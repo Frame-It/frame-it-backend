@@ -1,4 +1,4 @@
-package com.org.framelt.domin.user
+package com.org.framelt.domain.user
 
 enum class Concept {
     SNAP,

@@ -1,16 +1,15 @@
-package com.org.framelt.domin.user
+package com.org.framelt.domain.user
 
 data class User(
     val id: Long? = null,
+    val name : String,
     val nickname: String,
     val profileImageUrl: String? = null,
     val bio: String? = null,
     val identity: Identity,
     val career: String? = null,
-    val availableSchedules: List<Schedule>,
     val shootingConcepts: List<Concept>,
-    val availableLocations: List<Location>,
-    val notificationsEnabled: Boolean,
+    val notificationsEnabled: Boolean, //보유
     val deviseToken: String? = null
 ) {
 

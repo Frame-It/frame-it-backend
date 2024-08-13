@@ -1,6 +1,6 @@
-package com.org.framelt.domin.user
+package com.org.framelt.domain.user
 
-enum class Location {
+enum class LocationType {
     SEOUL,
     BUSAN,
     DAEGU,
