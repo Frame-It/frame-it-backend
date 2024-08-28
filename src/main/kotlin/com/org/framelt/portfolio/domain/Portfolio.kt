@@ -1,23 +1,24 @@
 package com.org.framelt.portfolio.domain
 
 import com.org.framelt.user.domain.User
+import org.springframework.web.multipart.MultipartFile
 
 class Portfolio(
     val id: Long? = null,
     val manage: User,
     val title: String,
     val description: String? = null,
-    val primaryPhoto: String,
-    val photos: List<String>,
+    val primaryPhoto: MultipartFile,
+    val photos: List<MultipartFile>,
     val hashtags: List<String>? = null,
     val collaborators: List<User>,
 ) {
-
+    //TODO:  photo 관련 수정
     constructor(
         manage: User,
         title: String,
         description: String?,
-        photos: List<String>,
+        photos: List<MultipartFile>,
         hashtags: List<String>?,
         collaborators: List<User>,
     ) : this(null, manage, title, description, photos.get(0), photos, hashtags, collaborators)

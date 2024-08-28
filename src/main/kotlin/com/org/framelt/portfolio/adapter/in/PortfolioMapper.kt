@@ -36,7 +36,7 @@ class PortfolioMapper {
                 userId = readPortfolio.manage.id,
                 userName = readPortfolio.manage.name,
                 description = readPortfolio.description,
-                photosUrl = readPortfolio.photos,
+                photosUrl = readPortfolio.photos.map { it.originalFilename ?: "" },
                 hashtags = readPortfolio.hashtags,
                 collaborators = readPortfolio.collaborators.joinToString(", ") { it.name }
             )

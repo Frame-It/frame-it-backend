@@ -8,6 +8,6 @@ interface PortfolioCreateUseCase {
     fun create(command: PortfolioCreateCommend): Long
     fun read(command: PortfolioReadCommend): PortfolioDetailResponse
     fun readAll(command: PortfolioReadAllCommend): List<PortfolioResponse>
-    fun update(command: PortfolioUpdateCommend)
-    fun  delete(command: PortfolioDeleteCommend)
+    fun update(command: PortfolioUpdateCommend): Void
+    fun  delete(command: PortfolioDeleteCommend): Void
 }
