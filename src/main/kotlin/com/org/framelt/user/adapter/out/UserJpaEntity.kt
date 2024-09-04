@@ -1,3 +1,76 @@
 package com.org.framelt.user.adapter.out
 
-class UserJpaEntity
+import com.org.framelt.user.domain.Concept
+import com.org.framelt.user.domain.Identity
+import com.org.framelt.user.domain.User
+import jakarta.persistence.CollectionTable
+import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+
+@Entity(name = "users")
+class UserJpaEntity(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    @Column(nullable = false)
+    val name: String,
+    @Column(nullable = false)
+    val nickname: String,
+    @Column(nullable = true)
+    val profileImageUrl: String? = null,
+    @Column(nullable = true)
+    val bio: String? = null,
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    val identity: Identity,
+    @Column(nullable = true)
+    val career: String? = null,
+    @ElementCollection(targetClass = Concept::class)
+    @CollectionTable(
+        name = "user_shooting_concepts",
+        joinColumns = [JoinColumn(name = "user_id")],
+    )
+    @Enumerated(EnumType.STRING)
+    val shootingConcepts: List<Concept>,
+    @Column(nullable = false)
+    val notificationsEnabled: Boolean, // 보유
+    @Column(nullable = true)
+    val deviseToken: String? = null,
+) {
+    companion object {
+        fun fromDomain(user: User) =
+            UserJpaEntity(
+                id = user.id,
+                name = user.name,
+                nickname = user.nickname,
+                profileImageUrl = user.profileImageUrl,
+                bio = user.bio,
+                identity = user.identity,
+                career = user.career,
+                shootingConcepts = user.shootingConcepts,
+                notificationsEnabled = user.notificationsEnabled,
+                deviseToken = user.deviseToken,
+            )
+    }
+}
+
+fun UserJpaEntity.toDomain() =
+    User(
+        id,
+        name,
+        nickname,
+        profileImageUrl,
+        bio,
+        identity,
+        career,
+        shootingConcepts,
+        notificationsEnabled,
+        deviseToken,
+    )
