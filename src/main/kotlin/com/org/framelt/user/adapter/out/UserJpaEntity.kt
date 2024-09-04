@@ -39,6 +39,8 @@ class UserJpaEntity(
     )
     @Enumerated(EnumType.STRING)
     val shootingConcepts: List<Concept>,
+    @Column(nullable = true)
+    val description: String? = null,
     @Column(nullable = false)
     val notificationsEnabled: Boolean, // 보유
     @Column(nullable = true)
@@ -55,6 +57,7 @@ class UserJpaEntity(
                 identity = user.identity,
                 career = user.career,
                 shootingConcepts = user.shootingConcepts,
+                description = user.description,
                 notificationsEnabled = user.notificationsEnabled,
                 deviseToken = user.deviseToken,
             )
@@ -63,14 +66,15 @@ class UserJpaEntity(
 
 fun UserJpaEntity.toDomain() =
     User(
-        id,
-        name,
-        nickname,
-        profileImageUrl,
-        bio,
-        identity,
-        career,
-        shootingConcepts,
-        notificationsEnabled,
-        deviseToken,
+        id = this.id,
+        name = this.name,
+        nickname = this.nickname,
+        profileImageUrl = this.profileImageUrl,
+        bio = this.bio,
+        identity = this.identity,
+        career = this.career,
+        shootingConcepts = this.shootingConcepts,
+        description = this.description,
+        notificationsEnabled = this.notificationsEnabled,
+        deviseToken = this.deviseToken,
     )

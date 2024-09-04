@@ -1,6 +1,6 @@
 package com.org.framelt.user.domain
 
-data class User(
+class User(
     val id: Long? = null,
     val name: String,
     val nickname: String,
@@ -9,6 +9,7 @@ data class User(
     val identity: Identity,
     val career: String? = null,
     val shootingConcepts: List<Concept>,
+    var description: String? = null,
     val notificationsEnabled: Boolean, // 보유
     val deviseToken: String? = null,
 )
