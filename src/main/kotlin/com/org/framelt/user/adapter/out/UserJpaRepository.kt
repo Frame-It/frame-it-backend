@@ -1,5 +1,7 @@
 package com.org.framelt.user.adapter.out
 
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.Repository
 
-interface UserJpaRepository : JpaRepository<UserJpaEntity, Long>
+interface UserJpaRepository : Repository<UserJpaEntity, Long> {
+    fun findById(id: Long): UserJpaEntity
+}

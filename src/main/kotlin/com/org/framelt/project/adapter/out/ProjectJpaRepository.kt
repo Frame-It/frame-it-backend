@@ -1,4 +1,7 @@
 package com.org.framelt.project.adapter.out
 
-class ProjectJpaRepository {
+import org.springframework.data.repository.Repository
+
+interface ProjectJpaRepository : Repository<ProjectJpaEntity, Long> {
+    fun save(project: ProjectJpaEntity): ProjectJpaEntity
 }

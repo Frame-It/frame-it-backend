@@ -3,54 +3,74 @@ package com.org.framelt.user.adapter.out
 import com.org.framelt.user.domain.Concept
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.User
-import jakarta.persistence.*
-@Entity
-@Table(name = "users")
+import jakarta.persistence.CollectionTable
+import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+
+@Entity(name = "users")
 class UserJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-
+    val id: Long? = null,
     @Column(nullable = false)
     val name: String,
-
     @Column(nullable = false)
     val nickname: String,
-
-    @Column(name = "profile_image_url")
+    @Column(nullable = true)
     val profileImageUrl: String? = null,
-
+    @Column(nullable = true)
     val bio: String? = null,
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val identity: Identity,
-
+    @Column(nullable = true)
     val career: String? = null,
-
-    @ElementCollection
-    @CollectionTable(name = "user_concepts", joinColumns = [JoinColumn(name = "user_id")])
-    @Column(name = "concept")
-    val shootingConcepts: List<String>,
-
-    @Column(name = "notifications_enabled", nullable = false)
-    val notificationsEnabled: Boolean,
-
-    @Column(name = "device_token")
-    val deviceToken: String? = null
+    @ElementCollection(targetClass = Concept::class)
+    @CollectionTable(
+        name = "user_shooting_concepts",
+        joinColumns = [JoinColumn(name = "user_id")],
+    )
+    @Enumerated(EnumType.STRING)
+    val shootingConcepts: List<Concept>,
+    @Column(nullable = false)
+    val notificationsEnabled: Boolean, // 보유
+    @Column(nullable = true)
+    val deviseToken: String? = null,
 ) {
-    fun toDomain(): User {
-        return User(
-            id = this.id,
-            name = this.name,
-            nickname = this.nickname,
-            profileImageUrl = this.profileImageUrl,
-            bio = this.bio,
-            identity = this.identity,
-            career = this.career,
-            shootingConcepts = this.shootingConcepts.map { Concept.SNAP },
-            notificationsEnabled = this.notificationsEnabled,
-            deviseToken = this.deviceToken
-        )
+    companion object {
+        fun fromDomain(user: User) =
+            UserJpaEntity(
+                id = user.id,
+                name = user.name,
+                nickname = user.nickname,
+                profileImageUrl = user.profileImageUrl,
+                bio = user.bio,
+                identity = user.identity,
+                career = user.career,
+                shootingConcepts = user.shootingConcepts,
+                notificationsEnabled = user.notificationsEnabled,
+                deviseToken = user.deviseToken,
+            )
     }
 }
+
+fun UserJpaEntity.toDomain() =
+    User(
+        id,
+        name,
+        nickname,
+        profileImageUrl,
+        bio,
+        identity,
+        career,
+        shootingConcepts,
+        notificationsEnabled,
+        deviseToken,
+    )
