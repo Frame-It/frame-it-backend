@@ -2,6 +2,8 @@ package com.org.framelt.project.application.service
 
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
+import com.org.framelt.project.application.port.`in`.ProjectDetailModel
+import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
 import com.org.framelt.project.application.port.out.ProjectCommandPort
@@ -16,7 +18,8 @@ class ProjectService(
     val projectQueryPort: ProjectQueryPort,
     val userQueryPort: UserQueryPort,
 ) : ProjectCreateUseCase,
-    ProjectUpdateUseCase {
+    ProjectUpdateUseCase,
+    ProjectReadUseCase {
     override fun create(projectCreateCommand: ProjectCreateCommand): Long {
         val manager = userQueryPort.readById(projectCreateCommand.userId)
         val project =
@@ -35,6 +38,25 @@ class ProjectService(
             )
         val savedProject = projectCommandPort.save(project)
         return savedProject.id!!
+    }
+
+    override fun getProjectDetail(projectId: Long): ProjectDetailModel {
+        val project = projectQueryPort.readById(projectId)
+        return ProjectDetailModel(
+            id = project.id!!,
+            title = project.title,
+            description = project.description,
+            shootingAt = project.shootingAt,
+            locationType = project.locationType,
+            spot = project.spot,
+            concepts = project.concepts,
+            conceptPhotoUrls = project.conceptPhotoUrls,
+            retouchingDescription = project.retouchingDescription,
+            managerId = project.manager.id!!,
+            managerNickname = project.manager.nickname,
+            managerProfileImageUrl = project.manager.profileImageUrl,
+            managerDescription = project.manager.description,
+        )
     }
 
     override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {
