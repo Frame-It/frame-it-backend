@@ -1,6 +1,7 @@
 package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.application.port.out.ProjectCommandPort
+import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.Project
 import org.springframework.stereotype.Repository
 
@@ -8,11 +9,22 @@ import org.springframework.stereotype.Repository
 class ProjectRepository(
     private val projectJpaRepository: ProjectJpaRepository,
     private val projectApplicantJpaRepository: ProjectApplicantJpaRepository,
-) : ProjectCommandPort {
+) : ProjectCommandPort,
+    ProjectQueryPort {
     override fun save(project: Project): Project {
         val projectEntity = ProjectJpaEntity.fromDomain(project)
         val savedProjectEntity = projectJpaRepository.save(projectEntity)
-        val applicantIds = projectApplicantJpaRepository.findByProjectId(savedProjectEntity.id!!).map { it.applicant.id!! }
-        return savedProjectEntity.toDomain(applicantIds)
+        return savedProjectEntity.toDomain(project.applicantIds)
+    }
+
+    override fun readById(id: Long): Project {
+        val projectEntity = projectJpaRepository.findById(id)
+        val applicantIds = projectApplicantJpaRepository.findByProjectId(projectEntity.id!!).map { it.applicant.id!! }
+        return projectEntity.toDomain(applicantIds)
+    }
+
+    override fun update(project: Project) {
+        val projectEntity = ProjectJpaEntity.fromDomain(project)
+        projectJpaRepository.save(projectEntity)
     }
 }
