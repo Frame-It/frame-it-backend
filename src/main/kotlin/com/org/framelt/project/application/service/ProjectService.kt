@@ -2,7 +2,10 @@ package com.org.framelt.project.application.service
 
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
+import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
+import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
 import com.org.framelt.project.application.port.out.ProjectCommandPort
+import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.Project
 import com.org.framelt.user.application.port.out.UserQueryPort
 import org.springframework.stereotype.Service
@@ -10,8 +13,10 @@ import org.springframework.stereotype.Service
 @Service
 class ProjectService(
     val projectCommandPort: ProjectCommandPort,
+    val projectQueryPort: ProjectQueryPort,
     val userQueryPort: UserQueryPort,
-) : ProjectCreateUseCase {
+) : ProjectCreateUseCase,
+    ProjectUpdateUseCase {
     override fun create(projectCreateCommand: ProjectCreateCommand): Long {
         val manager = userQueryPort.readById(projectCreateCommand.userId)
         val project =
@@ -30,5 +35,22 @@ class ProjectService(
             )
         val savedProject = projectCommandPort.save(project)
         return savedProject.id!!
+    }
+
+    override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {
+        val project = projectQueryPort.readById(projectUpdateCommand.projectId)
+        val updatedProject =
+            project.update(
+                title = projectUpdateCommand.title,
+                shootingAt = projectUpdateCommand.shootingAt,
+                locationType = projectUpdateCommand.locationType,
+                spot = projectUpdateCommand.spot,
+                concepts = projectUpdateCommand.concepts,
+                conceptPhotoUrls = projectUpdateCommand.conceptPhotoUrls,
+                description = projectUpdateCommand.description,
+                retouchingDescription = projectUpdateCommand.retouchingDescription,
+            )
+        projectCommandPort.update(updatedProject)
+        return updatedProject.id!!
     }
 }

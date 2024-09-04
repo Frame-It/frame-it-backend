@@ -21,4 +21,29 @@ data class Project(
 ) {
     var status: Status = Status.모집중
         private set
+
+    fun update(
+        title: String,
+        shootingAt: LocalDateTime,
+        locationType: LocationType,
+        spot: Spot,
+        concepts: List<Concept>,
+        conceptPhotoUrls: List<String>,
+        description: String,
+        retouchingDescription: String?,
+    ): Project =
+        Project(
+            id = this.id,
+            manager = this.manager,
+            title = title,
+            recruitmentRole = this.recruitmentRole,
+            shootingAt = shootingAt,
+            locationType = locationType,
+            spot = spot,
+            concepts = concepts,
+            conceptPhotoUrls = conceptPhotoUrls,
+            description = description,
+            retouchingDescription = retouchingDescription,
+            applicantIds = this.applicantIds,
+        )
 }
