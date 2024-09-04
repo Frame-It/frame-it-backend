@@ -2,7 +2,10 @@ package com.org.framelt.project.common
 
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
+import com.org.framelt.project.adapter.`in`.response.ProjectDetailManagerResponse
+import com.org.framelt.project.adapter.`in`.response.ProjectDetailResponse
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
+import com.org.framelt.project.application.port.`in`.ProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.user.domain.Identity
@@ -34,6 +37,26 @@ class ProjectMapper {
                 conceptPhotoUrls = request.conceptPhotoUrls,
                 description = request.description,
                 retouchingDescription = request.retouchingDescription,
+            )
+
+        fun toResponse(projectDetail: ProjectDetailModel): ProjectDetailResponse =
+            ProjectDetailResponse(
+                id = projectDetail.id,
+                title = projectDetail.title,
+                shootingAt = projectDetail.shootingAt,
+                locationType = projectDetail.locationType.name,
+                spot = projectDetail.spot.name,
+                concepts = projectDetail.concepts.map { it.name },
+                conceptPhotoUrls = projectDetail.conceptPhotoUrls,
+                description = projectDetail.description,
+                retouchingDescription = projectDetail.retouchingDescription,
+                manager =
+                    ProjectDetailManagerResponse(
+                        id = projectDetail.managerId,
+                        nickname = projectDetail.managerNickname,
+                        profileImageUrl = projectDetail.managerProfileImageUrl,
+                        description = projectDetail.managerDescription,
+                    ),
             )
     }
 }
