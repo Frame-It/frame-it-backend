@@ -5,6 +5,7 @@ import com.org.framelt.user.domain.User
 class ProjectApplicant(
     val project: Project,
     val applicant: User,
+    val applyContent: String,
 ) {
     init {
         require(project.status == Status.RECRUITING) { "모집 중인 프로젝트에만 지원 가능합니다." }
