@@ -3,6 +3,7 @@ package com.org.framelt.project.adapter.out
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.Spot
+import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.adapter.out.UserJpaEntity
 import com.org.framelt.user.adapter.out.toDomain
 import com.org.framelt.user.domain.Identity
@@ -35,6 +36,8 @@ class ProjectJpaEntity(
     @Column(nullable = false)
     val shootingAt: LocalDateTime,
     @Enumerated(EnumType.STRING)
+    val timeOption: TimeOption,
+    @Enumerated(EnumType.STRING)
     val locationType: LocationType,
     @Enumerated(EnumType.STRING)
     val spot: Spot,
@@ -63,6 +66,7 @@ class ProjectJpaEntity(
                 title = project.title,
                 recruitmentRole = project.recruitmentRole,
                 shootingAt = project.shootingAt,
+                timeOption = project.timeOption,
                 locationType = project.locationType,
                 spot = project.spot,
                 concepts = project.concepts,
@@ -80,6 +84,7 @@ fun ProjectJpaEntity.toDomain(applicantIds: List<Long>) =
         title = title,
         recruitmentRole = recruitmentRole,
         shootingAt = shootingAt,
+        timeOption = timeOption,
         locationType = locationType,
         spot = spot,
         concepts = concepts,
