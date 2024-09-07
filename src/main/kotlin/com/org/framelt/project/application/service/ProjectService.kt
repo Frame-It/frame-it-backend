@@ -110,6 +110,7 @@ class ProjectService(
             ProjectApplicant(
                 project = project,
                 applicant = applicant,
+                applyContent = projectApplyCommand.applyContent,
             )
         projectApplicantCommandPort.save(projectApplicant)
         // TODO: 프로젝트 호스트에게 신청 알림 전송
