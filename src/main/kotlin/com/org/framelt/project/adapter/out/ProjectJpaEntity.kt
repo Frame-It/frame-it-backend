@@ -77,7 +77,7 @@ class ProjectJpaEntity(
     }
 }
 
-fun ProjectJpaEntity.toDomain(applicantIds: List<Long>) =
+fun ProjectJpaEntity.toDomain(applicantIds: MutableList<Long>) =
     Project(
         id = id,
         manager = manager.toDomain(),

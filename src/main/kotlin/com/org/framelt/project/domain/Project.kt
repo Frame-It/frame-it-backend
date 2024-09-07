@@ -18,9 +18,9 @@ data class Project(
     val conceptPhotoUrls: List<String>,
     val description: String,
     val retouchingDescription: String?,
-    val applicantIds: List<Long>,
+    val applicantIds: MutableList<Long>,
 ) {
-    var status: Status = Status.모집중
+    var status: Status = Status.RECRUITING
         private set
 
     fun update(
@@ -49,4 +49,18 @@ data class Project(
             retouchingDescription = retouchingDescription,
             applicantIds = this.applicantIds,
         )
+
+    fun start() {
+        require(status == Status.RECRUITING) { "모집 중인 상태의 프로젝트만 시작 가능합니다." }
+        status = Status.IN_PROGRESS
+    }
+
+    fun complete() {
+        require(status == Status.IN_PROGRESS) { "진행 중인 상태의 프로젝트만 완료 가능합니다." }
+        status = Status.COMPLETED
+    }
+
+    fun cancel() {
+        status = Status.CANCELED
+    }
 }
