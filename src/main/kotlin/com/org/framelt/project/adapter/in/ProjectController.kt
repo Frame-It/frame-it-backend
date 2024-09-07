@@ -8,6 +8,7 @@ import com.org.framelt.project.adapter.`in`.response.ProjectCreateResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectUpdateResponse
+import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
@@ -97,5 +98,16 @@ class ProjectController(
         val applyResult = projectApplyUseCase.applyProject(projectApplyCommand)
         val response = ProjectApplyResponse(projectTitle = applyResult.projectTitle)
         return ResponseEntity.ok(response)
+    }
+
+    @PostMapping("/projects/{projectId}/applicants/{applicantId}/accept")
+    fun acceptApplicant(
+        @PathVariable projectId: Long,
+        @PathVariable applicantId: Long,
+    ): ResponseEntity<Unit> {
+        // TODO: 프로젝트 호스트 권한 체크
+        val projectApplicantAcceptCommand = ProjectApplicantAcceptCommand(projectId, applicantId)
+        projectApplyUseCase.acceptApplicant(projectApplicantAcceptCommand)
+        return ResponseEntity.ok().build()
     }
 }
