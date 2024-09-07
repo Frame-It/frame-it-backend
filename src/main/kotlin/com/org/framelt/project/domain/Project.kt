@@ -18,7 +18,7 @@ data class Project(
     val conceptPhotoUrls: List<String>,
     val description: String,
     val retouchingDescription: String?,
-    val applicantIds: List<Long>,
+    val applicantIds: MutableList<Long>,
 ) {
     var status: Status = Status.RECRUITING
         private set

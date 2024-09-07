@@ -21,13 +21,16 @@ class ProjectRepository(
 
     override fun readById(id: Long): Project {
         val projectEntity = projectJpaRepository.findById(id)
-        val applicantIds = projectApplicantJpaRepository.findByProjectId(projectEntity.id!!).map { it.applicant.id!! }
+        val applicantIds =
+            projectApplicantJpaRepository
+                .findByProjectId(projectEntity.id!!)
+                .mapTo(mutableListOf()) { it.applicant.id!! }
         return projectEntity.toDomain(applicantIds)
     }
 
     override fun readAll(projectFilterCommand: ProjectFilterCommand): List<Project> {
         val projectEntities = projectQueryDslRepository.findAllByFilter(projectFilterCommand)
-        return projectEntities.map { it.toDomain(applicantIds = emptyList()) }
+        return projectEntities.map { it.toDomain(applicantIds = mutableListOf()) }
     }
 
     override fun update(project: Project) {
