@@ -1,10 +1,12 @@
 package com.org.framelt.project.common
 
+import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailManagerResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectItemResponse
+import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
@@ -94,6 +96,16 @@ class ProjectMapper {
                 spot = projectItem.spot.name,
                 timeOption = projectItem.timeOption.name,
                 concepts = projectItem.concepts.map { it.name },
+            )
+
+        fun toCommand(
+            projectId: Long,
+            projectApplyRequest: ProjectApplyRequest,
+        ): ProjectApplyCommand =
+            ProjectApplyCommand(
+                projectId = projectId,
+                applicantId = projectApplyRequest.applicantId,
+                applyContent = projectApplyRequest.applyContent,
             )
     }
 }
