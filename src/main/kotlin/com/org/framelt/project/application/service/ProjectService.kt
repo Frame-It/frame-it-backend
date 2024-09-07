@@ -28,6 +28,7 @@ class ProjectService(
                 title = projectCreateCommand.title,
                 recruitmentRole = projectCreateCommand.recruitmentRole,
                 shootingAt = projectCreateCommand.shootingAt,
+                timeOption = projectCreateCommand.timeOption,
                 locationType = projectCreateCommand.locationType,
                 spot = projectCreateCommand.spot,
                 concepts = projectCreateCommand.concepts,
@@ -65,6 +66,7 @@ class ProjectService(
             project.update(
                 title = projectUpdateCommand.title,
                 shootingAt = projectUpdateCommand.shootingAt,
+                timeOption = projectUpdateCommand.timeOption,
                 locationType = projectUpdateCommand.locationType,
                 spot = projectUpdateCommand.spot,
                 concepts = projectUpdateCommand.concepts,
