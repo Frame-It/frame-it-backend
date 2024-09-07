@@ -14,4 +14,9 @@ enum class Spot {
     JEOLLA,
     GYEONGSANG,
     JEJU,
+    ;
+
+    companion object {
+        fun of(spot: String): Spot = valueOf(spot.uppercase())
+    }
 }
