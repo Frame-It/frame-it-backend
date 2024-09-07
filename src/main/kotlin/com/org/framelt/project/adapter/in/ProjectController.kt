@@ -1,11 +1,14 @@
 package com.org.framelt.project.adapter.`in`
 
+import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
+import com.org.framelt.project.adapter.`in`.response.ProjectApplyResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectCreateResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectUpdateResponse
+import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
@@ -25,6 +28,7 @@ class ProjectController(
     val projectCreateUseCase: ProjectCreateUseCase,
     val projectReadUseCase: ProjectReadUseCase,
     val projectUpdateUseCase: ProjectUpdateUseCase,
+    val projectApplyUseCase: ProjectApplyUseCase,
 ) {
     @PostMapping("/projects")
     fun create(
@@ -81,6 +85,17 @@ class ProjectController(
         val updateCommand = ProjectMapper.toCommand(projectUpdateRequest)
         val updatedProjectId = projectUpdateUseCase.update(updateCommand)
         val response = ProjectUpdateResponse(projectId = updatedProjectId)
+        return ResponseEntity.ok(response)
+    }
+
+    @PostMapping("/projects/{projectId}/apply")
+    fun apply(
+        @PathVariable projectId: Long,
+        @RequestBody projectApplyRequest: ProjectApplyRequest,
+    ): ResponseEntity<ProjectApplyResponse> {
+        val projectApplyCommand = ProjectMapper.toCommand(projectId, projectApplyRequest)
+        val applyResult = projectApplyUseCase.applyProject(projectApplyCommand)
+        val response = ProjectApplyResponse(projectTitle = applyResult.projectTitle)
         return ResponseEntity.ok(response)
     }
 }
