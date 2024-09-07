@@ -3,14 +3,14 @@ package com.org.framelt.project.common
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
+import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementDetailResponse
+import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailManagerResponse
-import com.org.framelt.project.adapter.`in`.response.ProjectDetailResponse
-import com.org.framelt.project.adapter.`in`.response.ProjectItemResponse
+import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
+import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
-import com.org.framelt.project.application.port.`in`.ProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
-import com.org.framelt.project.application.port.`in`.ProjectItemModel
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.user.domain.Identity
@@ -66,8 +66,8 @@ class ProjectMapper {
                 concepts = concepts?.split(","),
             )
 
-        fun toResponse(projectDetail: ProjectDetailModel): ProjectDetailResponse =
-            ProjectDetailResponse(
+        fun toResponse(projectDetail: ProjectAnnouncementDetailModel): ProjectAnnouncementDetailResponse =
+            ProjectAnnouncementDetailResponse(
                 id = projectDetail.id,
                 title = projectDetail.title,
                 shootingAt = projectDetail.shootingAt,
@@ -86,8 +86,8 @@ class ProjectMapper {
                     ),
             )
 
-        fun toResponse(projectItem: ProjectItemModel): ProjectItemResponse =
-            ProjectItemResponse(
+        fun toResponse(projectItem: ProjectAnnouncementItemModel): ProjectAnnouncementItemResponse =
+            ProjectAnnouncementItemResponse(
                 id = projectItem.id,
                 previewImageUrl = projectItem.previewImageUrl,
                 title = projectItem.title,

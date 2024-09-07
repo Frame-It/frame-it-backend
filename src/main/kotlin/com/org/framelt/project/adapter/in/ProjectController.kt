@@ -3,10 +3,10 @@ package com.org.framelt.project.adapter.`in`
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
+import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementDetailResponse
+import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectApplyResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectCreateResponse
-import com.org.framelt.project.adapter.`in`.response.ProjectDetailResponse
-import com.org.framelt.project.adapter.`in`.response.ProjectItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectUpdateResponse
 import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
@@ -45,8 +45,8 @@ class ProjectController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/projects")
-    fun showList(
+    @GetMapping("/projects/announcement")
+    fun showAnnouncementList(
         @RequestParam(required = false) recruitmentRole: String?,
         @RequestParam(required = false) startDate: LocalDate?,
         @RequestParam(required = false) endDate: LocalDate?,
@@ -54,7 +54,7 @@ class ProjectController(
         @RequestParam(required = false) spot: String?,
         @RequestParam(required = false) locationType: String?,
         @RequestParam(required = false) concepts: String?,
-    ): ResponseEntity<List<ProjectItemResponse>> {
+    ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val projectFilterCommand =
             ProjectMapper.toCommand(
                 recruitmentRole = recruitmentRole,
@@ -65,16 +65,16 @@ class ProjectController(
                 locationType = locationType,
                 concepts = concepts,
             )
-        val projectItems = projectReadUseCase.getProjectList(projectFilterCommand)
+        val projectItems = projectReadUseCase.getProjectAnnouncementList(projectFilterCommand)
         val response = projectItems.map { ProjectMapper.toResponse(it) }
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/projects/{projectId}")
+    @GetMapping("/projects/{projectId}/announcement")
     fun showDetail(
         @PathVariable projectId: Long,
-    ): ResponseEntity<ProjectDetailResponse> {
-        val projectDetail = projectReadUseCase.getProjectDetail(projectId)
+    ): ResponseEntity<ProjectAnnouncementDetailResponse> {
+        val projectDetail = projectReadUseCase.getProjectAnnouncementDetail(projectId)
         val response = ProjectMapper.toResponse(projectDetail)
         return ResponseEntity.ok(response)
     }
