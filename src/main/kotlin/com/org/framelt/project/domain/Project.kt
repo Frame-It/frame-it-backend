@@ -63,4 +63,9 @@ data class Project(
     fun cancel() {
         status = Status.CANCELED
     }
+
+    fun validateApplicantAcceptance(applicant: User) {
+        require(status == Status.RECRUITING) { "모집 중인 상태의 프로젝트만 신청자를 수락할 수 있습니다." }
+        require(applicantIds.contains(applicant.id)) { "신청자만 수락할 수 있습니다." }
+    }
 }
