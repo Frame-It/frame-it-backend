@@ -1,5 +1,8 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
+import com.org.framelt.project.application.port.`in`.ProjectApplyModel
+import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectDetailModel
@@ -8,9 +11,11 @@ import com.org.framelt.project.application.port.`in`.ProjectItemModel
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
+import com.org.framelt.project.application.port.out.ProjectApplicantCommandPort
 import com.org.framelt.project.application.port.out.ProjectCommandPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.Project
+import com.org.framelt.project.domain.ProjectApplicant
 import com.org.framelt.user.application.port.out.UserQueryPort
 import org.springframework.stereotype.Service
 
@@ -19,9 +24,11 @@ class ProjectService(
     val projectCommandPort: ProjectCommandPort,
     val projectQueryPort: ProjectQueryPort,
     val userQueryPort: UserQueryPort,
+    val projectApplicantCommandPort: ProjectApplicantCommandPort,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
-    ProjectReadUseCase {
+    ProjectReadUseCase,
+    ProjectApplyUseCase {
     override fun create(projectCreateCommand: ProjectCreateCommand): Long {
         val manager = userQueryPort.readById(projectCreateCommand.userId)
         val project =
@@ -37,7 +44,7 @@ class ProjectService(
                 conceptPhotoUrls = projectCreateCommand.conceptPhotoUrls,
                 description = projectCreateCommand.description,
                 retouchingDescription = projectCreateCommand.retouchingDescription,
-                applicantIds = listOf(),
+                applicantIds = mutableListOf(),
             )
         val savedProject = projectCommandPort.save(project)
         return savedProject.id!!
@@ -94,5 +101,18 @@ class ProjectService(
             )
         projectCommandPort.update(updatedProject)
         return updatedProject.id!!
+    }
+
+    override fun applyProject(projectApplyCommand: ProjectApplyCommand): ProjectApplyModel {
+        val project = projectQueryPort.readById(projectApplyCommand.projectId)
+        val applicant = userQueryPort.readById(projectApplyCommand.applicantId)
+        val projectApplicant =
+            ProjectApplicant(
+                project = project,
+                applicant = applicant,
+            )
+        projectApplicantCommandPort.save(projectApplicant)
+        // TODO: 프로젝트 호스트에게 신청 알림 전송
+        return ProjectApplyModel(project.title)
     }
 }
