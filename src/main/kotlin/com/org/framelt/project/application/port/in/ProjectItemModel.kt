@@ -3,18 +3,16 @@ package com.org.framelt.project.application.port.`in`
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.TimeOption
-import com.org.framelt.user.domain.LocationType
+import com.org.framelt.user.domain.Identity
 import java.time.LocalDateTime
 
-data class ProjectUpdateCommand(
-    val projectId: Long,
+data class ProjectItemModel(
+    val id: Long,
+    val previewImageUrl: String,
     val title: String,
+    val recruitmentRole: Identity,
     val shootingAt: LocalDateTime,
-    val timeOption: TimeOption,
-    val locationType: LocationType,
     val spot: Spot,
+    val timeOption: TimeOption,
     val concepts: List<Concept>,
-    val conceptPhotoUrls: List<String>,
-    val description: String,
-    val retouchingDescription: String,
 )
