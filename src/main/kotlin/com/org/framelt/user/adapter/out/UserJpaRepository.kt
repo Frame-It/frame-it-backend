@@ -1,3 +1,5 @@
 package com.org.framelt.user.adapter.out
 
-class UserJpaRepository
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface UserJpaRepository : JpaRepository<UserJpaEntity, Long>
