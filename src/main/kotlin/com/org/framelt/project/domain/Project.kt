@@ -11,6 +11,7 @@ data class Project(
     val title: String,
     val recruitmentRole: Identity,
     val shootingAt: LocalDateTime,
+    val timeOption: TimeOption,
     val locationType: LocationType,
     val spot: Spot,
     val concepts: List<Concept>,
@@ -25,6 +26,7 @@ data class Project(
     fun update(
         title: String,
         shootingAt: LocalDateTime,
+        timeOption: TimeOption,
         locationType: LocationType,
         spot: Spot,
         concepts: List<Concept>,
@@ -38,6 +40,7 @@ data class Project(
             title = title,
             recruitmentRole = this.recruitmentRole,
             shootingAt = shootingAt,
+            timeOption = timeOption,
             locationType = locationType,
             spot = spot,
             concepts = concepts,
