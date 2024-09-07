@@ -1,5 +1,6 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyModel
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
@@ -13,9 +14,11 @@ import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
 import com.org.framelt.project.application.port.out.ProjectApplicantCommandPort
 import com.org.framelt.project.application.port.out.ProjectCommandPort
+import com.org.framelt.project.application.port.out.ProjectMemberCommandPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.ProjectApplicant
+import com.org.framelt.project.domain.ProjectMember
 import com.org.framelt.user.application.port.out.UserQueryPort
 import org.springframework.stereotype.Service
 
@@ -25,6 +28,7 @@ class ProjectService(
     val projectQueryPort: ProjectQueryPort,
     val userQueryPort: UserQueryPort,
     val projectApplicantCommandPort: ProjectApplicantCommandPort,
+    val projectMemberCommandPort: ProjectMemberCommandPort,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
@@ -115,5 +119,31 @@ class ProjectService(
         projectApplicantCommandPort.save(projectApplicant)
         // TODO: 프로젝트 호스트에게 신청 알림 전송
         return ProjectApplyModel(project.title)
+    }
+
+    override fun acceptApplicant(projectApplicantAcceptCommand: ProjectApplicantAcceptCommand) {
+        val project = projectQueryPort.readById(projectApplicantAcceptCommand.projectId)
+        val applicant = userQueryPort.readById(projectApplicantAcceptCommand.applicantId)
+
+        // TODO: 호출자가 프로젝트 매니저인지 검증 추가
+        project.validateApplicantAcceptance(applicant)
+
+        val manager =
+            ProjectMember(
+                project = project,
+                member = project.manager,
+                isManager = true,
+            )
+        val guest =
+            ProjectMember(
+                project = project,
+                member = applicant,
+            )
+        projectMemberCommandPort.save(manager)
+        projectMemberCommandPort.save(guest)
+        // TODO: (정책) 기존 지원자들 DB에서 삭제?
+
+        project.start()
+        // TODO: 프로젝트 호스트/게스트에게 시작 알림 전송
     }
 }
