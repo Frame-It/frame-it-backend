@@ -1,14 +1,14 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
+import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyModel
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
-import com.org.framelt.project.application.port.`in`.ProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
-import com.org.framelt.project.application.port.`in`.ProjectItemModel
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
@@ -54,9 +54,9 @@ class ProjectService(
         return savedProject.id!!
     }
 
-    override fun getProjectDetail(projectId: Long): ProjectDetailModel {
+    override fun getProjectAnnouncementDetail(projectId: Long): ProjectAnnouncementDetailModel {
         val project = projectQueryPort.readById(projectId)
-        return ProjectDetailModel(
+        return ProjectAnnouncementDetailModel(
             id = project.id!!,
             title = project.title,
             description = project.description,
@@ -73,10 +73,10 @@ class ProjectService(
         )
     }
 
-    override fun getProjectList(projectFilterCommand: ProjectFilterCommand): List<ProjectItemModel> {
+    override fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel> {
         val projects = projectQueryPort.readAll(projectFilterCommand)
         return projects.map {
-            ProjectItemModel(
+            ProjectAnnouncementItemModel(
                 id = it.id!!,
                 previewImageUrl = it.conceptPhotoUrls.first(),
                 title = it.title,

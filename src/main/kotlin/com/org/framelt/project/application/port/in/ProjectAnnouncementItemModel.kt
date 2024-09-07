@@ -6,7 +6,7 @@ import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
 import java.time.LocalDateTime
 
-data class ProjectItemModel(
+data class ProjectAnnouncementItemModel(
     val id: Long,
     val previewImageUrl: String,
     val title: String,

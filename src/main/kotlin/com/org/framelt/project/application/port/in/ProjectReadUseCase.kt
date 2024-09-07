@@ -1,7 +1,7 @@
 package com.org.framelt.project.application.port.`in`
 
 interface ProjectReadUseCase {
-    fun getProjectDetail(projectId: Long): ProjectDetailModel
+    fun getProjectAnnouncementDetail(projectId: Long): ProjectAnnouncementDetailModel
 
-    fun getProjectList(projectFilterCommand: ProjectFilterCommand): List<ProjectItemModel>
+    fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel>
 }
