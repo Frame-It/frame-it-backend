@@ -5,7 +5,7 @@ import com.org.framelt.project.domain.Spot
 import com.org.framelt.user.domain.LocationType
 import java.time.LocalDateTime
 
-data class ProjectDetailModel(
+data class ProjectAnnouncementDetailModel(
     val id: Long,
     val title: String,
     val description: String,

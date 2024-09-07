@@ -2,7 +2,7 @@ package com.org.framelt.project.adapter.`in`.response
 
 import java.time.LocalDateTime
 
-data class ProjectDetailResponse(
+data class ProjectAnnouncementDetailResponse(
     val id: Long,
     val title: String,
     val description: String,
