@@ -3,6 +3,8 @@ package com.org.framelt.project.application.service
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectDetailModel
+import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
+import com.org.framelt.project.application.port.`in`.ProjectItemModel
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
@@ -58,6 +60,22 @@ class ProjectService(
             managerProfileImageUrl = project.manager.profileImageUrl,
             managerDescription = project.manager.description,
         )
+    }
+
+    override fun getProjectList(projectFilterCommand: ProjectFilterCommand): List<ProjectItemModel> {
+        val projects = projectQueryPort.readAll(projectFilterCommand)
+        return projects.map {
+            ProjectItemModel(
+                id = it.id!!,
+                previewImageUrl = it.conceptPhotoUrls.first(),
+                title = it.title,
+                recruitmentRole = it.recruitmentRole,
+                shootingAt = it.shootingAt,
+                spot = it.spot,
+                timeOption = it.timeOption,
+                concepts = it.concepts,
+            )
+        }
     }
 
     override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {
