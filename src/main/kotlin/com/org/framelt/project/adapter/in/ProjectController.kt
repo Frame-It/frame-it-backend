@@ -71,7 +71,7 @@ class ProjectController(
     }
 
     @GetMapping("/projects/{projectId}/announcement")
-    fun showDetail(
+    fun showAnnouncementDetail(
         @PathVariable projectId: Long,
     ): ResponseEntity<ProjectAnnouncementDetailResponse> {
         val projectDetail = projectReadUseCase.getProjectAnnouncementDetail(projectId)
