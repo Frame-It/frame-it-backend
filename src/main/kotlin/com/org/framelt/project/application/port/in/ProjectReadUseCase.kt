@@ -5,5 +5,13 @@ interface ProjectReadUseCase {
 
     fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel>
 
-    fun getRecruitingProjectForHost(projectId: Long): RecruitingProjectDetailHostModel
+    fun getRecruitingProjectForHost(
+        projectId: Long,
+        userId: Long,
+    ): RecruitingProjectDetailHostModel
+
+    fun getRecruitingProjectForGuest(
+        projectId: Long,
+        userId: Long,
+    ): RecruitingProjectDetailGuestModel
 }
