@@ -22,4 +22,9 @@ class ProjectApplicantRepository(
         val projectApplicantJpaEntity = projectApplicantJpaRepository.getByProjectIdAndApplicantId(projectId, applicantId)
         return projectApplicantJpaEntity.toDomain()
     }
+
+    override fun existsByProjectIdAndApplicantId(
+        projectId: Long,
+        applicantId: Long,
+    ): Boolean = projectApplicantJpaRepository.existsByProjectIdAndApplicantId(projectId, applicantId)
 }

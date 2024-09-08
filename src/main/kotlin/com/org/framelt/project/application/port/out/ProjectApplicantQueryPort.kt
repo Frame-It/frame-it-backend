@@ -7,4 +7,9 @@ interface ProjectApplicantQueryPort {
         projectId: Long,
         applicantId: Long,
     ): ProjectApplicant
+
+    fun existsByProjectIdAndApplicantId(
+        projectId: Long,
+        applicantId: Long,
+    ): Boolean
 }

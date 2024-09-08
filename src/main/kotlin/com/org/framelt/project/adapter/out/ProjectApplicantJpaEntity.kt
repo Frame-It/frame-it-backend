@@ -47,7 +47,7 @@ class ProjectApplicantJpaEntity(
 fun ProjectApplicantJpaEntity.toDomain(): ProjectApplicant =
     ProjectApplicant(
         id = id,
-        project = project.toDomain(mutableListOf()),
+        project = project.toDomain(),
         applicant = applicant.toDomain(),
         applyContent = applyContent,
         isCanceled = isCanceled,

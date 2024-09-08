@@ -5,14 +5,15 @@ import org.springframework.data.repository.Repository
 interface ProjectApplicantJpaRepository : Repository<ProjectApplicantJpaEntity, Long> {
     fun save(projectApplicantJpaEntity: ProjectApplicantJpaEntity): ProjectApplicantJpaEntity
 
-    fun findByProjectId(projectId: Long): List<ProjectApplicantJpaEntity>
-
     fun findByProjectIdAndApplicantId(
         projectId: Long,
         applicantId: Long,
     ): ProjectApplicantJpaEntity?
 
-    fun deleteById(id: Long)
+    fun existsByProjectIdAndApplicantId(
+        projectId: Long,
+        applicantId: Long,
+    ): Boolean
 }
 
 fun ProjectApplicantJpaRepository.getByProjectIdAndApplicantId(
