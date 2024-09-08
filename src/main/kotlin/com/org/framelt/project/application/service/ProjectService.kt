@@ -1,5 +1,6 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.project.application.port.`in`.InProgressProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
@@ -19,10 +20,12 @@ import com.org.framelt.project.application.port.out.ProjectApplicantCommandPort
 import com.org.framelt.project.application.port.out.ProjectApplicantQueryPort
 import com.org.framelt.project.application.port.out.ProjectCommandPort
 import com.org.framelt.project.application.port.out.ProjectMemberCommandPort
+import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.ProjectApplicant
 import com.org.framelt.project.domain.ProjectMember
+import com.org.framelt.project.domain.Status
 import com.org.framelt.user.application.port.out.UserQueryPort
 import org.springframework.stereotype.Service
 
@@ -34,6 +37,7 @@ class ProjectService(
     val projectApplicantCommandPort: ProjectApplicantCommandPort,
     val projectApplicantQueryPort: ProjectApplicantQueryPort,
     val projectMemberCommandPort: ProjectMemberCommandPort,
+    val projectMemberQueryPort: ProjectMemberQueryPort,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
@@ -99,8 +103,18 @@ class ProjectService(
     ): RecruitingProjectDetailHostModel {
         // TODO: 호출자가 프로젝트 호스트인지 검증 추가
         val project = projectQueryPort.readById(projectId)
+        validateProjectStatus(project, Status.RECRUITING)
         val applicants = projectApplicantQueryPort.readByProjectId(projectId)
         return RecruitingProjectDetailHostModel.fromDomain(project, applicants)
+    }
+
+    private fun validateProjectStatus(
+        project: Project,
+        status: Status,
+    ) {
+        if (project.status != status) {
+            throw IllegalArgumentException(status.name + " 상태의 프로젝트가 아닙니다.")
+        }
     }
 
     override fun getRecruitingProjectForGuest(
@@ -109,8 +123,22 @@ class ProjectService(
     ): RecruitingProjectDetailGuestModel {
         // TODO: 호출자가 프로젝트 게스트인지 검증 추가
         val project = projectQueryPort.readById(projectId)
+        validateProjectStatus(project, Status.RECRUITING)
         val applicant = projectApplicantQueryPort.readByProjectIdAndApplicantId(projectId, userId)
         return RecruitingProjectDetailGuestModel.fromDomain(project, applicant)
+    }
+
+    override fun getInProgressProject(
+        projectId: Long,
+        userId: Long,
+    ): InProgressProjectDetailModel {
+        val project = projectQueryPort.readById(projectId)
+        validateProjectStatus(project, Status.IN_PROGRESS)
+
+        val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
+        val otherProjectMember = projectMembers.first { it.member.id != userId }
+
+        return InProgressProjectDetailModel.fromDomain(project, otherProjectMember)
     }
 
     override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {
@@ -182,7 +210,7 @@ class ProjectService(
             ProjectMember(
                 project = project,
                 member = project.host,
-                isManager = true,
+                isHost = true,
             )
         val guest =
             ProjectMember(
@@ -194,6 +222,7 @@ class ProjectService(
         // TODO: (정책) 기존 지원자들 DB에서 삭제?
 
         project.start()
+        projectCommandPort.save(project)
         // TODO: 프로젝트 호스트/게스트에게 시작 알림 전송
     }
 }

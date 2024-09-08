@@ -3,6 +3,7 @@ package com.org.framelt.project.adapter.out
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.Spot
+import com.org.framelt.project.domain.Status
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.adapter.out.UserJpaEntity
 import com.org.framelt.user.adapter.out.toDomain
@@ -57,6 +58,8 @@ class ProjectJpaEntity(
     val description: String,
     @Column(nullable = true)
     val retouchingDescription: String?,
+    @Enumerated(EnumType.STRING)
+    val status: Status,
 ) {
     companion object {
         fun fromDomain(project: Project) =
@@ -73,6 +76,7 @@ class ProjectJpaEntity(
                 conceptPhotoUrls = project.conceptPhotoUrls,
                 description = project.description,
                 retouchingDescription = project.retouchingDescription,
+                status = project.status,
             )
     }
 }
@@ -91,4 +95,5 @@ fun ProjectJpaEntity.toDomain() =
         conceptPhotoUrls = conceptPhotoUrls,
         description = description,
         retouchingDescription = retouchingDescription,
+        status = status,
     )
