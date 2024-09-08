@@ -15,6 +15,11 @@ class ProjectApplicantRepository(
         projectApplicantJpaRepository.save(projectApplicantJpaEntity)
     }
 
+    override fun readByProjectId(projectId: Long): List<ProjectApplicant> {
+        val projectApplicantJpaEntities = projectApplicantJpaRepository.getByProjectId(projectId)
+        return projectApplicantJpaEntities.map { it.toDomain() }
+    }
+
     override fun readByProjectIdAndApplicantId(
         projectId: Long,
         applicantId: Long,

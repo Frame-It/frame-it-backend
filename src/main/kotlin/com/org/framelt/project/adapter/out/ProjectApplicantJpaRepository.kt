@@ -5,6 +5,8 @@ import org.springframework.data.repository.Repository
 interface ProjectApplicantJpaRepository : Repository<ProjectApplicantJpaEntity, Long> {
     fun save(projectApplicantJpaEntity: ProjectApplicantJpaEntity): ProjectApplicantJpaEntity
 
+    fun getByProjectId(projectId: Long): List<ProjectApplicantJpaEntity>
+
     fun findByProjectIdAndApplicantId(
         projectId: Long,
         applicantId: Long,
