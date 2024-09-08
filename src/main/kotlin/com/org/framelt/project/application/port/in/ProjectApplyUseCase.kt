@@ -4,4 +4,6 @@ interface ProjectApplyUseCase {
     fun applyProject(projectApplyCommand: ProjectApplyCommand): ProjectApplyModel
 
     fun acceptApplicant(projectApplicantAcceptCommand: ProjectApplicantAcceptCommand)
+
+    fun cancelApplication(projectApplicantCancelCommand: ProjectApplicantCancelCommand)
 }

@@ -1,5 +1,6 @@
 package com.org.framelt.project.adapter.`in`
 
+import com.org.framelt.project.adapter.`in`.request.ProjectApplicationCancelRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
@@ -14,6 +15,7 @@ import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
 import com.org.framelt.project.common.ProjectMapper
+import com.org.framelt.project.common.ProjectMapper.Companion.toCommand
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -98,6 +100,17 @@ class ProjectController(
         val applyResult = projectApplyUseCase.applyProject(projectApplyCommand)
         val response = ProjectApplyResponse(projectTitle = applyResult.projectTitle)
         return ResponseEntity.ok(response)
+    }
+
+    @PostMapping("/projects/{projectId}/applicants/{applicantId}/cancel")
+    fun cancelApplication(
+        @PathVariable projectId: Long,
+        @PathVariable applicantId: Long,
+        @RequestBody projectApplicationCancelRequest: ProjectApplicationCancelRequest,
+    ): ResponseEntity<Unit> {
+        val projectApplicantCancelCommand = ProjectMapper.toCommand(projectId, applicantId, projectApplicationCancelRequest)
+        projectApplyUseCase.cancelApplication(projectApplicantCancelCommand)
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/projects/{projectId}/applicants/{applicantId}/accept")

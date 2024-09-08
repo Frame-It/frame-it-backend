@@ -3,6 +3,7 @@ package com.org.framelt.project.application.service
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
+import com.org.framelt.project.application.port.`in`.ProjectApplicantCancelCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyModel
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
@@ -13,6 +14,7 @@ import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
 import com.org.framelt.project.application.port.out.ProjectApplicantCommandPort
+import com.org.framelt.project.application.port.out.ProjectApplicantQueryPort
 import com.org.framelt.project.application.port.out.ProjectCommandPort
 import com.org.framelt.project.application.port.out.ProjectMemberCommandPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
@@ -28,6 +30,7 @@ class ProjectService(
     val projectQueryPort: ProjectQueryPort,
     val userQueryPort: UserQueryPort,
     val projectApplicantCommandPort: ProjectApplicantCommandPort,
+    val projectApplicantQueryPort: ProjectApplicantQueryPort,
     val projectMemberCommandPort: ProjectMemberCommandPort,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
@@ -119,6 +122,16 @@ class ProjectService(
         projectApplicantCommandPort.save(projectApplicant)
         // TODO: 프로젝트 호스트에게 신청 알림 전송
         return ProjectApplyModel(project.title)
+    }
+
+    override fun cancelApplication(projectApplicantCancelCommand: ProjectApplicantCancelCommand) {
+        val projectApplicant =
+            projectApplicantQueryPort.readByProjectIdAndApplicantId(
+                projectId = projectApplicantCancelCommand.projectId,
+                applicantId = projectApplicantCancelCommand.applicantId,
+            )
+        projectApplicant.cancel(projectApplicantCancelCommand.cancelReason)
+        projectApplicantCommandPort.save(projectApplicant)
     }
 
     override fun acceptApplicant(projectApplicantAcceptCommand: ProjectApplicantAcceptCommand) {
