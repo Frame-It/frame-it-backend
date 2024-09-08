@@ -38,10 +38,10 @@ class ProjectService(
     ProjectReadUseCase,
     ProjectApplyUseCase {
     override fun create(projectCreateCommand: ProjectCreateCommand): Long {
-        val manager = userQueryPort.readById(projectCreateCommand.userId)
+        val host = userQueryPort.readById(projectCreateCommand.userId)
         val project =
             Project(
-                manager = manager,
+                host = host,
                 title = projectCreateCommand.title,
                 recruitmentRole = projectCreateCommand.recruitmentRole,
                 shootingAt = projectCreateCommand.shootingAt,
@@ -69,10 +69,10 @@ class ProjectService(
             concepts = project.concepts,
             conceptPhotoUrls = project.conceptPhotoUrls,
             retouchingDescription = project.retouchingDescription,
-            managerId = project.manager.id!!,
-            managerNickname = project.manager.nickname,
-            managerProfileImageUrl = project.manager.profileImageUrl,
-            managerDescription = project.manager.description,
+            host = project.host.id!!,
+            hostNickname = project.host.nickname,
+            hostProfileImageUrl = project.host.profileImageUrl,
+            hostDescription = project.host.description,
         )
     }
 
@@ -92,7 +92,10 @@ class ProjectService(
         }
     }
 
-    override fun getRecruitingProjectForHost(projectId: Long): RecruitingProjectDetailHostModel {
+    override fun getRecruitingProjectForHost(
+        projectId: Long,
+        userId: Long,
+    ): RecruitingProjectDetailHostModel {
         // TODO: 호출자가 프로젝트 호스트인지 검증 추가
         val project = projectQueryPort.readById(projectId)
         val applicants = projectApplicantQueryPort.readByProjectId(projectId)
@@ -160,14 +163,14 @@ class ProjectService(
                 projectId = projectApplicantAcceptCommand.projectId,
                 applicantId = projectApplicantAcceptCommand.applicantId,
             )
-        // TODO: 호출자가 프로젝트 매니저인지 검증 추가
+        // TODO: 호출자가 프로젝트 호스트인지 검증 추가
         projectApplicant.accepted(projectApplicantAcceptCommand.projectId)
 
         val project = projectQueryPort.readById(projectApplicantAcceptCommand.projectId)
-        val manager =
+        val host =
             ProjectMember(
                 project = project,
-                member = project.manager,
+                member = project.host,
                 isManager = true,
             )
         val guest =
@@ -175,7 +178,7 @@ class ProjectService(
                 project = project,
                 member = projectApplicant.applicant,
             )
-        projectMemberCommandPort.save(manager)
+        projectMemberCommandPort.save(host)
         projectMemberCommandPort.save(guest)
         // TODO: (정책) 기존 지원자들 DB에서 삭제?
 

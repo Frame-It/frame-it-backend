@@ -12,5 +12,5 @@ data class ProjectAnnouncementDetailResponse(
     val concepts: List<String>,
     val conceptPhotoUrls: List<String>,
     val retouchingDescription: String?,
-    val manager: ProjectDetailManagerResponse,
+    val host: ProjectDetailManagerResponse,
 )

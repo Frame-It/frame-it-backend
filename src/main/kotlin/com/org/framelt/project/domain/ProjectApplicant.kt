@@ -12,7 +12,7 @@ class ProjectApplicant(
 ) {
     init {
         require(project.status == Status.RECRUITING) { "모집 중인 프로젝트에만 지원 가능합니다." }
-        require(applicant.id != project.manager.id) { "프로젝트 매니저는 지원할 수 없습니다." }
+        require(applicant.id != project.host.id) { "프로젝트 호스트는 지원할 수 없습니다." }
         require(applicant.identity == project.recruitmentRole) { "모집 역할과 사용자 역할이 일치하지 않습니다." }
     }
 
