@@ -15,8 +15,8 @@ data class ProjectAnnouncementDetailModel(
     val concepts: List<Concept>,
     val conceptPhotoUrls: List<String>,
     val retouchingDescription: String?,
-    val managerId: Long,
-    val managerNickname: String,
-    val managerProfileImageUrl: String?,
-    val managerDescription: String?,
+    val host: Long,
+    val hostNickname: String,
+    val hostProfileImageUrl: String?,
+    val hostDescription: String?,
 )

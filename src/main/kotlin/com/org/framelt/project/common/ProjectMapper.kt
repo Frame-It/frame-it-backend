@@ -79,12 +79,12 @@ class ProjectMapper {
                 conceptPhotoUrls = projectDetail.conceptPhotoUrls,
                 description = projectDetail.description,
                 retouchingDescription = projectDetail.retouchingDescription,
-                manager =
+                host =
                     ProjectDetailManagerResponse(
-                        id = projectDetail.managerId,
-                        nickname = projectDetail.managerNickname,
-                        profileImageUrl = projectDetail.managerProfileImageUrl,
-                        description = projectDetail.managerDescription,
+                        id = projectDetail.host,
+                        nickname = projectDetail.hostNickname,
+                        profileImageUrl = projectDetail.hostProfileImageUrl,
+                        description = projectDetail.hostDescription,
                     ),
             )
 

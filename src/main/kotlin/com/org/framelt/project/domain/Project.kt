@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 data class Project(
     val id: Long? = null,
-    val manager: User,
+    val host: User,
     val title: String,
     val recruitmentRole: Identity,
     val shootingAt: LocalDateTime,
@@ -35,7 +35,7 @@ data class Project(
     ): Project =
         Project(
             id = this.id,
-            manager = this.manager,
+            host = this.host,
             title = title,
             recruitmentRole = this.recruitmentRole,
             shootingAt = shootingAt,

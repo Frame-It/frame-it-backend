@@ -27,8 +27,8 @@ class ProjectJpaEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     @ManyToOne
-    @JoinColumn(name = "manager_id")
-    val manager: UserJpaEntity,
+    @JoinColumn(name = "host_id")
+    val host: UserJpaEntity,
     @Column(nullable = false)
     val title: String,
     @Enumerated(EnumType.STRING)
@@ -62,7 +62,7 @@ class ProjectJpaEntity(
         fun fromDomain(project: Project) =
             ProjectJpaEntity(
                 id = project.id,
-                manager = UserJpaEntity.fromDomain(project.manager),
+                host = UserJpaEntity.fromDomain(project.host),
                 title = project.title,
                 recruitmentRole = project.recruitmentRole,
                 shootingAt = project.shootingAt,
@@ -80,7 +80,7 @@ class ProjectJpaEntity(
 fun ProjectJpaEntity.toDomain() =
     Project(
         id = id,
-        manager = manager.toDomain(),
+        host = host.toDomain(),
         title = title,
         recruitmentRole = recruitmentRole,
         shootingAt = shootingAt,
