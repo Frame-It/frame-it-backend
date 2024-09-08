@@ -6,5 +6,5 @@ class ProjectMember(
     val id: Long? = null,
     val member: User,
     val project: Project,
-    val isManager: Boolean = false,
+    val isHost: Boolean = false,
 )

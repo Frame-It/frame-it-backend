@@ -1,5 +1,6 @@
 package com.org.framelt.project.adapter.`in`
 
+import com.org.framelt.project.adapter.`in`.response.InProgressProjectDetailResponse
 import com.org.framelt.project.adapter.`in`.response.RecruitingProjectDetailGuestResponse
 import com.org.framelt.project.adapter.`in`.response.RecruitingProjectDetailHostResponse
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
@@ -30,6 +31,16 @@ class ProjectDetailQueryController(
     ): ResponseEntity<RecruitingProjectDetailGuestResponse> {
         val result = projectReadUseCase.getRecruitingProjectForGuest(projectId, userId)
         val response = RecruitingProjectDetailGuestResponse.from(result)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/in-progress-projects/{projectId}")
+    fun showInProgressProject(
+        @PathVariable projectId: Long,
+        @RequestParam userId: Long,
+    ): ResponseEntity<InProgressProjectDetailResponse> {
+        val result = projectReadUseCase.getInProgressProject(projectId, userId)
+        val response = InProgressProjectDetailResponse.from(result)
         return ResponseEntity.ok(response)
     }
 }

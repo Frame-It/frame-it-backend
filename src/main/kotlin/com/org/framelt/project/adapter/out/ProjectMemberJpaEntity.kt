@@ -2,6 +2,7 @@ package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.domain.ProjectMember
 import com.org.framelt.user.adapter.out.UserJpaEntity
+import com.org.framelt.user.adapter.out.toDomain
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -29,7 +30,15 @@ class ProjectMemberJpaEntity(
             ProjectMemberJpaEntity(
                 project = ProjectJpaEntity.fromDomain(projectMember.project),
                 member = UserJpaEntity.fromDomain(projectMember.member),
-                isManager = projectMember.isManager,
+                isManager = projectMember.isHost,
             )
     }
 }
+
+fun ProjectMemberJpaEntity.toDomain(): ProjectMember =
+    ProjectMember(
+        id = id!!,
+        project = project.toDomain(),
+        member = member.toDomain(),
+        isHost = isManager,
+    )
