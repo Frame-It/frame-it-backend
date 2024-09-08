@@ -51,7 +51,6 @@ class ProjectService(
                 conceptPhotoUrls = projectCreateCommand.conceptPhotoUrls,
                 description = projectCreateCommand.description,
                 retouchingDescription = projectCreateCommand.retouchingDescription,
-                applicantIds = mutableListOf(),
             )
         val savedProject = projectCommandPort.save(project)
         return savedProject.id!!
@@ -111,17 +110,30 @@ class ProjectService(
     }
 
     override fun applyProject(projectApplyCommand: ProjectApplyCommand): ProjectApplyModel {
+        validateDuplicateApplicationExistence(projectApplyCommand)
+
         val project = projectQueryPort.readById(projectApplyCommand.projectId)
         val applicant = userQueryPort.readById(projectApplyCommand.applicantId)
-        val projectApplicant =
+
+        projectApplicantCommandPort.save(
             ProjectApplicant(
                 project = project,
                 applicant = applicant,
                 applyContent = projectApplyCommand.applyContent,
-            )
-        projectApplicantCommandPort.save(projectApplicant)
+            ),
+        )
         // TODO: 프로젝트 호스트에게 신청 알림 전송
         return ProjectApplyModel(project.title)
+    }
+
+    private fun validateDuplicateApplicationExistence(projectApplyCommand: ProjectApplyCommand) {
+        if (projectApplicantQueryPort.existsByProjectIdAndApplicantId(
+                projectId = projectApplyCommand.projectId,
+                applicantId = projectApplyCommand.applicantId,
+            )
+        ) {
+            throw IllegalArgumentException("이미 지원한 프로젝트입니다.")
+        }
     }
 
     override fun cancelApplication(projectApplicantCancelCommand: ProjectApplicantCancelCommand) {
@@ -135,12 +147,15 @@ class ProjectService(
     }
 
     override fun acceptApplicant(projectApplicantAcceptCommand: ProjectApplicantAcceptCommand) {
-        val project = projectQueryPort.readById(projectApplicantAcceptCommand.projectId)
-        val applicant = userQueryPort.readById(projectApplicantAcceptCommand.applicantId)
-
+        val projectApplicant =
+            projectApplicantQueryPort.readByProjectIdAndApplicantId(
+                projectId = projectApplicantAcceptCommand.projectId,
+                applicantId = projectApplicantAcceptCommand.applicantId,
+            )
         // TODO: 호출자가 프로젝트 매니저인지 검증 추가
-        project.validateApplicantAcceptance(applicant)
+        projectApplicant.accepted(projectApplicantAcceptCommand.projectId)
 
+        val project = projectQueryPort.readById(projectApplicantAcceptCommand.projectId)
         val manager =
             ProjectMember(
                 project = project,
@@ -150,7 +165,7 @@ class ProjectService(
         val guest =
             ProjectMember(
                 project = project,
-                member = applicant,
+                member = projectApplicant.applicant,
             )
         projectMemberCommandPort.save(manager)
         projectMemberCommandPort.save(guest)
