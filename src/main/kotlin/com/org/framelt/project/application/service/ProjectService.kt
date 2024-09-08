@@ -13,6 +13,7 @@ import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
+import com.org.framelt.project.application.port.`in`.RecruitingProjectDetailGuestModel
 import com.org.framelt.project.application.port.`in`.RecruitingProjectDetailHostModel
 import com.org.framelt.project.application.port.out.ProjectApplicantCommandPort
 import com.org.framelt.project.application.port.out.ProjectApplicantQueryPort
@@ -100,6 +101,16 @@ class ProjectService(
         val project = projectQueryPort.readById(projectId)
         val applicants = projectApplicantQueryPort.readByProjectId(projectId)
         return RecruitingProjectDetailHostModel.fromDomain(project, applicants)
+    }
+
+    override fun getRecruitingProjectForGuest(
+        projectId: Long,
+        userId: Long,
+    ): RecruitingProjectDetailGuestModel {
+        // TODO: 호출자가 프로젝트 게스트인지 검증 추가
+        val project = projectQueryPort.readById(projectId)
+        val applicant = projectApplicantQueryPort.readByProjectIdAndApplicantId(projectId, userId)
+        return RecruitingProjectDetailGuestModel.fromDomain(project, applicant)
     }
 
     override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {
