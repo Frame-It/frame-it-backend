@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository
 class ProjectRepository(
     private val projectJpaRepository: ProjectJpaRepository,
     private val projectQueryDslRepository: ProjectQueryDslRepository,
-    private val projectApplicantJpaRepository: ProjectApplicantJpaRepository,
 ) : ProjectCommandPort,
     ProjectQueryPort {
     override fun save(project: Project): Project {

@@ -18,10 +18,8 @@ data class Project(
     val conceptPhotoUrls: List<String>,
     val description: String,
     val retouchingDescription: String?,
+    var status: Status = Status.RECRUITING,
 ) {
-    var status: Status = Status.RECRUITING
-        private set
-
     fun update(
         title: String,
         shootingAt: LocalDateTime,

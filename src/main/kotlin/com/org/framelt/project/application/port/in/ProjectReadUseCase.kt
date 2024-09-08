@@ -14,4 +14,9 @@ interface ProjectReadUseCase {
         projectId: Long,
         userId: Long,
     ): RecruitingProjectDetailGuestModel
+
+    fun getInProgressProject(
+        projectId: Long,
+        userId: Long,
+    ): InProgressProjectDetailModel
 }
