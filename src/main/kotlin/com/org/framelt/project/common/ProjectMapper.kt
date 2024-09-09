@@ -3,6 +3,7 @@ package com.org.framelt.project.common
 import com.org.framelt.project.adapter.`in`.request.ProjectApplicationCancelRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
+import com.org.framelt.project.adapter.`in`.request.ProjectReviewRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementDetailResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
@@ -13,6 +14,7 @@ import com.org.framelt.project.application.port.`in`.ProjectApplicantCancelComma
 import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
+import com.org.framelt.project.application.port.`in`.ProjectReviewCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.user.domain.Identity
@@ -119,6 +121,19 @@ class ProjectMapper {
                 projectId = projectId,
                 applicantId = applicantId,
                 cancelReason = projectApplicationCancelRequest.cancelReason,
+            )
+
+        fun toCommand(
+            projectId: Long,
+            reviewerId: Long,
+            projectReviewRequest: ProjectReviewRequest,
+        ): ProjectReviewCommand =
+            ProjectReviewCommand(
+                projectId = projectId,
+                reviewerId = reviewerId,
+                revieweeId = projectReviewRequest.revieweeId,
+                tags = projectReviewRequest.tags,
+                content = projectReviewRequest.content,
             )
     }
 }
