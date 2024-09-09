@@ -60,6 +60,8 @@ data class Project(
         status = Status.CANCELED
     }
 
+    fun isCompleted(): Boolean = status == Status.COMPLETED
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
