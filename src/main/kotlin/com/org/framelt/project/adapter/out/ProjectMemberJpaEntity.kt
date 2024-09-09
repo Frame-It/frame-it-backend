@@ -24,13 +24,17 @@ class ProjectMemberJpaEntity(
     val member: UserJpaEntity,
     @Column(nullable = false)
     val isManager: Boolean = false,
+    @Column(nullable = false)
+    var hasCompletedProject: Boolean = false,
 ) {
     companion object {
         fun fromDomain(projectMember: ProjectMember): ProjectMemberJpaEntity =
             ProjectMemberJpaEntity(
+                id = projectMember.id,
                 project = ProjectJpaEntity.fromDomain(projectMember.project),
                 member = UserJpaEntity.fromDomain(projectMember.member),
                 isManager = projectMember.isHost,
+                hasCompletedProject = projectMember.hasCompletedProject,
             )
     }
 }
@@ -41,4 +45,5 @@ fun ProjectMemberJpaEntity.toDomain(): ProjectMember =
         project = project.toDomain(),
         member = member.toDomain(),
         isHost = isManager,
+        hasCompletedProject = hasCompletedProject,
     )
