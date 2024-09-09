@@ -16,4 +16,9 @@ class ProjectMemberRepository(
 
     override fun readAllByProjectId(projectId: Long): List<ProjectMember> =
         projectMemberJpaRepository.findByProjectId(projectId).map { it.toDomain() }
+
+    override fun readByMemberIdAndProjectId(
+        memberId: Long,
+        projectId: Long,
+    ): ProjectMember = projectMemberJpaRepository.findByMemberIdAndProjectId(memberId, projectId).toDomain()
 }

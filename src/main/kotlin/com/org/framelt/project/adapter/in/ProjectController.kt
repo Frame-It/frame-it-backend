@@ -11,6 +11,8 @@ import com.org.framelt.project.adapter.`in`.response.ProjectCreateResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectUpdateResponse
 import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
+import com.org.framelt.project.application.port.`in`.ProjectCompleteCommand
+import com.org.framelt.project.application.port.`in`.ProjectCompleteUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
@@ -29,6 +31,7 @@ import java.time.LocalDate
 class ProjectController(
     val projectCreateUseCase: ProjectCreateUseCase,
     val projectReadUseCase: ProjectReadUseCase,
+    val ProjectCompleteUseCase: ProjectCompleteUseCase,
     val projectUpdateUseCase: ProjectUpdateUseCase,
     val projectApplyUseCase: ProjectApplyUseCase,
 ) {
@@ -120,6 +123,16 @@ class ProjectController(
         // TODO: 프로젝트 호스트 권한 체크
         val projectApplicantAcceptCommand = ProjectApplicantAcceptCommand(projectId, applicantId)
         projectApplyUseCase.acceptApplicant(projectApplicantAcceptCommand)
+        return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/projects/{projectId}/complete")
+    fun complete(
+        @RequestParam memberId: Long,
+        @PathVariable projectId: Long,
+    ): ResponseEntity<Unit> {
+        val projectCompleteCommand = ProjectCompleteCommand(projectId, memberId)
+        ProjectCompleteUseCase.complete(projectCompleteCommand)
         return ResponseEntity.ok().build()
     }
 }
