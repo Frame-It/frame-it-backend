@@ -8,6 +8,8 @@ import com.org.framelt.project.application.port.`in`.ProjectApplicantCancelComma
 import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyModel
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
+import com.org.framelt.project.application.port.`in`.ProjectCompleteCommand
+import com.org.framelt.project.application.port.`in`.ProjectCompleteUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
@@ -41,7 +43,8 @@ class ProjectService(
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
-    ProjectApplyUseCase {
+    ProjectApplyUseCase,
+    ProjectCompleteUseCase {
     override fun create(projectCreateCommand: ProjectCreateCommand): Long {
         val host = userQueryPort.readById(projectCreateCommand.userId)
         val project =
@@ -224,5 +227,22 @@ class ProjectService(
         project.start()
         projectCommandPort.save(project)
         // TODO: 프로젝트 호스트/게스트에게 시작 알림 전송
+    }
+
+    override fun complete(projectCompleteCommand: ProjectCompleteCommand) {
+        val projectMember =
+            projectMemberQueryPort.readByMemberIdAndProjectId(
+                memberId = projectCompleteCommand.memberId,
+                projectId = projectCompleteCommand.projectId,
+            )
+        projectMember.completeProject()
+        projectMemberCommandPort.save(projectMember)
+
+        val projectMembers = projectMemberQueryPort.readAllByProjectId(projectCompleteCommand.projectId)
+        if (projectMembers.all { it.hasCompletedProject }) {
+            val project = projectMember.project
+            project.complete()
+            projectCommandPort.save(project)
+        }
     }
 }

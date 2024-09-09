@@ -6,4 +6,9 @@ interface ProjectMemberJpaRepository : Repository<ProjectMemberJpaEntity, Long> 
     fun save(projectMemberJpaEntity: ProjectMemberJpaEntity)
 
     fun findByProjectId(projectId: Long): List<ProjectMemberJpaEntity>
+
+    fun findByMemberIdAndProjectId(
+        memberId: Long,
+        projectId: Long,
+    ): ProjectMemberJpaEntity
 }

@@ -7,4 +7,12 @@ class ProjectMember(
     val member: User,
     val project: Project,
     val isHost: Boolean = false,
-)
+    var hasCompletedProject: Boolean = false,
+) {
+    fun completeProject() {
+        require(!hasCompletedProject) { "이미 완료한 프로젝트입니다." }
+        hasCompletedProject = true
+    }
+
+    override fun toString(): String = "ProjectMember(id=$id, member=$member, project=$project, isHost=$isHost)"
+}
