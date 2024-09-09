@@ -34,6 +34,7 @@ class ProjectReviewJpaEntity(
     companion object {
         fun fromDomain(projectReview: ProjectReview): ProjectReviewJpaEntity =
             ProjectReviewJpaEntity(
+                id = projectReview.id,
                 reviewer = ProjectMemberJpaEntity.fromDomain(projectReview.reviewer),
                 reviewee = ProjectMemberJpaEntity.fromDomain(projectReview.reviewee),
                 tags = projectReview.tags,
@@ -41,3 +42,12 @@ class ProjectReviewJpaEntity(
             )
     }
 }
+
+fun ProjectReviewJpaEntity.toDomain(): ProjectReview =
+    ProjectReview(
+        id = id,
+        reviewer = reviewer.toDomain(),
+        reviewee = reviewee.toDomain(),
+        tags = tags,
+        content = content,
+    )
