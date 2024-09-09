@@ -268,6 +268,7 @@ class ProjectService(
             val project = projectMember.project
             project.complete()
             projectCommandPort.save(project)
+            // TODO: 프로젝트 호스트/게스트에게 완료 알림 전송
         }
     }
 }
