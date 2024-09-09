@@ -1,6 +1,7 @@
 package com.org.framelt.project.domain
 
 class ProjectReview(
+    val id: Long? = null,
     val reviewer: ProjectMember,
     val reviewee: ProjectMember,
     val tags: List<String>,

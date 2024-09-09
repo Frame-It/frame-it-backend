@@ -1,5 +1,6 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.project.application.port.`in`.CompletedProjectDetailModel
 import com.org.framelt.project.application.port.`in`.InProgressProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
@@ -24,6 +25,7 @@ import com.org.framelt.project.application.port.out.ProjectCommandPort
 import com.org.framelt.project.application.port.out.ProjectMemberCommandPort
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
+import com.org.framelt.project.application.port.out.ProjectReviewQueryPort
 import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.ProjectApplicant
 import com.org.framelt.project.domain.ProjectMember
@@ -40,6 +42,7 @@ class ProjectService(
     val projectApplicantQueryPort: ProjectApplicantQueryPort,
     val projectMemberCommandPort: ProjectMemberCommandPort,
     val projectMemberQueryPort: ProjectMemberQueryPort,
+    val projectReviewQueryPort: ProjectReviewQueryPort,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
@@ -142,6 +145,28 @@ class ProjectService(
         val otherProjectMember = projectMembers.first { it.member.id != userId }
 
         return InProgressProjectDetailModel.fromDomain(project, otherProjectMember)
+    }
+
+    override fun getCompletedProject(
+        projectId: Long,
+        userId: Long,
+    ): CompletedProjectDetailModel {
+        val project = projectQueryPort.readById(projectId)
+        validateProjectStatus(project, Status.COMPLETED)
+
+        val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
+        val projectMember = projectMembers.first { it.member.id == userId }
+        val otherProjectMember = projectMembers.first { it.member.id != userId }
+
+        val myProjectReview = projectReviewQueryPort.readByReviewerIdAndRevieweeId(projectMember.id!!, otherProjectMember.id!!)
+        val projectReviewOfMember = projectReviewQueryPort.readByReviewerIdAndRevieweeId(otherProjectMember.id, projectMember.id)
+
+        return CompletedProjectDetailModel.fromDomain(
+            project = project,
+            myProjectReview = myProjectReview,
+            projectMember = otherProjectMember,
+            projectReviewOfMember = projectReviewOfMember,
+        )
     }
 
     override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {

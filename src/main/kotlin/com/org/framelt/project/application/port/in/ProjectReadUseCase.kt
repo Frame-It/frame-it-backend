@@ -19,4 +19,9 @@ interface ProjectReadUseCase {
         projectId: Long,
         userId: Long,
     ): InProgressProjectDetailModel
+
+    fun getCompletedProject(
+        projectId: Long,
+        userId: Long,
+    ): CompletedProjectDetailModel
 }
