@@ -10,4 +10,5 @@ data class ProjectFilterCommand(
     val spot: String?,
     val locationType: String?,
     val concepts: List<String>?,
+    val userId: Long,
 )

@@ -15,4 +15,5 @@ data class ProjectAnnouncementItemModel(
     val spot: Spot,
     val timeOption: TimeOption,
     val concepts: List<Concept>,
+    val isBookmarked: Boolean,
 )

@@ -19,4 +19,5 @@ data class ProjectAnnouncementDetailModel(
     val hostNickname: String,
     val hostProfileImageUrl: String?,
     val hostDescription: String?,
+    val isBookmarked: Boolean,
 )

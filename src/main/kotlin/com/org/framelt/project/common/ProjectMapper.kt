@@ -59,6 +59,7 @@ class ProjectMapper {
             spot: String?,
             locationType: String?,
             concepts: String?,
+            userId: Long,
         ): ProjectFilterCommand =
             ProjectFilterCommand(
                 recruitmentRole = recruitmentRole,
@@ -68,6 +69,7 @@ class ProjectMapper {
                 spot = spot,
                 locationType = locationType,
                 concepts = concepts?.split(","),
+                userId = userId,
             )
 
         fun toResponse(projectDetail: ProjectAnnouncementDetailModel): ProjectAnnouncementDetailResponse =
@@ -88,6 +90,7 @@ class ProjectMapper {
                         profileImageUrl = projectDetail.hostProfileImageUrl,
                         description = projectDetail.hostDescription,
                     ),
+                isBookmarked = projectDetail.isBookmarked,
             )
 
         fun toResponse(projectItem: ProjectAnnouncementItemModel): ProjectAnnouncementItemResponse =
@@ -100,6 +103,7 @@ class ProjectMapper {
                 spot = projectItem.spot.name,
                 timeOption = projectItem.timeOption.name,
                 concepts = projectItem.concepts.map { it.name },
+                isBookmarked = projectItem.isBookmarked,
             )
 
         fun toCommand(

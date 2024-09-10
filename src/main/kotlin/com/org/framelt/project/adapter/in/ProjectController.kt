@@ -9,6 +9,7 @@ import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResp
 import com.org.framelt.project.adapter.`in`.response.ProjectApplyResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectCreateResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectUpdateResponse
+import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCompleteCommand
@@ -58,6 +59,7 @@ class ProjectController(
         @RequestParam(required = false) spot: String?,
         @RequestParam(required = false) locationType: String?,
         @RequestParam(required = false) concepts: String?,
+        @RequestParam(required = true) userId: Long,
     ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val projectFilterCommand =
             ProjectMapper.toCommand(
@@ -68,6 +70,7 @@ class ProjectController(
                 spot = spot,
                 locationType = locationType,
                 concepts = concepts,
+                userId = userId,
             )
         val projectItems = projectReadUseCase.getProjectAnnouncementList(projectFilterCommand)
         val response = projectItems.map { ProjectMapper.toResponse(it) }
@@ -77,8 +80,10 @@ class ProjectController(
     @GetMapping("/projects/{projectId}/announcement")
     fun showAnnouncementDetail(
         @PathVariable projectId: Long,
+        @RequestParam userId: Long,
     ): ResponseEntity<ProjectAnnouncementDetailResponse> {
-        val projectDetail = projectReadUseCase.getProjectAnnouncementDetail(projectId)
+        val projectAnnouncementDetailCommand = ProjectAnnouncementDetailCommand(projectId, userId)
+        val projectDetail = projectReadUseCase.getProjectAnnouncementDetail(projectAnnouncementDetailCommand)
         val response = ProjectMapper.toResponse(projectDetail)
         return ResponseEntity.ok(response)
     }

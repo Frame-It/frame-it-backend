@@ -11,4 +11,5 @@ data class ProjectAnnouncementItemResponse(
     val timeOption: String,
     val spot: String,
     val concepts: List<String>,
+    val isBookmarked: Boolean,
 )
