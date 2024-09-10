@@ -2,6 +2,7 @@ package com.org.framelt.project.application.service
 
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailModel
 import com.org.framelt.project.application.port.`in`.InProgressProjectDetailModel
+import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailCommand
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplicantAcceptCommand
@@ -21,6 +22,7 @@ import com.org.framelt.project.application.port.`in`.RecruitingProjectDetailGues
 import com.org.framelt.project.application.port.`in`.RecruitingProjectDetailHostModel
 import com.org.framelt.project.application.port.out.ProjectApplicantCommandPort
 import com.org.framelt.project.application.port.out.ProjectApplicantQueryPort
+import com.org.framelt.project.application.port.out.ProjectBookmarkQueryPort
 import com.org.framelt.project.application.port.out.ProjectCommandPort
 import com.org.framelt.project.application.port.out.ProjectMemberCommandPort
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
@@ -43,6 +45,7 @@ class ProjectService(
     val projectMemberCommandPort: ProjectMemberCommandPort,
     val projectMemberQueryPort: ProjectMemberQueryPort,
     val projectReviewQueryPort: ProjectReviewQueryPort,
+    val projectBookmarkQueryPort: ProjectBookmarkQueryPort,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
@@ -68,8 +71,16 @@ class ProjectService(
         return savedProject.id!!
     }
 
-    override fun getProjectAnnouncementDetail(projectId: Long): ProjectAnnouncementDetailModel {
-        val project = projectQueryPort.readById(projectId)
+    override fun getProjectAnnouncementDetail(
+        projectAnnouncementDetailCommand: ProjectAnnouncementDetailCommand,
+    ): ProjectAnnouncementDetailModel {
+        val project = projectQueryPort.readById(projectAnnouncementDetailCommand.projectId)
+        val isBookmarked =
+            projectBookmarkQueryPort.existsBookmark(
+                projectId = projectAnnouncementDetailCommand.projectId,
+                userId = projectAnnouncementDetailCommand.userId,
+            )
+        // TODO: 프로젝트 상세 조회 시 조회수 증가 로직 추가
         return ProjectAnnouncementDetailModel(
             id = project.id!!,
             title = project.title,
@@ -84,14 +95,16 @@ class ProjectService(
             hostNickname = project.host.nickname,
             hostProfileImageUrl = project.host.profileImageUrl,
             hostDescription = project.host.description,
+            isBookmarked = isBookmarked,
         )
     }
 
     override fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel> {
         val projects = projectQueryPort.readAll(projectFilterCommand)
         return projects.map {
+            val isBookmarked = projectBookmarkQueryPort.existsBookmark(it.id!!, projectFilterCommand.userId)
             ProjectAnnouncementItemModel(
-                id = it.id!!,
+                id = it.id,
                 previewImageUrl = it.conceptPhotoUrls.first(),
                 title = it.title,
                 recruitmentRole = it.recruitmentRole,
@@ -99,6 +112,7 @@ class ProjectService(
                 spot = it.spot,
                 timeOption = it.timeOption,
                 concepts = it.concepts,
+                isBookmarked = isBookmarked,
             )
         }
     }
