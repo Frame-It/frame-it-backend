@@ -16,4 +16,6 @@ interface ProjectBookmarkJpaRepository : Repository<ProjectBookmarkJpaEntity, Lo
     ): ProjectBookmarkJpaEntity
 
     fun delete(projectBookmarkJpaEntity: ProjectBookmarkJpaEntity)
+
+    fun findAllByUserId(userId: Long): List<ProjectBookmarkJpaEntity>
 }

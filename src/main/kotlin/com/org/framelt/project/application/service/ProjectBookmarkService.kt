@@ -1,5 +1,7 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.project.application.port.`in`.BookmarkedProjectReadModel
+import com.org.framelt.project.application.port.`in`.BookmarkedProjectsReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectBookmarkCommand
 import com.org.framelt.project.application.port.`in`.ProjectBookmarkUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUnbookmarkCommand
@@ -47,5 +49,10 @@ class ProjectBookmarkService(
                 projectUnbookmarkCommand.userId,
             )
         projectBookmarkCommandPort.unbookmarkProject(projectBookmark)
+    }
+
+    override fun readBookmarkedProjects(bookmarkedProjectsReadCommand: BookmarkedProjectsReadCommand): List<BookmarkedProjectReadModel> {
+        val bookmarkedProjects = projectBookmarkQueryPort.readByUserId(bookmarkedProjectsReadCommand.userId)
+        return bookmarkedProjects.map { BookmarkedProjectReadModel.fromDomain(it.project) }
     }
 }
