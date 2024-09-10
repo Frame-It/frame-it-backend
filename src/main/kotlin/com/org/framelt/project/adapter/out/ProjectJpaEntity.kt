@@ -60,6 +60,8 @@ class ProjectJpaEntity(
     val retouchingDescription: String?,
     @Enumerated(EnumType.STRING)
     val status: Status,
+    @Column(nullable = false)
+    val viewCount: Int = 0,
 ) {
     companion object {
         fun fromDomain(project: Project) =
@@ -77,6 +79,7 @@ class ProjectJpaEntity(
                 description = project.description,
                 retouchingDescription = project.retouchingDescription,
                 status = project.status,
+                viewCount = project.viewCount,
             )
     }
 }
@@ -96,4 +99,5 @@ fun ProjectJpaEntity.toDomain() =
         description = description,
         retouchingDescription = retouchingDescription,
         status = status,
+        viewCount = viewCount,
     )

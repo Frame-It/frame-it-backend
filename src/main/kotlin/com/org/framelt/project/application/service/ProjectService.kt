@@ -83,7 +83,8 @@ class ProjectService(
                 userId = projectAnnouncementDetailCommand.userId,
             )
 
-        // TODO: 프로젝트 상세 조회 시 조회수 증가 로직 추가
+        increaseViewCount(project)
+
         val applicantCount = projectApplicantQueryPort.countApplicants(project.id!!)
         return ProjectAnnouncementDetailModel(
             id = project.id,
@@ -106,6 +107,11 @@ class ProjectService(
                     applicantCount = applicantCount,
                 ),
         )
+    }
+
+    private fun increaseViewCount(project: Project) {
+        project.increaseViewCount()
+        projectCommandPort.save(project)
     }
 
     override fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel> {

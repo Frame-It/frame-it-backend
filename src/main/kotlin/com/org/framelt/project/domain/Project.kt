@@ -19,6 +19,7 @@ data class Project(
     val description: String,
     val retouchingDescription: String?,
     var status: Status = Status.RECRUITING,
+    var viewCount: Int = 0,
 ) {
     fun update(
         title: String,
@@ -66,6 +67,10 @@ data class Project(
         closureChecker: ProjectClosureChecker,
         applicantCount: Int,
     ) = closureChecker.isClosed(status, shootingAt, applicantCount)
+
+    fun increaseViewCount() {
+        this.viewCount++
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
