@@ -24,4 +24,18 @@ class ProjectBookmarkRepository(
             )
         projectBookmarkJpaRepository.save(projectBookmarkJpaEntity)
     }
+
+    override fun readByProjectIdAndUserId(
+        projectId: Long,
+        userId: Long,
+    ): ProjectBookmark {
+        val projectBookmarkJpaEntity =
+            projectBookmarkJpaRepository.findByProjectIdAndUserId(projectId, userId)
+        return projectBookmarkJpaEntity.toDomain()
+    }
+
+    override fun unbookmarkProject(projectBookmark: ProjectBookmark) {
+        val projectBookmarkJpaEntity = ProjectBookmarkJpaEntity.fromDomain(projectBookmark)
+        projectBookmarkJpaRepository.delete(projectBookmarkJpaEntity)
+    }
 }

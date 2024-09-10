@@ -2,6 +2,7 @@ package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.domain.ProjectBookmark
 import com.org.framelt.user.adapter.out.UserJpaEntity
+import com.org.framelt.user.adapter.out.toDomain
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -30,3 +31,10 @@ class ProjectBookmarkJpaEntity(
             )
     }
 }
+
+fun ProjectBookmarkJpaEntity.toDomain(): ProjectBookmark =
+    ProjectBookmark(
+        id = id,
+        project = project.toDomain(),
+        user = user.toDomain(),
+    )

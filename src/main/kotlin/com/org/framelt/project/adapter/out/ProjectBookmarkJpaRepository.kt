@@ -9,4 +9,11 @@ interface ProjectBookmarkJpaRepository : Repository<ProjectBookmarkJpaEntity, Lo
         projectId: Long,
         userId: Long,
     ): Boolean
+
+    fun findByProjectIdAndUserId(
+        projectId: Long,
+        userId: Long,
+    ): ProjectBookmarkJpaEntity
+
+    fun delete(projectBookmarkJpaEntity: ProjectBookmarkJpaEntity)
 }
