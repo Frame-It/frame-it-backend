@@ -62,6 +62,11 @@ data class Project(
 
     fun isCompleted(): Boolean = status == Status.COMPLETED
 
+    fun isClosed(
+        closureChecker: ProjectClosureChecker,
+        applicantCount: Int,
+    ) = closureChecker.isClosed(status, shootingAt, applicantCount)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -91,6 +91,7 @@ class ProjectMapper {
                         description = projectDetail.hostDescription,
                     ),
                 isBookmarked = projectDetail.isBookmarked,
+                isClosed = projectDetail.isClosed,
             )
 
         fun toResponse(projectItem: ProjectAnnouncementItemModel): ProjectAnnouncementItemResponse =

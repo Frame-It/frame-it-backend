@@ -16,6 +16,8 @@ interface ProjectApplicantJpaRepository : Repository<ProjectApplicantJpaEntity, 
         projectId: Long,
         applicantId: Long,
     ): Boolean
+
+    fun countByProjectId(id: Long): Int
 }
 
 fun ProjectApplicantJpaRepository.getByProjectIdAndApplicantId(
