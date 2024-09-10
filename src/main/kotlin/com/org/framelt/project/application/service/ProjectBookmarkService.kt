@@ -2,6 +2,7 @@ package com.org.framelt.project.application.service
 
 import com.org.framelt.project.application.port.`in`.ProjectBookmarkCommand
 import com.org.framelt.project.application.port.`in`.ProjectBookmarkUseCase
+import com.org.framelt.project.application.port.`in`.ProjectUnbookmarkCommand
 import com.org.framelt.project.application.port.out.ProjectBookmarkCommandPort
 import com.org.framelt.project.application.port.out.ProjectBookmarkQueryPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
@@ -37,5 +38,14 @@ class ProjectBookmarkService(
         ) {
             throw IllegalArgumentException("해당 사용자와 프로젝트에 대한 북마크가 이미 존재합니다.")
         }
+    }
+
+    override fun unbookmarkProject(projectUnbookmarkCommand: ProjectUnbookmarkCommand) {
+        val projectBookmark =
+            projectBookmarkQueryPort.readByProjectIdAndUserId(
+                projectUnbookmarkCommand.projectId,
+                projectUnbookmarkCommand.userId,
+            )
+        projectBookmarkCommandPort.unbookmarkProject(projectBookmark)
     }
 }
