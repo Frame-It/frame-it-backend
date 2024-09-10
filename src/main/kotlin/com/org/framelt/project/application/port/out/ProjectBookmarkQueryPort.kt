@@ -12,4 +12,6 @@ interface ProjectBookmarkQueryPort {
         projectId: Long,
         userId: Long,
     ): ProjectBookmark
+
+    fun readByUserId(userId: Long): List<ProjectBookmark>
 }

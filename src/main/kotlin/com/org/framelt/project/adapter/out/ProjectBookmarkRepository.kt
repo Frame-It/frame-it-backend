@@ -38,4 +38,9 @@ class ProjectBookmarkRepository(
         val projectBookmarkJpaEntity = ProjectBookmarkJpaEntity.fromDomain(projectBookmark)
         projectBookmarkJpaRepository.delete(projectBookmarkJpaEntity)
     }
+
+    override fun readByUserId(userId: Long): List<ProjectBookmark> {
+        val projectBookmarkJpaEntities = projectBookmarkJpaRepository.findAllByUserId(userId)
+        return projectBookmarkJpaEntities.map { it.toDomain() }
+    }
 }
