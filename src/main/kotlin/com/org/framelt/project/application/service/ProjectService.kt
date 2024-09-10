@@ -30,6 +30,7 @@ import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.application.port.out.ProjectReviewQueryPort
 import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.ProjectApplicant
+import com.org.framelt.project.domain.ProjectClosureChecker
 import com.org.framelt.project.domain.ProjectMember
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.application.port.out.UserQueryPort
@@ -46,6 +47,7 @@ class ProjectService(
     val projectMemberQueryPort: ProjectMemberQueryPort,
     val projectReviewQueryPort: ProjectReviewQueryPort,
     val projectBookmarkQueryPort: ProjectBookmarkQueryPort,
+    val projectClosureChecker: ProjectClosureChecker,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
@@ -80,9 +82,11 @@ class ProjectService(
                 projectId = projectAnnouncementDetailCommand.projectId,
                 userId = projectAnnouncementDetailCommand.userId,
             )
+
         // TODO: 프로젝트 상세 조회 시 조회수 증가 로직 추가
+        val applicantCount = projectApplicantQueryPort.countApplicants(project.id!!)
         return ProjectAnnouncementDetailModel(
-            id = project.id!!,
+            id = project.id,
             title = project.title,
             description = project.description,
             shootingAt = project.shootingAt,
@@ -96,6 +100,11 @@ class ProjectService(
             hostProfileImageUrl = project.host.profileImageUrl,
             hostDescription = project.host.description,
             isBookmarked = isBookmarked,
+            isClosed =
+                project.isClosed(
+                    closureChecker = projectClosureChecker,
+                    applicantCount = applicantCount,
+                ),
         )
     }
 
@@ -206,6 +215,7 @@ class ProjectService(
 
         val project = projectQueryPort.readById(projectApplyCommand.projectId)
         val applicant = userQueryPort.readById(projectApplyCommand.applicantId)
+        validateProjectClosure(project)
 
         projectApplicantCommandPort.save(
             ProjectApplicant(
@@ -225,6 +235,16 @@ class ProjectService(
             )
         ) {
             throw IllegalArgumentException("이미 지원한 프로젝트입니다.")
+        }
+    }
+
+    private fun validateProjectClosure(project: Project) {
+        if (project.isClosed(
+                closureChecker = projectClosureChecker,
+                applicantCount = projectApplicantQueryPort.countApplicants(project.id!!),
+            )
+        ) {
+            throw IllegalArgumentException("모집이 마감된 프로젝트입니다.")
         }
     }
 

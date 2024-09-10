@@ -32,4 +32,6 @@ class ProjectApplicantRepository(
         projectId: Long,
         applicantId: Long,
     ): Boolean = projectApplicantJpaRepository.existsByProjectIdAndApplicantId(projectId, applicantId)
+
+    override fun countApplicants(id: Long): Int = projectApplicantJpaRepository.countByProjectId(id)
 }

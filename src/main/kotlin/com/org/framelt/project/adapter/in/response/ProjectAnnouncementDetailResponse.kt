@@ -14,4 +14,5 @@ data class ProjectAnnouncementDetailResponse(
     val retouchingDescription: String?,
     val host: ProjectDetailManagerResponse,
     val isBookmarked: Boolean,
+    val isClosed: Boolean,
 )
