@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 
 @Component
-class KakaoOauthClient(
+class KakaoOAuthClient(
     @Value("\${kakao.client-id}") private val kakaoClientId: String,
     @Value("\${kakao.redirect-uri}") private val kakaoRedirectUri: String,
     @Value("\${kakao.client-secret}") private val kakaoClientSecret: String,
