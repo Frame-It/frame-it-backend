@@ -3,7 +3,7 @@ package com.org.framelt.project.adapter.out
 import com.org.framelt.project.application.port.out.ProjectBookmarkCommandPort
 import com.org.framelt.project.application.port.out.ProjectBookmarkQueryPort
 import com.org.framelt.project.domain.ProjectBookmark
-import com.org.framelt.user.adapter.out.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import org.springframework.stereotype.Repository
 
 @Repository

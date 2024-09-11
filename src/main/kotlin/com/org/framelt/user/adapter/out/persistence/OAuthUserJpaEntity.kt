@@ -1,4 +1,4 @@
-package com.org.framelt.user.adapter.out
+package com.org.framelt.user.adapter.out.persistence
 
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import jakarta.persistence.Column

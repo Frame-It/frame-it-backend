@@ -9,7 +9,7 @@ import com.org.framelt.project.application.port.out.ProjectBookmarkCommandPort
 import com.org.framelt.project.application.port.out.ProjectBookmarkQueryPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.ProjectBookmark
-import com.org.framelt.user.application.port.out.UserQueryPort
+import com.org.framelt.user.application.port.out.persistence.UserQueryPort
 import org.springframework.stereotype.Service
 
 @Service

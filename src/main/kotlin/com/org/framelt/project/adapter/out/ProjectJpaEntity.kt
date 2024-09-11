@@ -5,8 +5,8 @@ import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.Status
 import com.org.framelt.project.domain.TimeOption
-import com.org.framelt.user.adapter.out.UserJpaEntity
-import com.org.framelt.user.adapter.out.toDomain
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.toDomain
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.LocationType
 import jakarta.persistence.CollectionTable

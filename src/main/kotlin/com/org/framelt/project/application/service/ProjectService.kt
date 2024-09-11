@@ -33,7 +33,7 @@ import com.org.framelt.project.domain.ProjectApplicant
 import com.org.framelt.project.domain.ProjectClosureChecker
 import com.org.framelt.project.domain.ProjectMember
 import com.org.framelt.project.domain.Status
-import com.org.framelt.user.application.port.out.UserQueryPort
+import com.org.framelt.user.application.port.out.persistence.UserQueryPort
 import org.springframework.stereotype.Service
 
 @Service
