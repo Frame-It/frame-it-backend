@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kakao Login</title>
+    <script>
+        function redirectToKakaoLogin() {
+            const kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize?client_id=xxx&redirect_uri=xxx&response_type=code";
+            window.location.href = kakaoAuthUrl;
+        }
+    </script>
+</head>
+<body>
+<h1>Kakao Login Example</h1>
+<button onclick="redirectToKakaoLogin()">로그인</button>
+</body>
+</html>
