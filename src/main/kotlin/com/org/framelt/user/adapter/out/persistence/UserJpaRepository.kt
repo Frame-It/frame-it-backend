@@ -1,4 +1,4 @@
-package com.org.framelt.user.adapter.out
+package com.org.framelt.user.adapter.out.persistence
 
 import org.springframework.data.repository.Repository
 

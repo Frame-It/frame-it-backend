@@ -1,8 +1,8 @@
 package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.domain.ProjectBookmark
-import com.org.framelt.user.adapter.out.UserJpaEntity
-import com.org.framelt.user.adapter.out.toDomain
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.toDomain
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
