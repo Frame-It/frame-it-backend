@@ -12,4 +12,17 @@ class User(
     var description: String? = null,
     val notificationsEnabled: Boolean, // 보유
     val deviseToken: String? = null,
-)
+) {
+    companion object {
+        fun beforeCompleteSignUp() =
+            User(
+                name = IN_SIGN_UP_PROGRESS,
+                nickname = IN_SIGN_UP_PROGRESS,
+                identity = Identity.NONE,
+                shootingConcepts = emptyList(),
+                notificationsEnabled = false,
+            )
+
+        private const val IN_SIGN_UP_PROGRESS = "회원가입 진행 중"
+    }
+}
