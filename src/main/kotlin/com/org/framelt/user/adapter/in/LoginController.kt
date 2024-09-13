@@ -21,4 +21,14 @@ class LoginController(
         val response = LoginResponse(loginResult)
         return ResponseEntity.ok(response)
     }
+
+    @GetMapping("/local/oauth2/code/google")
+    fun loginWithGoogle(
+        @RequestParam code: String,
+    ): ResponseEntity<LoginResponse> {
+        val loginCommand = LoginCommand("google", code)
+        val loginResult = loginUseCase.login(loginCommand)
+        val response = LoginResponse(loginResult)
+        return ResponseEntity.ok(response)
+    }
 }

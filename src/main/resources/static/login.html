@@ -9,10 +9,16 @@
             const kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize?client_id=xxx&redirect_uri=xxx&response_type=code";
             window.location.href = kakaoAuthUrl;
         }
+
+        function redirectToGoogleLogin() {
+            const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=xxx&redirect_uri=xxx&response_type=code&scope=profile";
+            window.location.href = googleAuthUrl;
+        }
     </script>
 </head>
 <body>
 <h1>Kakao Login Example</h1>
-<button onclick="redirectToKakaoLogin()">로그인</button>
+<button onclick="redirectToKakaoLogin()">카카오 로그인</button>
+<button onclick="redirectToGoogleLogin()">구글 로그인</button>
 </body>
 </html>
