@@ -1,4 +1,4 @@
-package com.org.framelt.user.application.service
+package com.org.framelt.user.adapter.`in`
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
