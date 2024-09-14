@@ -14,19 +14,22 @@ class UserRepository(
     UserCommandPort {
     override fun save(
         user: User,
-        provider: OAuthProvider?,
-        providerUserId: String?,
+        provider: OAuthProvider,
+        providerUserId: String,
     ): User {
         val userEntity = userJpaRepository.save(UserJpaEntity.fromDomain(user))
-        if (provider != null && providerUserId != null) {
-            oAuthUserJpaRepository.save(
-                OAuthUserJpaEntity(
-                    provider = provider,
-                    providerUserId = providerUserId,
-                    user = userEntity,
-                ),
-            )
-        }
+        oAuthUserJpaRepository.save(
+            OAuthUserJpaEntity(
+                provider = provider,
+                providerUserId = providerUserId,
+                user = userEntity,
+            ),
+        )
+        return userEntity.toDomain()
+    }
+
+    override fun save(user: User): User {
+        val userEntity = userJpaRepository.save(UserJpaEntity.fromDomain(user))
         return userEntity.toDomain()
     }
 
