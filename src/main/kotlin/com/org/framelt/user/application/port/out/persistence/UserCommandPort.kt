@@ -6,7 +6,9 @@ import com.org.framelt.user.domain.User
 interface UserCommandPort {
     fun save(
         user: User,
-        provider: OAuthProvider?,
-        providerUserId: String?,
+        provider: OAuthProvider,
+        providerUserId: String,
     ): User
+
+    fun save(user: User): User
 }

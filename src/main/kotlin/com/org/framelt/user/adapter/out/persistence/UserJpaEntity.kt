@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import java.time.LocalDate
 
 @Entity(name = "users")
 class UserJpaEntity(
@@ -41,6 +42,8 @@ class UserJpaEntity(
     val shootingConcepts: List<Concept>,
     @Column(nullable = true)
     val description: String? = null,
+    @Column(nullable = true)
+    val birthDate: LocalDate?,
     @Column(nullable = false)
     val notificationsEnabled: Boolean, // 보유
     @Column(nullable = true)
@@ -58,6 +61,7 @@ class UserJpaEntity(
                 career = user.career,
                 shootingConcepts = user.shootingConcepts,
                 description = user.description,
+                birthDate = user.birthDate,
                 notificationsEnabled = user.notificationsEnabled,
                 deviseToken = user.deviseToken,
             )
@@ -77,4 +81,5 @@ fun UserJpaEntity.toDomain() =
         description = this.description,
         notificationsEnabled = this.notificationsEnabled,
         deviseToken = this.deviseToken,
+        birthDate = this.birthDate,
     )
