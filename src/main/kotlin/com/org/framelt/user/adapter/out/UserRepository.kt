@@ -30,7 +30,7 @@ class UserRepository(
             bio = userEntity.bio,
             identity = userEntity.identity,
             career = userEntity.career,
-            shootingConcepts = userEntity.shootingConcepts.map { Concept(it) },
+            shootingConcepts = userEntity.shootingConcepts.map { Concept.SNAP },
             notificationsEnabled = userEntity.notificationsEnabled,
             deviseToken = userEntity.deviceToken
         )

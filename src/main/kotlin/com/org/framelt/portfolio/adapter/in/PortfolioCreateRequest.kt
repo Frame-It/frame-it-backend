@@ -7,5 +7,5 @@ data class PortfolioCreateRequest(
     val title: String,
     val description: String,
     val hashTags: List<String>,
-    val togethers: List<String>
+    val togethers: List<Long>
 )
