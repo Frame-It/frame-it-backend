@@ -34,8 +34,13 @@ class UserRepository(
     }
 
     override fun readById(id: Long): User {
-        val userEntity = userJpaRepository.findById(id)
+        val userEntity = userJpaRepository.getById(id)
         return userEntity.toDomain()
+    }
+
+    override fun findById(id: Long): User? {
+        val userEntity = userJpaRepository.findById(id)
+        return userEntity?.toDomain()
     }
 
     override fun findByProviderAndProviderUserId(

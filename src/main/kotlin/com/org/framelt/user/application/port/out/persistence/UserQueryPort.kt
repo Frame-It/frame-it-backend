@@ -6,6 +6,8 @@ import com.org.framelt.user.domain.User
 interface UserQueryPort {
     fun readById(id: Long): User
 
+    fun findById(id: Long): User?
+
     fun findByProviderAndProviderUserId(
         provider: OAuthProvider,
         providerUserId: String,
