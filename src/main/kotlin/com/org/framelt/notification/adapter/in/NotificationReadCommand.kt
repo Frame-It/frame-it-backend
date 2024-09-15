@@ -1,6 +1,5 @@
 package com.org.framelt.notification.adapter.`in`
 
-data class NotificationDeleteCommand(
+data class NotificationReadCommand(
     val userId: Long,
-    val notificationId: Long
 )

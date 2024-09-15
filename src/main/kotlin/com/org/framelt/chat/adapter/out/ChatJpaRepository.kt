@@ -1,3 +1,5 @@
 package com.org.framelt.chat.adapter.out
 
-class ChatJpaRepository
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface ChatJpaRepository : JpaRepository<ChatJpaEntity, Long>

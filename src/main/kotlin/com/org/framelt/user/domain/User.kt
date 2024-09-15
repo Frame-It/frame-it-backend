@@ -1,7 +1,7 @@
 package com.org.framelt.user.domain
 
 data class User(
-    val id: Long? = null,
+    val id: Long = 0L,
     val name: String,
     val nickname: String,
     val profileImageUrl: String? = null,
