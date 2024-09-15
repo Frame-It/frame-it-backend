@@ -18,20 +18,21 @@ class AuthService(
     val userCommandPort: UserCommandPort,
 ) : LoginUseCase {
     override fun login(loginCommand: LoginCommand): String {
-        val providerUserId = authPort.getProviderUserId(loginCommand.provider, loginCommand.code)
+        val authProfile = authPort.getProfile(loginCommand.provider, loginCommand.code)
         val provider = OAuthProvider.of(loginCommand.provider)
         val user =
-            userQueryPort.findByProviderAndProviderUserId(provider, providerUserId)
-                ?: signUp(provider, providerUserId)
+            userQueryPort.findByProviderAndProviderUserId(provider, authProfile.providerUserId)
+                ?: signUp(authProfile.email, provider, authProfile.providerUserId)
         return jwtPort.createToken(user.id!!.toString())
     }
 
     private fun signUp(
+        email: String,
         provider: OAuthProvider,
         providerUserId: String,
     ): User =
         userCommandPort.save(
-            user = User.beforeCompleteSignUp(),
+            user = User.beforeCompleteSignUp(email),
             provider = provider,
             providerUserId = providerUserId,
         )

@@ -1,6 +1,7 @@
 package com.org.framelt.user.adapter.out.oauth.google
 
 import com.org.framelt.user.adapter.out.oauth.OAuthClient
+import com.org.framelt.user.adapter.out.oauth.OAuthProfileResponse
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -18,10 +19,13 @@ class GoogleOAuthClient(
     @Value("\${google.client-secret}") private val clientSecret: String,
     @Value("\${google.redirect-uri}") private val redirectUri: String,
 ) : OAuthClient {
-    override fun getProviderUserId(code: String): String {
+    override fun getProfile(code: String): OAuthProfileResponse {
         val googleAccessToken = requestGoogleAccessToken(code)
         val profile = requestGoogleProfile(googleAccessToken)
-        return profile.id
+        return OAuthProfileResponse(
+            providerUserId = profile.id,
+            email = profile.email,
+        )
     }
 
     private fun requestGoogleAccessToken(code: String): GoogleAccessToken {

@@ -1,5 +1,6 @@
 package com.org.framelt.user.adapter.out.oauth
 
+import com.org.framelt.user.application.port.out.oauth.AuthProfile
 import java.util.EnumMap
 
 class OAuthClients(
@@ -15,11 +16,15 @@ class OAuthClients(
         this.clientsByProvider = clientsMap
     }
 
-    fun getOAuthProviderUserId(
+    fun getProfile(
         oAuthProvider: OAuthProvider,
         code: String,
-    ): String {
+    ): AuthProfile {
         val oAuthClient = clientsByProvider[oAuthProvider] ?: throw IllegalArgumentException("지원되지 않는 OAuthProvider 입니다.")
-        return oAuthClient.getProviderUserId(code)
+        val oAuthProfileResponse = oAuthClient.getProfile(code)
+        return AuthProfile(
+            providerUserId = oAuthProfileResponse.providerUserId,
+            email = oAuthProfileResponse.email,
+        )
     }
 }

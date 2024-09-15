@@ -1,6 +1,7 @@
 package com.org.framelt.user.adapter.out.oauth.kakao
 
 import com.org.framelt.user.adapter.out.oauth.OAuthClient
+import com.org.framelt.user.adapter.out.oauth.OAuthProfileResponse
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -18,10 +19,13 @@ class KakaoOAuthClient(
     @Value("\${kakao.redirect-uri}") private val kakaoRedirectUri: String,
     @Value("\${kakao.client-secret}") private val kakaoClientSecret: String,
 ) : OAuthClient {
-    override fun getProviderUserId(code: String): String {
+    override fun getProfile(code: String): OAuthProfileResponse {
         val kakaoAccessToken = requestKakaoAccessToken(code)
         val profile = requestKakaoProfile(kakaoAccessToken)
-        return profile.id.toString()
+        return OAuthProfileResponse(
+            providerUserId = profile.id.toString(),
+            email = profile.kakaoAccount.email,
+        )
     }
 
     private fun requestKakaoAccessToken(code: String): KakaoAccessToken {

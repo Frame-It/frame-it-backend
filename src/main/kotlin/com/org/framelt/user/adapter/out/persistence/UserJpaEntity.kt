@@ -48,6 +48,8 @@ class UserJpaEntity(
     val notificationsEnabled: Boolean, // 보유
     @Column(nullable = true)
     val deviseToken: String? = null,
+    @Column(nullable = false, unique = true)
+    val email: String,
 ) {
     companion object {
         fun fromDomain(user: User) =
@@ -64,6 +66,7 @@ class UserJpaEntity(
                 birthDate = user.birthDate,
                 notificationsEnabled = user.notificationsEnabled,
                 deviseToken = user.deviseToken,
+                email = user.email,
             )
     }
 }
@@ -82,4 +85,5 @@ fun UserJpaEntity.toDomain() =
         notificationsEnabled = this.notificationsEnabled,
         deviseToken = this.deviseToken,
         birthDate = this.birthDate,
+        email = this.email,
     )
