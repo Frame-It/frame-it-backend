@@ -1,7 +1,6 @@
 package com.org.framelt.user.adapter.out.jwt
 
 import com.org.framelt.user.application.port.out.JwtPort
-import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
@@ -31,20 +30,13 @@ class JwtProvider(
             .compact()
     }
 
-    override fun getSubject(token: String): String =
-        getClaimsJws(token)
+    override fun parseToken(token: String): String {
+        require(token.startsWith("Bearer ")) { "유효하지 않은 토큰 타입입니다. 입력된 Token: $token" }
+        val credential = token.removePrefix(SCHEME)
+        return getClaimsJws(credential)
             .body
             .subject
-
-    fun isValidToken(token: String): Boolean =
-        try {
-            getClaimsJws(token)
-            true
-        } catch (e: JwtException) {
-            false
-        } catch (e: IllegalArgumentException) {
-            false
-        }
+    }
 
     private fun getClaimsJws(token: String) =
         Jwts
@@ -52,4 +44,8 @@ class JwtProvider(
             .setSigningKey(key.encoded)
             .build()
             .parseClaimsJws(token)
+
+    companion object {
+        private const val SCHEME = "Bearer "
+    }
 }
