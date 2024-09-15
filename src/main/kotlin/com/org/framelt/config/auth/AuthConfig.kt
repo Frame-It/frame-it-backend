@@ -13,7 +13,9 @@ class AuthConfig(
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry
             .addInterceptor(authInterceptor)
-            .addPathPatterns("/projects/announcement")
+            .addPathPatterns("/**")
+            .excludePathPatterns("/local/oauth2/code/**")
+            .excludePathPatterns("/login", "/login.html")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {

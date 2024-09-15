@@ -1,5 +1,6 @@
 package com.org.framelt.project.adapter.`in`
 
+import com.org.framelt.config.auth.Authorization
 import com.org.framelt.project.adapter.`in`.request.ProjectApplicationCancelRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
@@ -19,6 +20,7 @@ import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
 import com.org.framelt.project.common.ProjectMapper
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -39,8 +41,9 @@ class ProjectController(
     @PostMapping("/projects")
     fun create(
         @RequestBody projectCreateRequest: ProjectCreateRequest,
+        @Authorization userId: Long,
     ): ResponseEntity<ProjectCreateResponse> {
-        val createCommand = ProjectMapper.toCommand(projectCreateRequest)
+        val createCommand = ProjectMapper.toCommand(userId = userId, request = projectCreateRequest)
         val createdProjectId = projectCreateUseCase.create(createCommand)
         val response =
             ProjectCreateResponse(
@@ -59,7 +62,7 @@ class ProjectController(
         @RequestParam(required = false) spot: String?,
         @RequestParam(required = false) locationType: String?,
         @RequestParam(required = false) concepts: String?,
-        @RequestParam(required = true) userId: Long,
+        @Authorization userId: Long,
     ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val projectFilterCommand =
             ProjectMapper.toCommand(
@@ -80,7 +83,7 @@ class ProjectController(
     @GetMapping("/projects/{projectId}/announcement")
     fun showAnnouncementDetail(
         @PathVariable projectId: Long,
-        @RequestParam userId: Long,
+        @Authorization userId: Long,
     ): ResponseEntity<ProjectAnnouncementDetailResponse> {
         val projectAnnouncementDetailCommand = ProjectAnnouncementDetailCommand(projectId, userId)
         val projectDetail = projectReadUseCase.getProjectAnnouncementDetail(projectAnnouncementDetailCommand)
@@ -91,8 +94,9 @@ class ProjectController(
     @PutMapping("/projects")
     fun update(
         @RequestBody projectUpdateRequest: ProjectUpdateRequest,
+        @Authorization userId: Long,
     ): ResponseEntity<ProjectUpdateResponse> {
-        val updateCommand = ProjectMapper.toCommand(projectUpdateRequest)
+        val updateCommand = ProjectMapper.toCommand(userId = userId, request = projectUpdateRequest)
         val updatedProjectId = projectUpdateUseCase.update(updateCommand)
         val response = ProjectUpdateResponse(projectId = updatedProjectId)
         return ResponseEntity.ok(response)
@@ -101,21 +105,27 @@ class ProjectController(
     @PostMapping("/projects/{projectId}/apply")
     fun apply(
         @PathVariable projectId: Long,
+        @Authorization userId: Long,
         @RequestBody projectApplyRequest: ProjectApplyRequest,
     ): ResponseEntity<ProjectApplyResponse> {
-        val projectApplyCommand = ProjectMapper.toCommand(projectId, projectApplyRequest)
+        val projectApplyCommand =
+            ProjectMapper.toCommand(
+                projectId = projectId,
+                userId = userId,
+                projectApplyRequest = projectApplyRequest,
+            )
         val applyResult = projectApplyUseCase.applyProject(projectApplyCommand)
         val response = ProjectApplyResponse(projectTitle = applyResult.projectTitle)
         return ResponseEntity.ok(response)
     }
 
-    @PostMapping("/projects/{projectId}/applicants/{applicantId}/cancel")
+    @DeleteMapping("/projects/{projectId}/applicants")
     fun cancelApplication(
         @PathVariable projectId: Long,
-        @PathVariable applicantId: Long,
+        @Authorization userId: Long,
         @RequestBody projectApplicationCancelRequest: ProjectApplicationCancelRequest,
     ): ResponseEntity<Unit> {
-        val projectApplicantCancelCommand = ProjectMapper.toCommand(projectId, applicantId, projectApplicationCancelRequest)
+        val projectApplicantCancelCommand = ProjectMapper.toCommand(projectId, userId, projectApplicationCancelRequest)
         projectApplyUseCase.cancelApplication(projectApplicantCancelCommand)
         return ResponseEntity.ok().build()
     }
@@ -123,17 +133,23 @@ class ProjectController(
     @PostMapping("/projects/{projectId}/applicants/{applicantId}/accept")
     fun acceptApplicant(
         @PathVariable projectId: Long,
+        @Authorization userId: Long,
         @PathVariable applicantId: Long,
     ): ResponseEntity<Unit> {
         // TODO: 프로젝트 호스트 권한 체크
-        val projectApplicantAcceptCommand = ProjectApplicantAcceptCommand(projectId, applicantId)
+        val projectApplicantAcceptCommand =
+            ProjectApplicantAcceptCommand(
+                projectId = projectId,
+                userId = userId,
+                applicantId = applicantId,
+            )
         projectApplyUseCase.acceptApplicant(projectApplicantAcceptCommand)
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/projects/{projectId}/complete")
     fun complete(
-        @RequestParam memberId: Long,
+        @Authorization memberId: Long,
         @PathVariable projectId: Long,
     ): ResponseEntity<Unit> {
         val projectCompleteCommand = ProjectCompleteCommand(projectId, memberId)

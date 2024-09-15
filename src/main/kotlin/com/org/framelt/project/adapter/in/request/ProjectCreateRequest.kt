@@ -6,7 +6,6 @@ import com.org.framelt.user.domain.LocationType
 import java.time.LocalDateTime
 
 data class ProjectCreateRequest(
-    val userId: Long,
     val title: String,
     val recruitmentRole: String,
     val shootingAt: LocalDateTime,
