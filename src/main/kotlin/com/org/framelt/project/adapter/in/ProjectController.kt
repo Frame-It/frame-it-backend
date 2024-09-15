@@ -32,7 +32,7 @@ import java.time.LocalDate
 class ProjectController(
     val projectCreateUseCase: ProjectCreateUseCase,
     val projectReadUseCase: ProjectReadUseCase,
-    val ProjectCompleteUseCase: ProjectCompleteUseCase,
+    val projectCompleteUseCase: ProjectCompleteUseCase,
     val projectUpdateUseCase: ProjectUpdateUseCase,
     val projectApplyUseCase: ProjectApplyUseCase,
 ) {
@@ -137,7 +137,7 @@ class ProjectController(
         @PathVariable projectId: Long,
     ): ResponseEntity<Unit> {
         val projectCompleteCommand = ProjectCompleteCommand(projectId, memberId)
-        ProjectCompleteUseCase.complete(projectCompleteCommand)
+        projectCompleteUseCase.complete(projectCompleteCommand)
         return ResponseEntity.ok().build()
     }
 }
