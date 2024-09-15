@@ -202,6 +202,7 @@ class ProjectService(
         val project = projectQueryPort.readById(projectUpdateCommand.projectId)
         val updatedProject =
             project.update(
+                // TODO: 작성자 검증 추가
                 title = projectUpdateCommand.title,
                 shootingAt = projectUpdateCommand.shootingAt,
                 timeOption = projectUpdateCommand.timeOption,

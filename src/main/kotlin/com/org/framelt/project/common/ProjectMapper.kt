@@ -22,9 +22,12 @@ import java.time.LocalDate
 
 class ProjectMapper {
     companion object {
-        fun toCommand(request: ProjectCreateRequest): ProjectCreateCommand =
+        fun toCommand(
+            userId: Long,
+            request: ProjectCreateRequest,
+        ): ProjectCreateCommand =
             ProjectCreateCommand(
-                userId = request.userId,
+                userId = userId,
                 title = request.title,
                 recruitmentRole = Identity.of(request.recruitmentRole),
                 shootingAt = request.shootingAt,
@@ -37,8 +40,12 @@ class ProjectMapper {
                 retouchingDescription = request.retouchingDescription,
             )
 
-        fun toCommand(request: ProjectUpdateRequest): ProjectUpdateCommand =
+        fun toCommand(
+            userId: Long,
+            request: ProjectUpdateRequest,
+        ): ProjectUpdateCommand =
             ProjectUpdateCommand(
+                userId = userId,
                 projectId = request.projectId,
                 title = request.title,
                 shootingAt = request.shootingAt,
@@ -109,11 +116,12 @@ class ProjectMapper {
 
         fun toCommand(
             projectId: Long,
+            userId: Long,
             projectApplyRequest: ProjectApplyRequest,
         ): ProjectApplyCommand =
             ProjectApplyCommand(
                 projectId = projectId,
-                applicantId = projectApplyRequest.applicantId,
+                applicantId = userId,
                 applyContent = projectApplyRequest.applyContent,
             )
 

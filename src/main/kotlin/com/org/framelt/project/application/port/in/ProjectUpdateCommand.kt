@@ -7,6 +7,7 @@ import com.org.framelt.user.domain.LocationType
 import java.time.LocalDateTime
 
 data class ProjectUpdateCommand(
+    val userId: Long,
     val projectId: Long,
     val title: String,
     val shootingAt: LocalDateTime,
