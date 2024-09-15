@@ -9,7 +9,7 @@ import jakarta.persistence.*
 class UserJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 
     @Column(nullable = false)
     val name: String,
