@@ -20,8 +20,8 @@ class AuthInterceptor(
             request.getHeader(HttpHeaders.AUTHORIZATION)
                 ?: throw IllegalArgumentException("인증 정보가 없습니다.")
 
-        val memberId = jwtProvider.parseToken(authHeader)
-        request.setAttribute("memberId", memberId)
+        val userId = jwtProvider.parseToken(authHeader)
+        request.setAttribute("userId", userId)
         return true
     }
 }

@@ -22,8 +22,8 @@ class MemberIdArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): Any? {
-        val memberId = webRequest.getAttribute("memberId", NativeWebRequest.SCOPE_REQUEST) as String
-        val user = userQueryPort.findById(memberId.toLong()) ?: throw IllegalArgumentException("존재하지 않는 사용자입니다.")
+        val userId = webRequest.getAttribute("userId", NativeWebRequest.SCOPE_REQUEST) as String
+        val user = userQueryPort.findById(userId.toLong()) ?: throw IllegalArgumentException("존재하지 않는 사용자입니다.")
         return user.id
     }
 }
