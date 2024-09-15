@@ -7,15 +7,19 @@ import com.org.framelt.notification.adapter.`in`.NotificationResponse
 import com.org.framelt.notification.application.port.`in`.NotificationDeleteUseCase
 import com.org.framelt.notification.application.port.`in`.NotificationMarkAsReadUseCase
 import com.org.framelt.notification.application.port.`in`.NotificationQueryUseCase
+import com.org.framelt.notification.application.port.`in`.NotificationSendPort
 import com.org.framelt.notification.application.port.out.NotificationCommendPort
 import com.org.framelt.notification.application.port.out.NotificationReadPort
 import com.org.framelt.user.application.port.out.UserReadPort
+import org.springframework.context.event.EventListener
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 @Service
 class NotificationService(
     private val notificationCommendPort: NotificationCommendPort,
     private val notificationReadPort: NotificationReadPort,
+    private val notificationSendPort: NotificationSendPort,
     private val userReadPort: UserReadPort,
 ) : NotificationDeleteUseCase, NotificationMarkAsReadUseCase, NotificationQueryUseCase {
 
@@ -31,7 +35,13 @@ class NotificationService(
 
     override fun getNotificationStatus(command: NotificationReadCommand): List<NotificationResponse> {
         val user = userReadPort.readById(command.userId)
-        val notification = notificationReadPort.findByReceiverId(command.userId)
+        val notification = notificationReadPort.findAllByReceiverId(command.userId)
         return notification.map { NotificationResponse(it.id, it.title, it.content, it.sendTime, it.isRead) }.toList()
+    }
+
+    @EventListener
+    @Async
+    fun sendTo(letter: NotificationLetter) {
+        notificationSendPort.sendTo(letter)
     }
 }
