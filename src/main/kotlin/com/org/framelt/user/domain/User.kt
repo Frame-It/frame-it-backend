@@ -14,6 +14,7 @@ class User(
     var description: String? = null,
     var birthDate: LocalDate? = null,
     var notificationsEnabled: Boolean, // 보유
+    val email: String,
     val deviseToken: String? = null,
 ) {
     fun fillProfile(
@@ -31,13 +32,14 @@ class User(
     }
 
     companion object {
-        fun beforeCompleteSignUp() =
+        fun beforeCompleteSignUp(email: String) =
             User(
                 name = IN_SIGN_UP_PROGRESS,
                 nickname = IN_SIGN_UP_PROGRESS,
                 identity = Identity.NONE,
                 shootingConcepts = emptyList(),
                 notificationsEnabled = false,
+                email = email,
             )
 
         private const val IN_SIGN_UP_PROGRESS = "회원가입 진행 중"

@@ -1,8 +1,8 @@
 package com.org.framelt.user.application.port.out.oauth
 
 interface AuthPort {
-    fun getProviderUserId(
+    fun getProfile(
         provider: String,
         code: String,
-    ): String
+    ): AuthProfile
 }

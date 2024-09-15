@@ -7,4 +7,5 @@ data class GoogleProfile(
     val picture: String,
     val id: String,
     val name: String,
+    val email: String,
 )
