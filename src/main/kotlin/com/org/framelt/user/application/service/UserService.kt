@@ -4,6 +4,8 @@ import com.org.framelt.user.application.port.`in`.SignUpCommand
 import com.org.framelt.user.application.port.`in`.SignUpUseCase
 import com.org.framelt.user.application.port.`in`.UserAccountInfoModel
 import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
+import com.org.framelt.user.application.port.`in`.UserNicknameCheckCommand
+import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
 import com.org.framelt.user.domain.Identity
@@ -14,7 +16,8 @@ class UserService(
     val userQueryPort: UserQueryPort,
     val userCommandPort: UserCommandPort,
 ) : SignUpUseCase,
-    UserAccountReadUseCase {
+    UserAccountReadUseCase,
+    UserNicknameCheckUseCase {
     override fun signUp(signUpCommand: SignUpCommand) {
         val user = userQueryPort.readById(signUpCommand.id)
         user.fillProfile(
@@ -36,4 +39,7 @@ class UserService(
             notificationsEnabled = user.notificationsEnabled,
         )
     }
+
+    override fun isNicknameDuplicated(userNicknameCheckCommand: UserNicknameCheckCommand): Boolean =
+        userQueryPort.existsByNickname(userNicknameCheckCommand.nickname)
 }

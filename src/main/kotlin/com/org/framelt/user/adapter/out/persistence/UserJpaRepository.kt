@@ -8,4 +8,6 @@ interface UserJpaRepository : Repository<UserJpaEntity, Long> {
     fun getById(id: Long): UserJpaEntity
 
     fun findById(id: Long): UserJpaEntity?
+
+    fun existsByNickname(nickname: String): Boolean
 }

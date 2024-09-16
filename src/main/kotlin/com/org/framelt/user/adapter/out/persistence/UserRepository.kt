@@ -54,4 +54,6 @@ class UserRepository(
             )
         return oAuthUserJpaEntity?.user?.toDomain()
     }
+
+    override fun existsByNickname(nickname: String): Boolean = userJpaRepository.existsByNickname(nickname)
 }
