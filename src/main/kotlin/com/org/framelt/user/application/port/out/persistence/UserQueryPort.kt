@@ -12,4 +12,6 @@ interface UserQueryPort {
         provider: OAuthProvider,
         providerUserId: String,
     ): User?
+
+    fun existsByNickname(nickname: String): Boolean
 }
