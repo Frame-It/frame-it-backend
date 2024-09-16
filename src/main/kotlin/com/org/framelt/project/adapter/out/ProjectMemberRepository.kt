@@ -3,6 +3,7 @@ package com.org.framelt.project.adapter.out
 import com.org.framelt.project.application.port.out.ProjectMemberCommandPort
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.domain.ProjectMember
+import com.org.framelt.project.domain.Status
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -21,4 +22,9 @@ class ProjectMemberRepository(
         memberId: Long,
         projectId: Long,
     ): ProjectMember = projectMemberJpaRepository.findByMemberIdAndProjectId(memberId, projectId).toDomain()
+
+    override fun existsByMemberIdAndProjectStatus(
+        memberId: Long,
+        status: Status,
+    ): Boolean = projectMemberJpaRepository.existsByMemberIdAndProjectStatus(memberId, status)
 }

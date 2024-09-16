@@ -10,4 +10,6 @@ interface OAuthUserJpaRepository : Repository<OAuthUserJpaEntity, Long> {
     ): OAuthUserJpaEntity?
 
     fun save(oAuthUserJpaEntity: OAuthUserJpaEntity): OAuthUserJpaEntity
+
+    fun deleteByUser(userJpaEntity: UserJpaEntity)
 }

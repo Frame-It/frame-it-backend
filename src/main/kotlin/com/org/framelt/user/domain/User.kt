@@ -15,8 +15,9 @@ class User(
     var description: String? = null,
     var birthDate: LocalDate? = null,
     var notificationsEnabled: Boolean, // 보유
-    val email: String,
+    var email: String,
     val deviseToken: String? = null,
+    var isQuit: Boolean = false,
 ) {
     fun fillProfile(
         name: String,
@@ -30,6 +31,11 @@ class User(
         this.identity = identity
         this.birthDate = birthDate
         this.notificationsEnabled = notificationsEnabled
+    }
+
+    fun quit() {
+        isQuit = true
+        email = "quit_" + UUID.randomUUID().toString()
     }
 
     companion object {
