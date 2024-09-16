@@ -13,9 +13,11 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDate
 
 @Entity(name = "users")
+@SQLRestriction("is_quit = false")
 class UserJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +52,8 @@ class UserJpaEntity(
     val deviseToken: String? = null,
     @Column(nullable = false, unique = true)
     val email: String,
+    @Column(nullable = false)
+    val isQuit: Boolean,
 ) {
     companion object {
         fun fromDomain(user: User) =
@@ -67,6 +71,7 @@ class UserJpaEntity(
                 notificationsEnabled = user.notificationsEnabled,
                 deviseToken = user.deviseToken,
                 email = user.email,
+                isQuit = user.isQuit,
             )
     }
 }
@@ -86,4 +91,5 @@ fun UserJpaEntity.toDomain() =
         deviseToken = this.deviseToken,
         birthDate = this.birthDate,
         email = this.email,
+        isQuit = this.isQuit,
     )

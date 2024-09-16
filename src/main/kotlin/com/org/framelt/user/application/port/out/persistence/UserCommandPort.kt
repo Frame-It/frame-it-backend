@@ -11,4 +11,9 @@ interface UserCommandPort {
     ): User
 
     fun save(user: User): User
+
+    fun quit(
+        user: User,
+        quitReason: String?,
+    )
 }

@@ -1,5 +1,6 @@
 package com.org.framelt.user.adapter.out.persistence
 
+import com.org.framelt.project.adapter.out.ProjectJpaRepository
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Repository
 class UserRepository(
     private val userJpaRepository: UserJpaRepository,
     private val oAuthUserJpaRepository: OAuthUserJpaRepository,
+    private val quitUserJpaRepository: QuitUserJpaRepository,
+    private val projectJpaRepository: ProjectJpaRepository,
 ) : UserQueryPort,
     UserCommandPort {
     override fun save(
@@ -56,4 +59,16 @@ class UserRepository(
     }
 
     override fun existsByNickname(nickname: String): Boolean = userJpaRepository.existsByNickname(nickname)
+
+    override fun quit(
+        user: User,
+        quitReason: String?,
+    ) {
+        val userJpaEntity = UserJpaEntity.fromDomain(user)
+        userJpaRepository.save(userJpaEntity)
+        oAuthUserJpaRepository.deleteByUser(userJpaEntity)
+        projectJpaRepository.deleteAllByHost(userJpaEntity)
+        // TODO: 포트폴리오 데이터 삭제 처리
+        quitUserJpaRepository.save(QuitUserJpaEntity.fromDomain(userJpaEntity, quitReason))
+    }
 }
