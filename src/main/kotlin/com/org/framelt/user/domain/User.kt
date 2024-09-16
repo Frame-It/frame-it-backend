@@ -1,6 +1,7 @@
 package com.org.framelt.user.domain
 
 import java.time.LocalDate
+import java.util.UUID
 
 class User(
     val id: Long? = null,
@@ -35,13 +36,13 @@ class User(
         fun beforeCompleteSignUp(email: String) =
             User(
                 name = IN_SIGN_UP_PROGRESS,
-                nickname = IN_SIGN_UP_PROGRESS,
+                nickname = IN_SIGN_UP_PROGRESS + UUID.randomUUID().toString(),
                 identity = Identity.NONE,
                 shootingConcepts = emptyList(),
                 notificationsEnabled = false,
                 email = email,
             )
 
-        private const val IN_SIGN_UP_PROGRESS = "회원가입 진행 중"
+        private const val IN_SIGN_UP_PROGRESS = "Unknown"
     }
 }
