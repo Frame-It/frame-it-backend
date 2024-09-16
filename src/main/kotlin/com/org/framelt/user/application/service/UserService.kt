@@ -52,6 +52,11 @@ class UserService(
     override fun isNicknameDuplicated(userNicknameCheckCommand: UserNicknameCheckCommand): Boolean =
         userQueryPort.existsByNickname(userNicknameCheckCommand.nickname)
 
+    override fun hasInProgressProjects(userId: Long): Boolean {
+        val user = userQueryPort.readById(userId)
+        return projectMemberQueryPort.existsByMemberIdAndProjectStatus(user.id!!, Status.IN_PROGRESS)
+    }
+
     override fun quit(userQuitCommand: UserQuitCommand) {
         val user =
             userQueryPort.findById(userQuitCommand.userId)

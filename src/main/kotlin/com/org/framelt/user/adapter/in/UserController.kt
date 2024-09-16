@@ -4,6 +4,7 @@ import com.org.framelt.config.auth.Authorization
 import com.org.framelt.user.adapter.`in`.request.SignUpRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameCheckRequest
 import com.org.framelt.user.adapter.`in`.request.UserQuitRequest
+import com.org.framelt.user.adapter.`in`.response.InProgressProjectsCheckResponse
 import com.org.framelt.user.adapter.`in`.response.UserAccountInfoResponse
 import com.org.framelt.user.adapter.`in`.response.UserNicknameCheckResponse
 import com.org.framelt.user.application.port.`in`.SignUpUseCase
@@ -14,6 +15,7 @@ import com.org.framelt.user.common.UserMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -52,6 +54,15 @@ class UserController(
         val userNicknameCheckCommand = UserMapper.toCommand(userNicknameCheckRequest)
         val isDuplicated = userNicknameCheckUseCase.isNicknameDuplicated(userNicknameCheckCommand)
         val response = UserNicknameCheckResponse(isDuplicated)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/users/{userId}/in-progress-projects/exists")
+    fun checkInProgressProjects(
+        @PathVariable userId: Long,
+    ): ResponseEntity<InProgressProjectsCheckResponse> {
+        val exists = userQuitUseCase.hasInProgressProjects(userId)
+        val response = InProgressProjectsCheckResponse(exists)
         return ResponseEntity.ok(response)
     }
 
