@@ -22,7 +22,7 @@ class UserJpaEntity(
     val id: Long? = null,
     @Column(nullable = false)
     val name: String,
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val nickname: String,
     @Column(nullable = true)
     val profileImageUrl: String? = null,

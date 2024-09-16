@@ -20,6 +20,7 @@ class UserService(
     UserNicknameCheckUseCase {
     override fun signUp(signUpCommand: SignUpCommand) {
         val user = userQueryPort.readById(signUpCommand.id)
+        require(!isNicknameDuplicated(UserNicknameCheckCommand(signUpCommand.nickname))) { "이미 존재하는 닉네임은 사용할 수 없습니다." }
         user.fillProfile(
             name = signUpCommand.name,
             birthDate = signUpCommand.birthDate,
