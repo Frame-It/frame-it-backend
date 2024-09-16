@@ -9,4 +9,6 @@ interface ProjectReviewJpaRepository : Repository<ProjectReviewJpaEntity, Long> 
         reviewerId: Long,
         revieweeId: Long,
     ): ProjectReviewJpaEntity?
+
+    fun findById(id: Long): ProjectReviewJpaEntity?
 }

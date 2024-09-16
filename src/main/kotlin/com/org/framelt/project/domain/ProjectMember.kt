@@ -14,5 +14,7 @@ class ProjectMember(
         hasCompletedProject = true
     }
 
+    fun getUserId(): Long = member.id!!
+
     override fun toString(): String = "ProjectMember(id=$id, member=$member, project=$project, isHost=$isHost)"
 }

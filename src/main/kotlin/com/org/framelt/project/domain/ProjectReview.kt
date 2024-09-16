@@ -16,4 +16,8 @@ class ProjectReview(
     }
 
     override fun toString(): String = "ProjectReview(reviewer=$reviewer, reviewee=$reviewee, tags=$tags, content='$content')"
+
+    fun validateReviewAccess(userId: Long) {
+        require(reviewer.getUserId() == userId || reviewee.getUserId() == userId) { "해당 리뷰를 볼 권한이 없습니다." }
+    }
 }

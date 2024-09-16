@@ -15,6 +15,7 @@ import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewCommand
+import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.user.domain.Identity
@@ -147,6 +148,15 @@ class ProjectMapper {
                 revieweeId = projectReviewRequest.revieweeId,
                 tags = projectReviewRequest.tags,
                 content = projectReviewRequest.content,
+            )
+
+        fun toCommand(
+            reviewId: Long,
+            userId: Long,
+        ): ProjectReviewReadCommand =
+            ProjectReviewReadCommand(
+                reviewId = reviewId,
+                userId = userId,
             )
     }
 }
