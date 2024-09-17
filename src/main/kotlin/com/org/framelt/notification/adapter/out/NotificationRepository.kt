@@ -4,7 +4,6 @@ import com.org.framelt.notification.application.port.out.NotificationCommendPort
 import com.org.framelt.notification.application.port.out.NotificationReadPort
 import com.org.framelt.notification.domain.Notification
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 class NotificationRepository(

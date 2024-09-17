@@ -47,7 +47,7 @@ class UserRepository(
     }
 
     override fun readByIds(ids: List<Long>): List<User> {
-        val userEntities = userJpaRepository.findAllByIds(ids)
+        val userEntities = userJpaRepository.findAllByIdIn(ids)
         return userEntities.map { it.toDomain() }
     }
 

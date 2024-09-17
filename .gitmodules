@@ -1,3 +1,4 @@
 [submodule "src/main/resources/frame-it-backend-config"]
 	path = src/main/resources/frame-it-backend-config
 	url = https://github.com/Frame-It/frame-it-backend-config.git
+	branch = main
