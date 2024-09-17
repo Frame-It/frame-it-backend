@@ -7,18 +7,79 @@ import java.time.LocalDateTime
 
 data class Project(
     val id: Long? = null,
-    val manager: User,
+    val host: User,
     val title: String,
-    val identity: Identity,
-    val shootingDateTime: LocalDateTime,
+    val recruitmentRole: Identity,
+    val shootingAt: LocalDateTime,
+    val timeOption: TimeOption,
     val locationType: LocationType,
     val spot: Spot,
-    val concept: String, // TODO: 타입 생각하기
-    val photos: List<String>,
+    val concepts: List<Concept>,
+    val conceptPhotoUrls: List<String>,
     val description: String,
-    val editingDetails: String?,
-    val applicants: List<User>, // TODO: 객체화 시켜서 상태 관리하기
+    val retouchingDescription: String?,
+    var status: Status = Status.RECRUITING,
+    var viewCount: Int = 0,
 ) {
-    var status: Status = Status.모집중
-        private set
+    fun update(
+        title: String,
+        shootingAt: LocalDateTime,
+        timeOption: TimeOption,
+        locationType: LocationType,
+        spot: Spot,
+        concepts: List<Concept>,
+        conceptPhotoUrls: List<String>,
+        description: String,
+        retouchingDescription: String?,
+    ): Project =
+        Project(
+            id = this.id,
+            host = this.host,
+            title = title,
+            recruitmentRole = this.recruitmentRole,
+            shootingAt = shootingAt,
+            timeOption = timeOption,
+            locationType = locationType,
+            spot = spot,
+            concepts = concepts,
+            conceptPhotoUrls = conceptPhotoUrls,
+            description = description,
+            retouchingDescription = retouchingDescription,
+        )
+
+    fun start() {
+        require(status == Status.RECRUITING) { "모집 중인 상태의 프로젝트만 시작 가능합니다." }
+        status = Status.IN_PROGRESS
+    }
+
+    fun complete() {
+        require(status == Status.IN_PROGRESS) { "진행 중인 상태의 프로젝트만 완료 가능합니다." }
+        status = Status.COMPLETED
+    }
+
+    fun cancel() {
+        status = Status.CANCELED
+    }
+
+    fun isCompleted(): Boolean = status == Status.COMPLETED
+
+    fun isClosed(
+        closureChecker: ProjectClosureChecker,
+        applicantCount: Int,
+    ) = closureChecker.isClosed(status, shootingAt, applicantCount)
+
+    fun increaseViewCount() {
+        this.viewCount++
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Project
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id?.hashCode() ?: 0
 }
