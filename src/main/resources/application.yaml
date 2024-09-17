@@ -2,5 +2,6 @@ spring:
   config:
     import:
       - classpath:/frame-it-backend-config/application.yaml
+      - classpath:/frame-it-backend-config/application-dev.yaml
   profiles:
     active: local
