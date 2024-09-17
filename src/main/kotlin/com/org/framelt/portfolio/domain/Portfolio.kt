@@ -5,9 +5,28 @@ import com.org.framelt.user.domain.User
 class Portfolio(
     val id: Long? = null,
     val manage: User,
-    val title: String? = null,
+    val title: String,
     val description: String? = null,
-    val photos: List<String>? = null,
+    val primaryPhoto: String,
+    val photos: List<String>,
     val hashtags: List<String>? = null,
-//    val collaborators: String //이거를 링크랑 사용자 이름으로 하면 회원이 아닌사람이랑 구분해서 할 수 있을듯
-)
+    val collaborators: List<User>,
+) {
+
+    constructor(
+        manage: User,
+        title: String,
+        description: String?,
+        photos: List<String>,
+        hashtags: List<String>?,
+        collaborators: List<User>,
+    ) : this(null, manage, title, description, photos.get(0), photos, hashtags, collaborators)
+
+    fun isOwnedByUser(userId: Long): Boolean {
+        return manage.id == userId
+    }
+
+    fun getId(): Long {
+        return id ?: throw RuntimeException("해당 포트폴리오는 잘못된 데이터입니다.")
+    }
+}

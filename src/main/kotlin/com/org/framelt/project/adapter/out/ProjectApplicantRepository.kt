@@ -24,7 +24,8 @@ class ProjectApplicantRepository(
         projectId: Long,
         applicantId: Long,
     ): ProjectApplicant {
-        val projectApplicantJpaEntity = projectApplicantJpaRepository.getByProjectIdAndApplicantId(projectId, applicantId)
+        val projectApplicantJpaEntity =
+            projectApplicantJpaRepository.getByProjectIdAndApplicantId(projectId, applicantId)
         return projectApplicantJpaEntity.toDomain()
     }
 

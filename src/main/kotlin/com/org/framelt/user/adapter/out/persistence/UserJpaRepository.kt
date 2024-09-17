@@ -10,4 +10,6 @@ interface UserJpaRepository : Repository<UserJpaEntity, Long> {
     fun findById(id: Long): UserJpaEntity?
 
     fun existsByNickname(nickname: String): Boolean
+
+    fun findAllByIdIn(ids: List<Long>): List<UserJpaEntity>
 }

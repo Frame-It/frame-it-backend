@@ -7,6 +7,7 @@ interface UserQueryPort {
     fun readById(id: Long): User
 
     fun findById(id: Long): User?
+    fun readByIds(ids: List<Long>): List<User>
 
     fun findByProviderAndProviderUserId(
         provider: OAuthProvider,
