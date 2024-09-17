@@ -1,0 +1,6 @@
+spring:
+  config:
+    import:
+      - classpath:/frame-it-backend-config/application.yaml
+  profiles:
+    active: local
