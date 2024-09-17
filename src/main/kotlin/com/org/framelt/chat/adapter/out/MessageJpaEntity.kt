@@ -1,7 +1,8 @@
 package com.org.framelt.chat.adapter.out
 
 import com.org.framelt.chat.domain.Message
-import com.org.framelt.user.adapter.out.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.toDomain
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

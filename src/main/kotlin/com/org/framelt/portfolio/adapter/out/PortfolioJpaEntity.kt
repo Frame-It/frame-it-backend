@@ -1,6 +1,6 @@
 package com.org.framelt.portfolio.adapter.out
 
-import com.org.framelt.user.adapter.out.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import jakarta.persistence.*
 
 @Entity

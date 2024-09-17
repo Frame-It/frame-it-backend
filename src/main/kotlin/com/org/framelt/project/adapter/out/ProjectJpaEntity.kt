@@ -1,25 +1,11 @@
 package com.org.framelt.project.adapter.out
 
-import com.org.framelt.project.domain.Concept
-import com.org.framelt.project.domain.Project
-import com.org.framelt.project.domain.Spot
-import com.org.framelt.project.domain.Status
-import com.org.framelt.project.domain.TimeOption
+import com.org.framelt.project.domain.*
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.toDomain
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.LocationType
-import jakarta.persistence.CollectionTable
-import jakarta.persistence.Column
-import jakarta.persistence.ElementCollection
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity(name = "project")

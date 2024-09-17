@@ -1,7 +1,8 @@
 package com.org.framelt.notification.adapter.out
 
 import com.org.framelt.notification.domain.Notification
-import com.org.framelt.user.adapter.out.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.toDomain
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

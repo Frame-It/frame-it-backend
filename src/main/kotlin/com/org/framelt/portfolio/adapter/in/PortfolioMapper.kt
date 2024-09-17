@@ -23,7 +23,7 @@ class PortfolioMapper {
                 PortfolioResponse(
                     id = portfolio.getId(),
                     title = portfolio.title,
-                    userId = portfolio.manage.id,
+                    userId = portfolio.manage.id!!,
                     userName = portfolio.manage.name
                 )
             }
@@ -33,7 +33,7 @@ class PortfolioMapper {
             return PortfolioDetailResponse(
                 id = readPortfolio.getId(),
                 title = readPortfolio.title,
-                userId = readPortfolio.manage.id,
+                userId = readPortfolio.manage.id!!,
                 userName = readPortfolio.manage.name,
                 description = readPortfolio.description,
                 photosUrl = readPortfolio.photos,

@@ -6,7 +6,7 @@ import com.org.framelt.portfolio.application.port.`in`.PortfolioCreateUseCase
 import com.org.framelt.portfolio.application.port.out.PortfolioCommendPort
 import com.org.framelt.portfolio.application.port.out.PortfolioReadPort
 import com.org.framelt.portfolio.domain.Portfolio
-import com.org.framelt.user.application.port.out.UserReadPort
+import com.org.framelt.user.application.port.out.persistence.UserQueryPort
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service
 class PortfolioService(
     private val portfolioCommendPort: PortfolioCommendPort,
     private val portfolioReadPort: PortfolioReadPort,
-    private val userReadPort: UserReadPort,
-    private val fileUploadClient: FileUploadClient
+    private val userQueryPort: UserQueryPort,
+    private val fileUploadClient: FileUploadClient,
 ) : PortfolioCreateUseCase {
 
     override fun create(command: PortfolioCreateCommend): Long {
-        val user = userReadPort.readById(command.userId)
-        val togethers = userReadPort.readByIds(command.togethers)
+        val user = userQueryPort.readById(command.userId)
+        val togethers = userQueryPort.readByIds(command.togethers)
         val fileLinks = command.photos.map { photo ->
             fileUploadClient.upload(photo.name, MediaType.IMAGE_JPEG, photo.bytes)
                 .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
@@ -44,8 +44,8 @@ class PortfolioService(
     }
 
     override fun update(command: PortfolioUpdateCommend) {
-        val user = userReadPort.readById(command.userId)
-        val togethers = userReadPort.readByIds(command.togethers)
+        val user = userQueryPort.readById(command.userId)
+        val togethers = userQueryPort.readByIds(command.togethers)
         val fileLinks = command.photos.map { photo ->
             fileUploadClient.upload(photo.name, MediaType.IMAGE_JPEG, photo.bytes)
                 .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }

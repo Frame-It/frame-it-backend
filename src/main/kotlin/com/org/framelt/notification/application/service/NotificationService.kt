@@ -10,7 +10,7 @@ import com.org.framelt.notification.application.port.`in`.NotificationQueryUseCa
 import com.org.framelt.notification.application.port.`in`.NotificationSendPort
 import com.org.framelt.notification.application.port.out.NotificationCommendPort
 import com.org.framelt.notification.application.port.out.NotificationReadPort
-import com.org.framelt.user.application.port.out.UserReadPort
+import com.org.framelt.user.application.port.out.persistence.UserQueryPort
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
@@ -20,21 +20,21 @@ class NotificationService(
     private val notificationCommendPort: NotificationCommendPort,
     private val notificationReadPort: NotificationReadPort,
     private val notificationSendPort: NotificationSendPort,
-    private val userReadPort: UserReadPort,
+    private val userQueryPort: UserQueryPort,
 ) : NotificationDeleteUseCase, NotificationMarkAsReadUseCase, NotificationQueryUseCase {
 
     override fun deleteNotification(command: NotificationDeleteCommand) {
-        val user = userReadPort.readById(command.userId)
+        val user = userQueryPort.readById(command.userId)
         notificationCommendPort.deleteById(command.notificationId)
     }
 
     override fun markAllAsRead(command: MarkAllAsReadCommand) {
-        val user = userReadPort.readById(command.userId)
+        val user = userQueryPort.readById(command.userId)
         notificationCommendPort.updateAll(command.userId)
     }
 
     override fun getNotificationStatus(command: NotificationReadCommand): List<NotificationResponse> {
-        val user = userReadPort.readById(command.userId)
+        val user = userQueryPort.readById(command.userId)
         val notification = notificationReadPort.findAllByReceiverId(command.userId)
         return notification.map { NotificationResponse(it.id, it.title, it.content, it.sendTime, it.isRead) }.toList()
     }

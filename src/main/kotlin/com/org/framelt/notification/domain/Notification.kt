@@ -1,7 +1,5 @@
 package com.org.framelt.notification.domain
 
-import com.org.framelt.notification.adapter.out.NotificationJpaEntity
-import com.org.framelt.user.adapter.out.UserJpaEntity
 import com.org.framelt.user.domain.User
 import java.time.LocalDateTime
 

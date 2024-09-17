@@ -3,12 +3,13 @@ package com.org.framelt.portfolio.adapter.out
 import com.org.framelt.portfolio.application.port.out.PortfolioCommendPort
 import com.org.framelt.portfolio.application.port.out.PortfolioReadPort
 import com.org.framelt.portfolio.domain.Portfolio
-import com.org.framelt.user.adapter.out.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
+import com.org.framelt.user.adapter.out.persistence.toDomain
 import org.springframework.stereotype.Repository
 
 @Repository
 class PortfolioRepository(
-    private val portfolioJpaRepository: PortfolioJpaRepository
+    private val portfolioJpaRepository: PortfolioJpaRepository,
 ) : PortfolioCommendPort, PortfolioReadPort {
 
     override fun create(portfolio: Portfolio): Portfolio {
@@ -44,20 +45,39 @@ class PortfolioRepository(
                 id = portfolio.manage.id,
                 name = portfolio.manage.name,
                 nickname = portfolio.manage.nickname,
+                birthDate = portfolio.manage.birthDate,
+                isQuit = portfolio.manage.isQuit,
                 profileImageUrl = portfolio.manage.profileImageUrl,
                 bio = portfolio.manage.bio,
                 identity = portfolio.manage.identity,
                 career = portfolio.manage.career,
-                shootingConcepts = portfolio.manage.shootingConcepts.map { it.name },
+                shootingConcepts = portfolio.manage.shootingConcepts,
                 notificationsEnabled = portfolio.manage.notificationsEnabled,
-                deviceToken = portfolio.manage.deviseToken
+                email = portfolio.manage.email,
+                deviseToken = portfolio.manage.deviseToken
             ),
             title = portfolio.title,
             description = portfolio.description,
             primaryPhoto = portfolio.primaryPhoto,
             photos = portfolio.photos,
             hashtags = portfolio.hashtags,
-            collaborators = portfolio.collaborators.map { UserJpaEntity(it.id, it.name, it.nickname, it.profileImageUrl, it.bio, it.identity, it.career, it.shootingConcepts.map { concept -> concept.name }, it.notificationsEnabled, it.deviseToken) }
+            collaborators = portfolio.collaborators.map {
+                UserJpaEntity(
+                    id = it.id,
+                    name = it.name,
+                    nickname = it.nickname,
+                    birthDate = it.birthDate,
+                    isQuit = it.isQuit,
+                    profileImageUrl = it.profileImageUrl,
+                    bio = it.bio,
+                    identity = it.identity,
+                    career = it.career,
+                    shootingConcepts = it.shootingConcepts,
+                    notificationsEnabled = it.notificationsEnabled,
+                    email = it.email,
+                    deviseToken = it.deviseToken
+                )
+            }
         )
     }
 

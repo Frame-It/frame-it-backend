@@ -3,15 +3,13 @@ package com.org.framelt.chat.adapter.out
 import com.org.framelt.chat.application.service.ChatCommendPort
 import com.org.framelt.chat.application.service.ChatReadPort
 import com.org.framelt.chat.domain.Chatting
-import com.org.framelt.user.adapter.out.UserJpaEntity
-import com.org.framelt.user.adapter.out.UserJpaRepository
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.domain.User
 import org.springframework.stereotype.Repository
 
 @Repository
 class ChatRepository(
     private val chatJpaRepository: ChatJpaRepository,
-    private val userJpaRepository: UserJpaRepository,
 ) : ChatCommendPort, ChatReadPort {
 
     override fun save(chat: Chatting): Chatting {
@@ -20,13 +18,16 @@ class ChatRepository(
                 id = participant.id,
                 name = participant.name,
                 nickname = participant.nickname,
+                birthDate = participant.birthDate,
+                isQuit = participant.isQuit,
                 profileImageUrl = participant.profileImageUrl,
                 bio = participant.bio,
                 identity = participant.identity,
                 career = participant.career,
-                shootingConcepts = participant.shootingConcepts.map { it.name },
+                shootingConcepts = participant.shootingConcepts,
                 notificationsEnabled = participant.notificationsEnabled,
-                deviceToken = participant.deviseToken
+                email = participant.email,
+                deviseToken = participant.deviseToken
             )
         }
         val chatEntity = ChatJpaEntity(userEntities)
@@ -41,26 +42,32 @@ class ChatRepository(
                 id = participant.id,
                 name = participant.name,
                 nickname = participant.nickname,
+                birthDate = participant.birthDate,
+                isQuit = participant.isQuit,
                 profileImageUrl = participant.profileImageUrl,
                 bio = participant.bio,
                 identity = participant.identity,
                 career = participant.career,
-                shootingConcepts = participant.shootingConcepts.map { it.name },
+                shootingConcepts = participant.shootingConcepts,
                 notificationsEnabled = participant.notificationsEnabled,
-                deviceToken = participant.deviseToken
+                email = participant.email,
+                deviseToken = participant.deviseToken
             )
         }
         val senderEntity = UserJpaEntity(
             id = sender.id,
             name = sender.name,
             nickname = sender.nickname,
+            birthDate = sender.birthDate,
+            isQuit = sender.isQuit,
             profileImageUrl = sender.profileImageUrl,
             bio = sender.bio,
             identity = sender.identity,
             career = sender.career,
-            shootingConcepts = sender.shootingConcepts.map { it.name },
+            shootingConcepts = sender.shootingConcepts,
             notificationsEnabled = sender.notificationsEnabled,
-            deviceToken = sender.deviseToken
+            email = sender.email,
+            deviseToken = sender.deviseToken
         )
         val chatEntity = ChatJpaEntity(userEntities)
         val messageEntities = chat.messages.map { message ->

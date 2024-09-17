@@ -48,7 +48,6 @@ class User(
                 notificationsEnabled = false,
                 email = email,
             )
-
         private const val IN_SIGN_UP_PROGRESS = "Unknown"
     }
 }

@@ -1,6 +1,7 @@
 package com.org.framelt.chat.adapter.`in`
 
 import com.org.framelt.chat.application.port.`in`.ChatUseCase
+import com.org.framelt.config.auth.Authorization
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -11,7 +12,7 @@ class ChatController(
 ) {
     @PostMapping
     fun createChat(
-        @AuthenticationPrincipal userId: Long,
+        @Authorization userId: Long,
         @RequestBody request: CreateChatRequest,
     ): ResponseEntity<Long> {
         val command = ChatMapper.toCreateCommand(userId, request)
@@ -22,7 +23,7 @@ class ChatController(
     // 메시지 전송
     @PostMapping("/{chatId}/messages")
     fun sendMessage(
-        @AuthenticationPrincipal userId: Long,
+        @Authorization userId: Long,
         @RequestBody request: SendMessageRequest,
     ): ResponseEntity<Void> {
         val command = ChatMapper.toSendMessageCommand(userId, request)
@@ -32,7 +33,7 @@ class ChatController(
 
     // 채팅방 조회
     @GetMapping("/{chatId}")
-    fun getChat(@AuthenticationPrincipal userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
+    fun getChat(@Authorization userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
         val chat = chatUseCase.getChat(userId, chatId)
         return ResponseEntity.ok(chat)
     }

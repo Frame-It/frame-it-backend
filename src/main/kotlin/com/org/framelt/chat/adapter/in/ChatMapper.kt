@@ -18,7 +18,7 @@ class ChatMapper {
         fun toResponse(sender: User, chat: Chatting): ChattingResponse {
             val participantResponses = chat.participant.map { user ->
                 ChatUserInfoResponse(
-                    id = user.id,
+                    id = user.id!!,
                     name = user.name,
                     profileImageUrl = sender.profileImageUrl.toString()
                 )
@@ -29,7 +29,7 @@ class ChatMapper {
                 MessageResponse(
                     messageId = message.id,
                     sender = ChatUserInfoResponse(
-                        id = sender.id,
+                        id = sender.id!!,
                         name = sender.name,
                         profileImageUrl = sender.profileImageUrl.toString()
                     ),

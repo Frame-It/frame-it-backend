@@ -46,6 +46,11 @@ class UserRepository(
         return userEntity?.toDomain()
     }
 
+    override fun readByIds(ids: List<Long>): List<User> {
+        val userEntities = userJpaRepository.findAllByIds(ids)
+        return userEntities.map { it.toDomain() }
+    }
+
     override fun findByProviderAndProviderUserId(
         provider: OAuthProvider,
         providerUserId: String,
