@@ -1,0 +1,3 @@
+[submodule "frame-it-backend-config"]
+	path = frame-it-backend-config
+	url = https://github.com/Frame-It/frame-it-backend-config.git
