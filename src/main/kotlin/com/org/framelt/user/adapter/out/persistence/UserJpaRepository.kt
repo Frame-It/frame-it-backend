@@ -12,4 +12,6 @@ interface UserJpaRepository : Repository<UserJpaEntity, Long> {
     fun existsByNickname(nickname: String): Boolean
 
     fun findAllByIdIn(ids: List<Long>): List<UserJpaEntity>
+
+    fun findByEmail(email: String): UserJpaEntity?
 }
