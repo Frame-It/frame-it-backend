@@ -18,6 +18,7 @@ class AuthConfig(
             .excludePathPatterns("/login", "/login.html")
             .excludePathPatterns("/users/nicknames/check")
             .excludePathPatterns("/users/{userId}/in-progress-projects/exists")
+            .excludePathPatterns("/fake/login")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
