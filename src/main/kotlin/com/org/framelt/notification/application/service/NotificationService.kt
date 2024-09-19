@@ -1,9 +1,6 @@
 package com.org.framelt.notification.application.service
 
-import com.org.framelt.notification.adapter.`in`.MarkAllAsReadCommand
-import com.org.framelt.notification.adapter.`in`.NotificationDeleteCommand
-import com.org.framelt.notification.adapter.`in`.NotificationReadCommand
-import com.org.framelt.notification.adapter.`in`.NotificationResponse
+import com.org.framelt.notification.adapter.`in`.*
 import com.org.framelt.notification.application.port.`in`.NotificationDeleteUseCase
 import com.org.framelt.notification.application.port.`in`.NotificationMarkAsReadUseCase
 import com.org.framelt.notification.application.port.`in`.NotificationQueryUseCase
@@ -33,10 +30,15 @@ class NotificationService(
         notificationCommendPort.updateAll(command.userId)
     }
 
-    override fun getNotificationStatus(command: NotificationReadCommand): List<NotificationResponse> {
+    override fun getNotificationStatus(command: NotificationReadAllCommand): List<NotificationResponse> {
         val user = userQueryPort.readById(command.userId)
         val notification = notificationReadPort.findAllByReceiverId(command.userId)
         return notification.map { NotificationResponse(it.id, it.title, it.content, it.sendTime, it.isRead) }.toList()
+    }
+
+    override fun changeNotificationStatus(command: NotificationReadCommand) {
+        val user = userQueryPort.readById(command.userId)
+        notificationCommendPort.updateById(command.id)
     }
 
     @EventListener

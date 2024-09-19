@@ -22,4 +22,8 @@ class NotificationRepository(
     override fun updateAll(id: Long) {
         notificationJpaRepository.markAllAsReadByReceiverId(id)
     }
+
+    override fun updateById(id: Long) {
+        notificationJpaRepository.markAsReadByReceiverId(id)
+    }
 }

@@ -1,5 +1,3 @@
 package com.org.framelt.notification.adapter.`in`
 
-data class NotificationReadCommand(
-    val userId: Long,
-)
+class NotificationReadCommand(val userId: Long, val id: Long)

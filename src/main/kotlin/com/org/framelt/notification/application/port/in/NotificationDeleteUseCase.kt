@@ -1,9 +1,6 @@
 package com.org.framelt.notification.application.port.`in`
 
-import com.org.framelt.notification.adapter.`in`.MarkAllAsReadCommand
-import com.org.framelt.notification.adapter.`in`.NotificationDeleteCommand
-import com.org.framelt.notification.adapter.`in`.NotificationReadCommand
-import com.org.framelt.notification.adapter.`in`.NotificationResponse
+import com.org.framelt.notification.adapter.`in`.*
 
 interface NotificationDeleteUseCase {
     fun deleteNotification(notificationId: NotificationDeleteCommand)
@@ -14,5 +11,6 @@ interface NotificationMarkAsReadUseCase {
 }
 
 interface NotificationQueryUseCase {
-    fun getNotificationStatus(notificationId: NotificationReadCommand): List<NotificationResponse>
+    fun getNotificationStatus(notificationId: NotificationReadAllCommand): List<NotificationResponse>
+    fun changeNotificationStatus(command: NotificationReadCommand)
 }
