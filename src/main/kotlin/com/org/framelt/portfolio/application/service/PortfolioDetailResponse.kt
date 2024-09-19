@@ -5,6 +5,7 @@ data class PortfolioDetailResponse(
     val title: String,
     val userId: Long,
     val userName: String,
+    val identity: String,
     val description: String? = null,
     val photosUrl: List<String>,
     val hashtags: List<String>? = null,
