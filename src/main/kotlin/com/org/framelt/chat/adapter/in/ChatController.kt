@@ -20,7 +20,6 @@ class ChatController(
         return ResponseEntity.ok(chatId)
     }
 
-    // 메시지 전송
     @PostMapping("/{chatId}/messages")
     fun sendMessage(
         @Authorization userId: Long,

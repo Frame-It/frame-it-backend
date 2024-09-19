@@ -69,7 +69,7 @@ class ChatRepository(
             email = sender.email,
             deviseToken = sender.deviseToken
         )
-        val chatEntity = ChatJpaEntity(userEntities)
+        val chatEntity = ChatJpaEntity(chat.id, userEntities)
         val messageEntities = chat.messages.map { message ->
             MessageJpaEntity(
                 sender = senderEntity,
