@@ -22,15 +22,21 @@ class NotificationController(
         return ResponseEntity.ok().build()
     }
 
-    @GetMapping("/{notificationId}/status")
+    @GetMapping("/read")
     fun findNotifications(@Authorization userId: Long): ResponseEntity<List<NotificationResponse>> {
         val command = NotificationReadCommand(userId)
         return ResponseEntity.ok(notificationQueryUseCase.getNotificationStatus(command))
     }
 
-    @DeleteMapping("/{notificationId}")
-    fun deleteNotification(@Authorization userId: Long, @RequestBody request: NotificationDeleteRequest): ResponseEntity<Void> {
-        val command = NotificationDeleteCommand(userId, request.id)
+    @GetMapping("/{id}")
+    fun findNotification(@Authorization userId: Long): ResponseEntity<List<NotificationResponse>> {
+        val command = NotificationReadCommand(userId)
+        return ResponseEntity.ok(notificationQueryUseCase.getNotificationStatus(command))
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteNotification(@Authorization userId: Long, @PathVariable id: Long): ResponseEntity<Void> {
+        val command = NotificationDeleteCommand(userId, id)
         notificationDeleteUseCase.deleteNotification(command)
         return ResponseEntity.noContent().build()
     }
