@@ -38,7 +38,8 @@ class PortfolioService(
     }
 
     override fun readAll(command: PortfolioReadAllCommend): List<PortfolioResponse> {
-        val readAllPortfolio = portfolioReadPort.readByUserId(command.userId)
+        userQueryPort.readById(command.userId)
+        val readAllPortfolio = portfolioReadPort.readByUserId(command.targetId)
         readAllPortfolio.filter { it.isOwnedByUser(command.userId) }
         return PortfolioMapper.toResponse(readAllPortfolio)
     }
@@ -56,6 +57,8 @@ class PortfolioService(
     }
 
     override fun delete(command: PortfolioDeleteCommend) {
+        val portfolio = portfolioReadPort.readById(command.id)
+        if (portfolio.isOwnedByUser(command.userId)) throw IllegalArgumentException("해당 포트폴리오에 권한이 없는 사용자 입니다.")
         portfolioCommendPort.delete(command.id)
     }
 }

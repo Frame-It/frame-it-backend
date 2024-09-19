@@ -38,11 +38,12 @@ class PortfolioController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping
+    @GetMapping("/{targetId}")
     fun readAll(
         @Authorization userId: Long,
-    ): ResponseEntity<List<PortfolioResponse>> {
-        val command = PortfolioReadAllCommend(userId)
+        @PathVariable targetId: Long,
+        ): ResponseEntity<List<PortfolioResponse>> {
+        val command = PortfolioReadAllCommend(userId,targetId)
         val response = portfolioCreateUseCase.readAll(command)
         return ResponseEntity.ok(response)
     }
@@ -67,7 +68,7 @@ class PortfolioController(
         @Authorization userId: Long,
         @PathVariable id: Long,
     ): ResponseEntity<Void> {
-        val command = PortfolioDeleteCommend(id)
+        val command = PortfolioDeleteCommend(userId, id)
         portfolioCreateUseCase.delete(command)
         return ResponseEntity.noContent().build()
     }
