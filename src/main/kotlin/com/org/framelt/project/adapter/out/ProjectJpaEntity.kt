@@ -28,6 +28,7 @@ class ProjectJpaEntity(
     val locationType: LocationType,
     @Enumerated(EnumType.STRING)
     val spot: Spot,
+    @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Concept::class)
     @CollectionTable(
         name = "project_concepts",
