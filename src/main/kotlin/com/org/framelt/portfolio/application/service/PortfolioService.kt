@@ -20,14 +20,15 @@ class PortfolioService(
     private val userQueryPort: UserQueryPort,
     private val fileUploadClient: FileUploadClient,
 ) : PortfolioCreateUseCase {
-
     override fun create(command: PortfolioCreateCommend): Long {
         val user = userQueryPort.readById(command.userId)
         val togethers = userQueryPort.readByIds(command.togethers)
-        val fileLinks = command.photos.map { photo ->
-            fileUploadClient.upload(photo.name, MediaType.IMAGE_JPEG, photo.bytes)
-                .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
-        }
+        val fileLinks =
+            command.photos.map { photo ->
+                fileUploadClient
+                    .upload(photo.originalFilename!!, MediaType.IMAGE_JPEG, photo.bytes)
+                    .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
+            }
 
         val portfolio = Portfolio(user, command.title, command.description, fileLinks, command.hashtags, togethers)
         val savePortfolio = portfolioCommendPort.create(portfolio)
@@ -71,10 +72,12 @@ class PortfolioService(
     override fun update(command: PortfolioUpdateCommend) {
         val user = userQueryPort.readById(command.userId)
         val togethers = userQueryPort.readByIds(command.togethers)
-        val fileLinks = command.photos.map { photo ->
-            fileUploadClient.upload(photo.name, MediaType.IMAGE_JPEG, photo.bytes)
-                .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
-        }
+        val fileLinks =
+            command.photos.map { photo ->
+                fileUploadClient
+                    .upload(photo.name, MediaType.IMAGE_JPEG, photo.bytes)
+                    .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
+            }
 
         val portfolio = Portfolio(user, command.title, command.description, fileLinks, command.hashtags, togethers)
         portfolioCommendPort.update(portfolio)
