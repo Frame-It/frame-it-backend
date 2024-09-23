@@ -8,6 +8,7 @@ import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.util.Optional
+import java.util.UUID
 
 @Component
 class S3UploadClient(
@@ -23,7 +24,8 @@ class S3UploadClient(
         data: ByteArray,
     ): Optional<String> =
         try {
-            val key = "$IMAGE_PATH$fileName"
+            val randomUUID = UUID.randomUUID().toString()
+            val key = "$IMAGE_PATH$randomUUID$fileName"
             val request =
                 PutObjectRequest
                     .builder()
