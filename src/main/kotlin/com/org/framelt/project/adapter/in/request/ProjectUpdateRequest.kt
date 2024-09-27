@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 data class ProjectUpdateRequest(
-    val projectId: Long,
     val title: String,
     val shootingAt: LocalDateTime,
     val timeOption: TimeOption,

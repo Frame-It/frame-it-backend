@@ -43,11 +43,12 @@ class ProjectMapper {
 
         fun toCommand(
             userId: Long,
+            projectId: Long,
             request: ProjectUpdateRequest,
         ): ProjectUpdateCommand =
             ProjectUpdateCommand(
                 userId = userId,
-                projectId = request.projectId,
+                projectId = projectId,
                 title = request.title,
                 shootingAt = request.shootingAt,
                 timeOption = request.timeOption,
