@@ -22,6 +22,7 @@ data class Project(
     var viewCount: Int = 0,
 ) {
     fun update(
+        hostId: Long,
         title: String,
         shootingAt: LocalDateTime,
         timeOption: TimeOption,
@@ -31,8 +32,9 @@ data class Project(
         conceptPhotoUrls: List<String>,
         description: String,
         retouchingDescription: String?,
-    ): Project =
-        Project(
+    ): Project {
+        require(host.id == hostId) { "프로젝트의 작성자만 수정 가능합니다." }
+        return Project(
             id = this.id,
             host = this.host,
             title = title,
@@ -46,6 +48,7 @@ data class Project(
             description = description,
             retouchingDescription = retouchingDescription,
         )
+    }
 
     fun start() {
         require(status == Status.RECRUITING) { "모집 중인 상태의 프로젝트만 시작 가능합니다." }
