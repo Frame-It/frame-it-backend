@@ -94,7 +94,7 @@ class ProjectController(
 
     @PutMapping("/projects")
     fun update(
-        @RequestBody projectUpdateRequest: ProjectUpdateRequest,
+        @ModelAttribute projectUpdateRequest: ProjectUpdateRequest,
         @Authorization userId: Long,
     ): ResponseEntity<ProjectUpdateResponse> {
         val updateCommand = ProjectMapper.toCommand(userId = userId, request = projectUpdateRequest)
