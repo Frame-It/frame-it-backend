@@ -218,7 +218,7 @@ class ProjectService(
             }
         val updatedProject =
             project.update(
-                // TODO: 작성자 검증 추가
+                hostId = projectUpdateCommand.userId,
                 title = projectUpdateCommand.title,
                 shootingAt = projectUpdateCommand.shootingAt,
                 timeOption = projectUpdateCommand.timeOption,
