@@ -209,6 +209,13 @@ class ProjectService(
 
     override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {
         val project = projectQueryPort.readById(projectUpdateCommand.projectId)
+
+        val conceptPhotoUrls =
+            projectUpdateCommand.conceptPhotos.map {
+                fileUploadClient
+                    .upload(it.originalFilename!!, MediaType.IMAGE_JPEG, it.bytes)
+                    .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${it.name}") }
+            }
         val updatedProject =
             project.update(
                 // TODO: 작성자 검증 추가
@@ -218,7 +225,7 @@ class ProjectService(
                 locationType = projectUpdateCommand.locationType,
                 spot = projectUpdateCommand.spot,
                 concepts = projectUpdateCommand.concepts,
-                conceptPhotoUrls = projectUpdateCommand.conceptPhotoUrls,
+                conceptPhotoUrls = conceptPhotoUrls,
                 description = projectUpdateCommand.description,
                 retouchingDescription = projectUpdateCommand.retouchingDescription,
             )
