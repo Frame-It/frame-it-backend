@@ -1,5 +1,6 @@
 package com.org.framelt.user.application.service
 
+import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.application.port.`in`.SignUpCommand
@@ -8,12 +9,16 @@ import com.org.framelt.user.application.port.`in`.UserAccountInfoModel
 import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckCommand
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
+import com.org.framelt.user.application.port.`in`.UserProfileUpdateCommand
+import com.org.framelt.user.application.port.`in`.UserProfileUseCase
 import com.org.framelt.user.application.port.`in`.UserQuitCommand
 import com.org.framelt.user.application.port.`in`.UserQuitUseCase
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
+import com.org.framelt.user.domain.Concept
 import com.org.framelt.user.domain.Identity
 import jakarta.transaction.Transactional
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 
 @Transactional
@@ -22,10 +27,12 @@ class UserService(
     val userQueryPort: UserQueryPort,
     val userCommandPort: UserCommandPort,
     val projectMemberQueryPort: ProjectMemberQueryPort,
+    val fileUploadClient: FileUploadClient,
 ) : SignUpUseCase,
     UserAccountReadUseCase,
     UserNicknameCheckUseCase,
-    UserQuitUseCase {
+    UserQuitUseCase,
+    UserProfileUseCase {
     override fun signUp(signUpCommand: SignUpCommand) {
         val user = userQueryPort.readById(signUpCommand.id)
         require(!isNicknameDuplicated(UserNicknameCheckCommand(signUpCommand.nickname))) { "이미 존재하는 닉네임은 사용할 수 없습니다." }
@@ -64,5 +71,29 @@ class UserService(
         check(!projectMemberQueryPort.existsByMemberIdAndProjectStatus(user.id!!, Status.IN_PROGRESS)) { "진행 중인 프로젝트가 존재하면 탈퇴할 수 없습니다." }
         user.quit()
         userCommandPort.quit(user, userQuitCommand.quitReason)
+    }
+
+    override fun updateProfile(userProfileUpdateCommand: UserProfileUpdateCommand) {
+        require(userProfileUpdateCommand.userId == userProfileUpdateCommand.updateUserId) { "프로필 수정 권한이 없습니다." }
+
+        val user = userQueryPort.readById(userProfileUpdateCommand.userId)
+        val profileImageUrl =
+            userProfileUpdateCommand.profileImage?.let { it ->
+                fileUploadClient
+                    .upload(
+                        it.originalFilename!!,
+                        MediaType.IMAGE_JPEG,
+                        it.bytes,
+                    ).get()
+            } ?: user.profileImageUrl
+
+        val updatedUser =
+            user.updateProfile(
+                nickname = userProfileUpdateCommand.nickname,
+                profileImageUrl = profileImageUrl,
+                description = userProfileUpdateCommand.description,
+                concepts = userProfileUpdateCommand.concepts.map { it -> Concept.from(it) },
+            )
+        userCommandPort.save(updatedUser)
     }
 }

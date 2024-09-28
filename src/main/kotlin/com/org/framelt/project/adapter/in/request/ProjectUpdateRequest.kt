@@ -13,7 +13,7 @@ data class ProjectUpdateRequest(
     val locationType: LocationType,
     val spot: Spot,
     val concepts: List<String>,
-    val conceptPhotos: List<MultipartFile>,
+    val conceptPhotos: List<MultipartFile>?,
     val description: String,
     val retouchingDescription: String,
 )

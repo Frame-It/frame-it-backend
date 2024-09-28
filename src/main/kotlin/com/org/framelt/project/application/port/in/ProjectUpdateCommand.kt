@@ -16,7 +16,7 @@ data class ProjectUpdateCommand(
     val locationType: LocationType,
     val spot: Spot,
     val concepts: List<Concept>,
-    val conceptPhotos: List<MultipartFile>,
+    val conceptPhotos: List<MultipartFile>?,
     val description: String,
     val retouchingDescription: String,
 )
