@@ -6,4 +6,5 @@ import com.org.framelt.user.domain.User
 interface ChatCommendPort {
     fun save(chat: Chatting): Chatting?
     fun update(sender: User, chat: Chatting): Chatting?
+    fun updateReadStatus(senderId: Long, chatId: Long)
 }

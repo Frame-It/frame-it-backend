@@ -16,10 +16,10 @@ class ChatMapper {
         }
 
         fun toResponse(sender: User, chat: Chatting): ChattingResponse {
-            val participantResponses = chat.participant.map { user ->
+            val participantResponses = chat.participants.map { user ->
                 ChatUserInfoResponse(
-                    id = user.id!!,
-                    name = user.name,
+                    id = user.user.id!!,
+                    name = user.user.name,
                     profileImageUrl = sender.profileImageUrl.toString()
                 )
             }

@@ -30,9 +30,16 @@ class ChatController(
         return ResponseEntity.ok().build()
     }
 
-    // 채팅방 조회
+    @GetMapping()
+    fun getChat(
+        @Authorization userId: Long,
+    ): ResponseEntity<Void> {
+        chatUseCase.getChats(userId)
+        return ResponseEntity.ok().build()
+    }
+    
     @GetMapping("/{chatId}")
-    fun getChat(@Authorization userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
+    fun getChats(@Authorization userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
         val chat = chatUseCase.getChat(userId, chatId)
         return ResponseEntity.ok(chat)
     }

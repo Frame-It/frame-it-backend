@@ -22,6 +22,7 @@ data class MessageJpaEntity(
 
     val timeScript: LocalDateTime,
     val content: String,
+    val isRead: Boolean = false
 ) {
     fun toDomain(): Message {
         return Message(
