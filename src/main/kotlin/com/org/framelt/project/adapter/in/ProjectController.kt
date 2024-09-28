@@ -22,6 +22,7 @@ import com.org.framelt.project.common.ProjectMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -40,7 +41,7 @@ class ProjectController(
 ) {
     @PostMapping("/projects")
     fun create(
-        @RequestBody projectCreateRequest: ProjectCreateRequest,
+        @ModelAttribute projectCreateRequest: ProjectCreateRequest,
         @Authorization userId: Long,
     ): ResponseEntity<ProjectCreateResponse> {
         val createCommand = ProjectMapper.toCommand(userId = userId, request = projectCreateRequest)
@@ -91,12 +92,13 @@ class ProjectController(
         return ResponseEntity.ok(response)
     }
 
-    @PutMapping("/projects")
+    @PutMapping("/projects/{projectId}")
     fun update(
-        @RequestBody projectUpdateRequest: ProjectUpdateRequest,
+        @PathVariable projectId: Long,
+        @ModelAttribute projectUpdateRequest: ProjectUpdateRequest,
         @Authorization userId: Long,
     ): ResponseEntity<ProjectUpdateResponse> {
-        val updateCommand = ProjectMapper.toCommand(userId = userId, request = projectUpdateRequest)
+        val updateCommand = ProjectMapper.toCommand(userId = userId, projectId = projectId, request = projectUpdateRequest)
         val updatedProjectId = projectUpdateUseCase.update(updateCommand)
         val response = ProjectUpdateResponse(projectId = updatedProjectId)
         return ResponseEntity.ok(response)

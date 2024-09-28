@@ -38,6 +38,29 @@ class User(
         email = "quit_" + UUID.randomUUID().toString()
     }
 
+    fun updateProfile(
+        profileImageUrl: String?,
+        nickname: String,
+        description: String,
+        concepts: List<Concept>,
+    ): User =
+        User(
+            id = this.id,
+            name = this.name,
+            nickname = nickname,
+            profileImageUrl = profileImageUrl,
+            bio = this.bio,
+            identity = this.identity,
+            career = this.career,
+            shootingConcepts = concepts,
+            description = description,
+            birthDate = this.birthDate,
+            notificationsEnabled = this.notificationsEnabled,
+            email = this.email,
+            deviseToken = this.deviseToken,
+            isQuit = this.isQuit,
+        )
+
     companion object {
         fun beforeCompleteSignUp(email: String) =
             User(
@@ -48,6 +71,7 @@ class User(
                 notificationsEnabled = false,
                 email = email,
             )
+
         private const val IN_SIGN_UP_PROGRESS = "Unknown"
     }
 }

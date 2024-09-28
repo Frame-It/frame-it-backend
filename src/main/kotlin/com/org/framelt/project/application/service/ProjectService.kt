@@ -1,5 +1,6 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailModel
 import com.org.framelt.project.application.port.`in`.InProgressProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailCommand
@@ -34,6 +35,7 @@ import com.org.framelt.project.domain.ProjectClosureChecker
 import com.org.framelt.project.domain.ProjectMember
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 
 @Service
@@ -48,6 +50,7 @@ class ProjectService(
     val projectReviewQueryPort: ProjectReviewQueryPort,
     val projectBookmarkQueryPort: ProjectBookmarkQueryPort,
     val projectClosureChecker: ProjectClosureChecker,
+    val fileUploadClient: FileUploadClient,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
@@ -55,6 +58,12 @@ class ProjectService(
     ProjectCompleteUseCase {
     override fun create(projectCreateCommand: ProjectCreateCommand): Long {
         val host = userQueryPort.readById(projectCreateCommand.userId)
+        val conceptPhotoUrls =
+            projectCreateCommand.conceptPhotos?.map {
+                fileUploadClient
+                    .upload(it.originalFilename!!, MediaType.IMAGE_JPEG, it.bytes)
+                    .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${it.name}") }
+            } ?: emptyList()
         val project =
             Project(
                 host = host,
@@ -65,7 +74,7 @@ class ProjectService(
                 locationType = projectCreateCommand.locationType,
                 spot = projectCreateCommand.spot,
                 concepts = projectCreateCommand.concepts,
-                conceptPhotoUrls = projectCreateCommand.conceptPhotoUrls,
+                conceptPhotoUrls = conceptPhotoUrls,
                 description = projectCreateCommand.description,
                 retouchingDescription = projectCreateCommand.retouchingDescription,
             )
@@ -200,16 +209,23 @@ class ProjectService(
 
     override fun update(projectUpdateCommand: ProjectUpdateCommand): Long {
         val project = projectQueryPort.readById(projectUpdateCommand.projectId)
+
+        val conceptPhotoUrls =
+            projectUpdateCommand.conceptPhotos?.map {
+                fileUploadClient
+                    .upload(it.originalFilename!!, MediaType.IMAGE_JPEG, it.bytes)
+                    .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${it.name}") }
+            } ?: project.conceptPhotoUrls
         val updatedProject =
             project.update(
-                // TODO: 작성자 검증 추가
+                hostId = projectUpdateCommand.userId,
                 title = projectUpdateCommand.title,
                 shootingAt = projectUpdateCommand.shootingAt,
                 timeOption = projectUpdateCommand.timeOption,
                 locationType = projectUpdateCommand.locationType,
                 spot = projectUpdateCommand.spot,
                 concepts = projectUpdateCommand.concepts,
-                conceptPhotoUrls = projectUpdateCommand.conceptPhotoUrls,
+                conceptPhotoUrls = conceptPhotoUrls,
                 description = projectUpdateCommand.description,
                 retouchingDescription = projectUpdateCommand.retouchingDescription,
             )

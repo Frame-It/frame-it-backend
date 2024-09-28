@@ -36,25 +36,26 @@ class ProjectMapper {
                 locationType = request.locationType,
                 spot = request.spot,
                 concepts = request.concepts.map { Concept.of(it) },
-                conceptPhotoUrls = request.conceptPhotoUrls,
+                conceptPhotos = request.conceptPhotos,
                 description = request.description,
                 retouchingDescription = request.retouchingDescription,
             )
 
         fun toCommand(
             userId: Long,
+            projectId: Long,
             request: ProjectUpdateRequest,
         ): ProjectUpdateCommand =
             ProjectUpdateCommand(
                 userId = userId,
-                projectId = request.projectId,
+                projectId = projectId,
                 title = request.title,
                 shootingAt = request.shootingAt,
                 timeOption = request.timeOption,
                 locationType = request.locationType,
                 spot = request.spot,
                 concepts = request.concepts.map { Concept.of(it) },
-                conceptPhotoUrls = request.conceptPhotoUrls,
+                conceptPhotos = request.conceptPhotos,
                 description = request.description,
                 retouchingDescription = request.retouchingDescription,
             )
