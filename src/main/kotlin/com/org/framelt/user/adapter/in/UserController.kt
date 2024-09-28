@@ -3,6 +3,7 @@ package com.org.framelt.user.adapter.`in`
 import com.org.framelt.config.auth.Authorization
 import com.org.framelt.user.adapter.`in`.request.SignUpRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameCheckRequest
+import com.org.framelt.user.adapter.`in`.request.UserProfileUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserQuitRequest
 import com.org.framelt.user.adapter.`in`.response.InProgressProjectsCheckResponse
 import com.org.framelt.user.adapter.`in`.response.UserAccountInfoResponse
@@ -10,11 +11,14 @@ import com.org.framelt.user.adapter.`in`.response.UserNicknameCheckResponse
 import com.org.framelt.user.application.port.`in`.SignUpUseCase
 import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
+import com.org.framelt.user.application.port.`in`.UserProfileUseCase
 import com.org.framelt.user.application.port.`in`.UserQuitUseCase
 import com.org.framelt.user.common.UserMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -27,6 +31,7 @@ class UserController(
     val userAccountReadUseCase: UserAccountReadUseCase,
     val userNicknameCheckUseCase: UserNicknameCheckUseCase,
     val userQuitUseCase: UserQuitUseCase,
+    val userProfileUseCase: UserProfileUseCase,
 ) {
     @PutMapping("/users")
     fun signUp(
@@ -74,5 +79,16 @@ class UserController(
         val quitCommand = UserMapper.toCommand(userId, userQuitRequest)
         userQuitUseCase.quit(quitCommand)
         return ResponseEntity.ok().build()
+    }
+
+    @PatchMapping("/users/{updateUserId}")
+    fun updateProfile(
+        @PathVariable updateUserId: Long,
+        @ModelAttribute userProfileUpdateRequest: UserProfileUpdateRequest,
+        @Authorization userId: Long,
+    ): ResponseEntity<Unit> {
+        val userProfileUpdateCommand = UserMapper.toCommand(userProfileUpdateRequest, userId, updateUserId)
+        userProfileUseCase.updateProfile(userProfileUpdateCommand)
+        return ResponseEntity.noContent().build()
     }
 }

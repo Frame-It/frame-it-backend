@@ -59,11 +59,11 @@ class ProjectService(
     override fun create(projectCreateCommand: ProjectCreateCommand): Long {
         val host = userQueryPort.readById(projectCreateCommand.userId)
         val conceptPhotoUrls =
-            projectCreateCommand.conceptPhotos.map {
+            projectCreateCommand.conceptPhotos?.map {
                 fileUploadClient
                     .upload(it.originalFilename!!, MediaType.IMAGE_JPEG, it.bytes)
                     .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${it.name}") }
-            }
+            } ?: emptyList()
         val project =
             Project(
                 host = host,
@@ -211,11 +211,11 @@ class ProjectService(
         val project = projectQueryPort.readById(projectUpdateCommand.projectId)
 
         val conceptPhotoUrls =
-            projectUpdateCommand.conceptPhotos.map {
+            projectUpdateCommand.conceptPhotos?.map {
                 fileUploadClient
                     .upload(it.originalFilename!!, MediaType.IMAGE_JPEG, it.bytes)
                     .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${it.name}") }
-            }
+            } ?: project.conceptPhotoUrls
         val updatedProject =
             project.update(
                 hostId = projectUpdateCommand.userId,
