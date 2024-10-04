@@ -18,7 +18,7 @@ class AuthService(
     val userCommandPort: UserCommandPort,
 ) : LoginUseCase {
     override fun login(loginCommand: LoginCommand): String {
-        val authProfile = authPort.getProfile(loginCommand.provider, loginCommand.code)
+        val authProfile = authPort.getProfile(loginCommand.provider, loginCommand.code, loginCommand.redirectUri)
         val provider = OAuthProvider.of(loginCommand.provider)
         val user =
             userQueryPort.findByProviderAndProviderUserId(provider, authProfile.providerUserId)
