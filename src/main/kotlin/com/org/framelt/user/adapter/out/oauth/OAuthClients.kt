@@ -19,9 +19,10 @@ class OAuthClients(
     fun getProfile(
         oAuthProvider: OAuthProvider,
         code: String,
+        redirectUri: String,
     ): AuthProfile {
         val oAuthClient = clientsByProvider[oAuthProvider] ?: throw IllegalArgumentException("지원되지 않는 OAuthProvider 입니다.")
-        val oAuthProfileResponse = oAuthClient.getProfile(code)
+        val oAuthProfileResponse = oAuthClient.getProfile(code, redirectUri)
         return AuthProfile(
             providerUserId = oAuthProfileResponse.providerUserId,
             email = oAuthProfileResponse.email,

@@ -17,10 +17,12 @@ import org.springframework.web.client.exchange
 class GoogleOAuthClient(
     @Value("\${google.client-id}") private val clientId: String,
     @Value("\${google.client-secret}") private val clientSecret: String,
-    @Value("\${google.redirect-uri}") private val redirectUri: String,
 ) : OAuthClient {
-    override fun getProfile(code: String): OAuthProfileResponse {
-        val googleAccessToken = requestGoogleAccessToken(code)
+    override fun getProfile(
+        code: String,
+        redirectUri: String,
+    ): OAuthProfileResponse {
+        val googleAccessToken = requestGoogleAccessToken(code, redirectUri)
         val profile = requestGoogleProfile(googleAccessToken)
         return OAuthProfileResponse(
             providerUserId = profile.id,
@@ -28,7 +30,10 @@ class GoogleOAuthClient(
         )
     }
 
-    private fun requestGoogleAccessToken(code: String): GoogleAccessToken {
+    private fun requestGoogleAccessToken(
+        code: String,
+        redirectUri: String,
+    ): GoogleAccessToken {
         val httpHeaders =
             HttpHeaders().apply {
                 contentType = MediaType.APPLICATION_FORM_URLENCODED
