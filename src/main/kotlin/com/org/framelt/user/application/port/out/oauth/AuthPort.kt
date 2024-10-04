@@ -4,5 +4,6 @@ interface AuthPort {
     fun getProfile(
         provider: String,
         code: String,
+        redirectUri: String,
     ): AuthProfile
 }

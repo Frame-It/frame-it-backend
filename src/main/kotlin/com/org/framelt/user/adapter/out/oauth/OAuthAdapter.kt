@@ -11,9 +11,10 @@ class OAuthAdapter(
     override fun getProfile(
         provider: String,
         code: String,
+        redirectUri: String,
     ): AuthProfile {
         val oAuthProvider = OAuthProvider.of(provider)
-        val oAuthProviderUserId = oAuthClients.getProfile(oAuthProvider, code)
+        val oAuthProviderUserId = oAuthClients.getProfile(oAuthProvider, code, redirectUri)
         return oAuthProviderUserId
     }
 }

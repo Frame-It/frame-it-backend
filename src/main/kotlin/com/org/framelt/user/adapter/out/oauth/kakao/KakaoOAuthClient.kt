@@ -16,11 +16,13 @@ import org.springframework.web.client.exchange
 @Component
 class KakaoOAuthClient(
     @Value("\${kakao.client-id}") private val kakaoClientId: String,
-    @Value("\${kakao.redirect-uri}") private val kakaoRedirectUri: String,
     @Value("\${kakao.client-secret}") private val kakaoClientSecret: String,
 ) : OAuthClient {
-    override fun getProfile(code: String): OAuthProfileResponse {
-        val kakaoAccessToken = requestKakaoAccessToken(code)
+    override fun getProfile(
+        code: String,
+        redirectUri: String,
+    ): OAuthProfileResponse {
+        val kakaoAccessToken = requestKakaoAccessToken(code, redirectUri)
         val profile = requestKakaoProfile(kakaoAccessToken)
         return OAuthProfileResponse(
             providerUserId = profile.id.toString(),
@@ -28,7 +30,10 @@ class KakaoOAuthClient(
         )
     }
 
-    private fun requestKakaoAccessToken(code: String): KakaoAccessToken {
+    private fun requestKakaoAccessToken(
+        code: String,
+        redirectUri: String,
+    ): KakaoAccessToken {
         val httpHeaders =
             HttpHeaders().apply {
                 contentType = MediaType.APPLICATION_FORM_URLENCODED
@@ -37,7 +42,7 @@ class KakaoOAuthClient(
             LinkedMultiValueMap<String, String>().apply {
                 add("grant_type", TOKEN_GRANT_TYPE)
                 add("client_id", kakaoClientId)
-                add("redirect_uri", kakaoRedirectUri)
+                add("redirect_uri", redirectUri)
                 add("client_secret", kakaoClientSecret)
                 add("code", code)
             }
