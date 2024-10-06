@@ -26,4 +26,9 @@ class ProjectReviewRepository(
             )?.toDomain()
 
     override fun findById(id: Long): ProjectReview? = projectReviewJpaRepository.findById(id)?.toDomain()
+
+    override fun findAllByRevieweeUserId(revieweeUserId: Long): List<ProjectReview> =
+        projectReviewJpaRepository.findAllByRevieweeMemberId(revieweeUserId).map {
+            it.toDomain()
+        }
 }

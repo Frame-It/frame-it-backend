@@ -5,6 +5,7 @@ import com.org.framelt.project.adapter.`in`.request.ProjectReviewRequest
 import com.org.framelt.project.adapter.`in`.response.ProjectReviewResponse
 import com.org.framelt.project.application.port.`in`.ProjectReviewCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadUseCase
+import com.org.framelt.project.application.port.`in`.UserProjectReviewReadCommand
 import com.org.framelt.project.common.ProjectMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -37,6 +38,17 @@ class ProjectReviewController(
         val command = ProjectMapper.toCommand(reviewId, userId)
         val projectReview = projectReviewReadUseCase.getProjectReview(command)
         val response = ProjectReviewResponse.from(projectReview)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/users/{userId}/projects/reviews")
+    fun getProjectReviewsOfUser(
+        @PathVariable userId: Long,
+        @Authorization requestUserId: Long,
+    ): ResponseEntity<List<ProjectReviewResponse>> {
+        val command = UserProjectReviewReadCommand(userId, requestUserId)
+        val projectReviews = projectReviewReadUseCase.getProjectReviewsOfUser(command)
+        val response = projectReviews.map { ProjectReviewResponse.from(it) }
         return ResponseEntity.ok(response)
     }
 }

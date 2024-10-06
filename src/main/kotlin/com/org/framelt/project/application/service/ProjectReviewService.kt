@@ -5,6 +5,7 @@ import com.org.framelt.project.application.port.`in`.ProjectReviewCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReviewModel
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadUseCase
+import com.org.framelt.project.application.port.`in`.UserProjectReviewReadCommand
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.application.port.out.ProjectReviewCommandPort
 import com.org.framelt.project.application.port.out.ProjectReviewQueryPort
@@ -38,5 +39,15 @@ class ProjectReviewService(
                 ?: throw IllegalArgumentException("ID에 해당하는 프로젝트 리뷰가 존재하지 않습니다.")
         projectReview.validateReviewAccess(projectReviewReadCommand.userId)
         return ProjectReviewModel.fromDomain(projectReview)
+    }
+
+    override fun getProjectReviewsOfUser(userProjectReviewReadCommand: UserProjectReviewReadCommand): List<ProjectReviewModel> {
+        require(userProjectReviewReadCommand.userId == userProjectReviewReadCommand.requestUserId) {
+            "다른 유저의 리뷰 목록은 조회할 수 없습니다."
+        }
+
+        val projectReviews =
+            projectReviewQueryPort.findAllByRevieweeUserId(userProjectReviewReadCommand.userId)
+        return projectReviews.map { ProjectReviewModel.fromDomain(it) }
     }
 }
