@@ -61,6 +61,8 @@ class User(
             isQuit = this.isQuit,
         )
 
+    fun isSignUpCompleted(): Boolean = identity != Identity.NONE
+
     companion object {
         fun beforeCompleteSignUp(email: String) =
             User(

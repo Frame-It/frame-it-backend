@@ -4,6 +4,7 @@ import com.org.framelt.user.adapter.`in`.response.LoginResponse
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.UserJpaRepository
 import com.org.framelt.user.application.port.out.JwtPort
+import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.User
 import org.springframework.context.annotation.Profile
 import org.springframework.http.ResponseEntity
@@ -24,7 +25,7 @@ class FakeLoginController(
         val user =
             userJpaRepository.findByEmail(email)
                 ?: userJpaRepository.save(UserJpaEntity.fromDomain(User.beforeCompleteSignUp(email)))
-        val response = LoginResponse(jwtPort.createToken(user.id.toString()))
+        val response = LoginResponse(jwtPort.createToken(user.id.toString()), user.identity != Identity.NONE)
         return ResponseEntity.ok(response)
     }
 }
