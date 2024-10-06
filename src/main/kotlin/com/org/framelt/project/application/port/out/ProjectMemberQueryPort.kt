@@ -15,4 +15,6 @@ interface ProjectMemberQueryPort {
         memberId: Long,
         status: Status,
     ): Boolean
+
+    fun readAllByUserId(userId: Long): List<ProjectMember>
 }

@@ -17,4 +17,6 @@ interface ProjectMemberJpaRepository : Repository<ProjectMemberJpaEntity, Long> 
         memberId: Long,
         status: Status,
     ): Boolean
+
+    fun findByMemberId(memberId: Long): List<ProjectMemberJpaEntity>
 }

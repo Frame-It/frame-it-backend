@@ -27,4 +27,7 @@ class ProjectMemberRepository(
         memberId: Long,
         status: Status,
     ): Boolean = projectMemberJpaRepository.existsByMemberIdAndProjectStatus(memberId, status)
+
+    override fun readAllByUserId(userId: Long): List<ProjectMember> =
+        projectMemberJpaRepository.findByMemberId(userId).map { it.toDomain() }
 }
