@@ -11,4 +11,6 @@ interface ProjectReviewJpaRepository : Repository<ProjectReviewJpaEntity, Long> 
     ): ProjectReviewJpaEntity?
 
     fun findById(id: Long): ProjectReviewJpaEntity?
+
+    fun findAllByRevieweeMemberId(revieweeId: Long): List<ProjectReviewJpaEntity>
 }

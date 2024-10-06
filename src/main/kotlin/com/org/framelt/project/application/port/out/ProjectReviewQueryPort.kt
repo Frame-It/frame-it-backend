@@ -8,5 +8,7 @@ interface ProjectReviewQueryPort {
         revieweeId: Long,
     ): ProjectReview?
 
-    abstract fun findById(id: Long): ProjectReview?
+    fun findById(id: Long): ProjectReview?
+
+    fun findAllByRevieweeUserId(revieweeUserId: Long): List<ProjectReview>
 }
