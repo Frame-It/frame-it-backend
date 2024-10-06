@@ -4,6 +4,7 @@ import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.application.port.out.ProjectCommandPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.Project
+import com.org.framelt.project.domain.Status
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -31,5 +32,13 @@ class ProjectRepository(
     override fun update(project: Project) {
         val projectEntity = ProjectJpaEntity.fromDomain(project)
         projectJpaRepository.save(projectEntity)
+    }
+
+    override fun readByHostIdAndStatus(
+        hostId: Long,
+        status: Status,
+    ): List<Project> {
+        val projectEntities = projectJpaRepository.findByHostIdAndStatus(hostId, status)
+        return projectEntities.map { it.toDomain() }
     }
 }
