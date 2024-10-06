@@ -16,7 +16,7 @@ class WebMvcConfig(
             .addInterceptor(authInterceptor)
             .addPathPatterns("/**")
             .excludePathPatterns("/local/oauth2/code/**")
-            .excludePathPatterns("/login", "/login.html")
+            .excludePathPatterns("/login/**", "/login.html")
             .excludePathPatterns("/users/nicknames/check")
             .excludePathPatterns("/users/{userId}/in-progress-projects/exists")
             .excludePathPatterns("/fake/login")
@@ -29,9 +29,10 @@ class WebMvcConfig(
     override fun addCorsMappings(registry: CorsRegistry) {
         registry
             .addMapping("/**")
-            .allowedOrigins("*")
+            .allowedOriginPatterns("*")
             .allowedMethods("*")
             .allowedHeaders("*")
+            .allowCredentials(true)
             .maxAge(3600)
     }
 }
