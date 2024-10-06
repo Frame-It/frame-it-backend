@@ -8,6 +8,7 @@ import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementDetailResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailManagerResponse
+import com.org.framelt.project.adapter.`in`.response.UserProjectItemResponse
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplicantCancelCommand
@@ -17,6 +18,7 @@ import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
+import com.org.framelt.project.application.port.`in`.UserProjectModel
 import com.org.framelt.project.domain.Concept
 import com.org.framelt.user.domain.Identity
 import java.time.LocalDate
@@ -159,5 +161,17 @@ class ProjectMapper {
                 reviewId = reviewId,
                 userId = userId,
             )
+
+        fun toResponse(userProjects: List<UserProjectModel>): List<UserProjectItemResponse> =
+            userProjects.map {
+                UserProjectItemResponse(
+                    id = it.id,
+                    title = it.title,
+                    shootingAt = it.shootingAt,
+                    timeOption = it.timeOption.name,
+                    spot = it.spot.name,
+                    status = it.status.name,
+                )
+            }
     }
 }
