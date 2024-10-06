@@ -2,6 +2,7 @@ package com.org.framelt.user.application.service
 
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import com.org.framelt.user.application.port.`in`.LoginCommand
+import com.org.framelt.user.application.port.`in`.LoginResult
 import com.org.framelt.user.application.port.`in`.LoginUseCase
 import com.org.framelt.user.application.port.out.JwtPort
 import com.org.framelt.user.application.port.out.oauth.AuthPort
@@ -17,13 +18,17 @@ class AuthService(
     val userQueryPort: UserQueryPort,
     val userCommandPort: UserCommandPort,
 ) : LoginUseCase {
-    override fun login(loginCommand: LoginCommand): String {
+    override fun login(loginCommand: LoginCommand): LoginResult {
         val authProfile = authPort.getProfile(loginCommand.provider, loginCommand.code, loginCommand.redirectUri)
         val provider = OAuthProvider.of(loginCommand.provider)
         val user =
             userQueryPort.findByProviderAndProviderUserId(provider, authProfile.providerUserId)
                 ?: signUp(authProfile.email, provider, authProfile.providerUserId)
-        return jwtPort.createToken(user.id!!.toString())
+
+        return LoginResult(
+            accessToken = jwtPort.createToken(user.id!!.toString()),
+            signUpCompleted = user.isSignUpCompleted(),
+        )
     }
 
     private fun signUp(

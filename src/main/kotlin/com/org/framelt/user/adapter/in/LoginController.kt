@@ -21,7 +21,7 @@ class LoginController(
     ): ResponseEntity<LoginResponse> {
         val loginCommand = LoginCommand(socialType, code, redirectUri)
         val loginResult = loginUseCase.login(loginCommand)
-        val response = LoginResponse(loginResult)
+        val response = LoginResponse(loginResult.accessToken, loginResult.signUpCompleted)
         return ResponseEntity.ok(response)
     }
 }
