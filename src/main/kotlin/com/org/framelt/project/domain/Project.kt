@@ -5,7 +5,7 @@ import com.org.framelt.user.domain.LocationType
 import com.org.framelt.user.domain.User
 import java.time.LocalDateTime
 
-data class Project(
+class Project(
     val id: Long? = null,
     val host: User,
     val title: String,
