@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class ProjectAnnouncementItemResponse(
     val id: Long,
-    val previewImageUrl: String,
+    val previewImageUrl: String?,
     val title: String,
     val recruitmentRole: String,
     val shootingAt: LocalDateTime,
