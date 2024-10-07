@@ -82,6 +82,32 @@ class ProjectController(
         return ResponseEntity.ok(response)
     }
 
+    @GetMapping("/projects/announcement/guest")
+    fun showAnnouncementListForGuest(
+        @RequestParam(required = false) recruitmentRole: String?,
+        @RequestParam(required = false) startDate: LocalDate?,
+        @RequestParam(required = false) endDate: LocalDate?,
+        @RequestParam(required = false) timeOption: String?,
+        @RequestParam(required = false) spot: String?,
+        @RequestParam(required = false) locationType: String?,
+        @RequestParam(required = false) concepts: String?,
+    ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
+        val projectFilterCommand =
+            ProjectMapper.toCommand(
+                recruitmentRole = recruitmentRole,
+                startDate = startDate,
+                endDate = endDate,
+                timeOption = timeOption,
+                spot = spot,
+                locationType = locationType,
+                concepts = concepts,
+                userId = null,
+            )
+        val projectItems = projectReadUseCase.getProjectAnnouncementList(projectFilterCommand)
+        val response = projectItems.map { ProjectMapper.toResponse(it) }
+        return ResponseEntity.ok(response)
+    }
+
     @GetMapping("/projects/{projectId}/announcement")
     fun showAnnouncementDetail(
         @PathVariable projectId: Long,
