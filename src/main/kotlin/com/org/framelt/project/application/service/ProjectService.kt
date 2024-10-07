@@ -127,9 +127,7 @@ class ProjectService(
         val projects = projectQueryPort.readAll(projectFilterCommand)
         return projects.map {
             val projectId = it.id!!
-            val isBookmarked =
-                projectFilterCommand.userId?.let { projectBookmarkQueryPort.existsBookmark(projectId, it) }
-                    ?: false
+            val isBookmarked = projectBookmarkQueryPort.existsBookmark(projectId = projectId, userId = projectFilterCommand.userId)
             ProjectAnnouncementItemModel(
                 id = projectId,
                 previewImageUrl = it.conceptPhotoUrls.firstOrNull(),

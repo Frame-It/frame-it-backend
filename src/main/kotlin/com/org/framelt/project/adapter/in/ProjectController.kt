@@ -1,6 +1,7 @@
 package com.org.framelt.project.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
+import com.org.framelt.config.guest.OptionalAuth
 import com.org.framelt.project.adapter.`in`.request.ProjectApplicationCancelRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
@@ -63,7 +64,7 @@ class ProjectController(
         @RequestParam(required = false) spot: String?,
         @RequestParam(required = false) locationType: String?,
         @RequestParam(required = false) concepts: String?,
-        @Authorization userId: Long,
+        @OptionalAuth userId: Long,
     ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val projectFilterCommand =
             ProjectMapper.toCommand(
@@ -75,32 +76,6 @@ class ProjectController(
                 locationType = locationType,
                 concepts = concepts,
                 userId = userId,
-            )
-        val projectItems = projectReadUseCase.getProjectAnnouncementList(projectFilterCommand)
-        val response = projectItems.map { ProjectMapper.toResponse(it) }
-        return ResponseEntity.ok(response)
-    }
-
-    @GetMapping("/projects/announcement/guest")
-    fun showAnnouncementListForGuest(
-        @RequestParam(required = false) recruitmentRole: String?,
-        @RequestParam(required = false) startDate: LocalDate?,
-        @RequestParam(required = false) endDate: LocalDate?,
-        @RequestParam(required = false) timeOption: String?,
-        @RequestParam(required = false) spot: String?,
-        @RequestParam(required = false) locationType: String?,
-        @RequestParam(required = false) concepts: String?,
-    ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
-        val projectFilterCommand =
-            ProjectMapper.toCommand(
-                recruitmentRole = recruitmentRole,
-                startDate = startDate,
-                endDate = endDate,
-                timeOption = timeOption,
-                spot = spot,
-                locationType = locationType,
-                concepts = concepts,
-                userId = null,
             )
         val projectItems = projectReadUseCase.getProjectAnnouncementList(projectFilterCommand)
         val response = projectItems.map { ProjectMapper.toResponse(it) }
