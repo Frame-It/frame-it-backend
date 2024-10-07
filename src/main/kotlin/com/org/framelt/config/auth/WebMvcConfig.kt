@@ -20,6 +20,7 @@ class WebMvcConfig(
             .excludePathPatterns("/users/nicknames/check")
             .excludePathPatterns("/users/{userId}/in-progress-projects/exists")
             .excludePathPatterns("/fake/login")
+            .excludePathPatterns("/projects/announcement/guest")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {

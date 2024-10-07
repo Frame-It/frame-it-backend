@@ -70,7 +70,7 @@ class ProjectMapper {
             spot: String?,
             locationType: String?,
             concepts: String?,
-            userId: Long,
+            userId: Long?,
         ): ProjectFilterCommand =
             ProjectFilterCommand(
                 recruitmentRole = recruitmentRole,

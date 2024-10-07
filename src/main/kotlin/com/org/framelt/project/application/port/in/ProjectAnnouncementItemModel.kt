@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 data class ProjectAnnouncementItemModel(
     val id: Long,
-    val previewImageUrl: String,
+    val previewImageUrl: String?,
     val title: String,
     val recruitmentRole: Identity,
     val shootingAt: LocalDateTime,
