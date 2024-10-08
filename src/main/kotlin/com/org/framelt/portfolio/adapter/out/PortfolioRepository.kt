@@ -5,6 +5,8 @@ import com.org.framelt.portfolio.application.port.out.PortfolioReadPort
 import com.org.framelt.portfolio.domain.Portfolio
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.toDomain
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -33,8 +35,20 @@ class PortfolioRepository(
         return toDomain(portfolioEntity)
     }
 
-    override fun readByUserId(userId: Long): List<Portfolio> {
-        val portfolioEntities = portfolioJpaRepository.findAllByManageId(userId)
+    override fun readAll(pageable: Pageable): Page<Portfolio> {
+        return portfolioJpaRepository.findAll(pageable).map { toDomain(it) }
+    }
+
+    override fun readByPhotographer(pageable: Pageable): Page<Portfolio> {
+        return portfolioJpaRepository.findAllByPhotographer(pageable).map { toDomain(it) }
+    }
+
+    override fun readByModel(pageable: Pageable): Page<Portfolio> {
+        return portfolioJpaRepository.findAllByModel(pageable).map { toDomain(it) }
+    }
+
+    override fun readByUserId(userId: Long, pageable: Pageable): Page<Portfolio> {
+        val portfolioEntities = portfolioJpaRepository.findAllByManageId(userId, pageable)
         return portfolioEntities.map { toDomain(it) }
     }
 
