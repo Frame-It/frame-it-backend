@@ -1,6 +1,7 @@
 package com.org.framelt.project.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
+import com.org.framelt.config.guest.OptionalAuth
 import com.org.framelt.project.adapter.`in`.request.ProjectApplicationCancelRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
@@ -63,7 +64,7 @@ class ProjectController(
         @RequestParam(required = false) spot: String?,
         @RequestParam(required = false) locationType: String?,
         @RequestParam(required = false) concepts: String?,
-        @Authorization userId: Long,
+        @OptionalAuth userId: Long,
     ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val projectFilterCommand =
             ProjectMapper.toCommand(

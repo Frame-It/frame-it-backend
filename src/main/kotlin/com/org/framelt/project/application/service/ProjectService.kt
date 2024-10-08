@@ -126,10 +126,11 @@ class ProjectService(
     override fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel> {
         val projects = projectQueryPort.readAll(projectFilterCommand)
         return projects.map {
-            val isBookmarked = projectBookmarkQueryPort.existsBookmark(it.id!!, projectFilterCommand.userId)
+            val projectId = it.id!!
+            val isBookmarked = projectBookmarkQueryPort.existsBookmark(projectId = projectId, userId = projectFilterCommand.userId)
             ProjectAnnouncementItemModel(
-                id = it.id,
-                previewImageUrl = it.conceptPhotoUrls.first(),
+                id = projectId,
+                previewImageUrl = it.conceptPhotoUrls.firstOrNull(),
                 title = it.title,
                 recruitmentRole = it.recruitmentRole,
                 shootingAt = it.shootingAt,
