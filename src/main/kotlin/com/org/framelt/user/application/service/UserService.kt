@@ -15,7 +15,6 @@ import com.org.framelt.user.application.port.`in`.UserQuitCommand
 import com.org.framelt.user.application.port.`in`.UserQuitUseCase
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
-import com.org.framelt.user.domain.Concept
 import com.org.framelt.user.domain.Identity
 import jakarta.transaction.Transactional
 import org.springframework.http.MediaType
@@ -92,7 +91,7 @@ class UserService(
                 nickname = userProfileUpdateCommand.nickname,
                 profileImageUrl = profileImageUrl,
                 description = userProfileUpdateCommand.description,
-                concepts = userProfileUpdateCommand.concepts.map { it -> Concept.from(it) },
+                concepts = userProfileUpdateCommand.concepts,
             )
         userCommandPort.save(updatedUser)
     }
