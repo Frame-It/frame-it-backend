@@ -21,7 +21,7 @@ data class BookmarkedProjectReadResponse(
                 spot = bookmarkedProjectReadModel.spot.name,
                 shootingAt = bookmarkedProjectReadModel.shootingAt,
                 timeOption = bookmarkedProjectReadModel.timeOption.name,
-                concepts = bookmarkedProjectReadModel.concepts.map { it.name },
+                concepts = bookmarkedProjectReadModel.concepts.map { it.code },
             )
     }
 }

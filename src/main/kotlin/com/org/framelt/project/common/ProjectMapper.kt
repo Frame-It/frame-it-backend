@@ -37,7 +37,7 @@ class ProjectMapper {
                 timeOption = request.timeOption,
                 locationType = request.locationType,
                 spot = request.spot,
-                concepts = request.concepts.map { Concept.of(it) },
+                concepts = request.concepts.map { Concept.fromCode(it) },
                 conceptPhotos = request.conceptPhotos,
                 description = request.description,
                 retouchingDescription = request.retouchingDescription,
@@ -56,7 +56,7 @@ class ProjectMapper {
                 timeOption = request.timeOption,
                 locationType = request.locationType,
                 spot = request.spot,
-                concepts = request.concepts.map { Concept.of(it) },
+                concepts = request.concepts.map { Concept.fromCode(it) },
                 conceptPhotos = request.conceptPhotos,
                 description = request.description,
                 retouchingDescription = request.retouchingDescription,
@@ -69,7 +69,7 @@ class ProjectMapper {
             timeOption: String?,
             spot: String?,
             locationType: String?,
-            concepts: String?,
+            concepts: List<String>?,
             userId: Long,
         ): ProjectFilterCommand =
             ProjectFilterCommand(
@@ -79,7 +79,7 @@ class ProjectMapper {
                 timeOption = timeOption,
                 spot = spot,
                 locationType = locationType,
-                concepts = concepts?.split(","),
+                concepts = concepts?.map { Concept.fromCode(it) },
                 userId = userId,
             )
 
@@ -90,7 +90,7 @@ class ProjectMapper {
                 shootingAt = projectDetail.shootingAt,
                 locationType = projectDetail.locationType.name,
                 spot = projectDetail.spot.name,
-                concepts = projectDetail.concepts.map { it.name },
+                concepts = projectDetail.concepts.map { it.code },
                 conceptPhotoUrls = projectDetail.conceptPhotoUrls,
                 description = projectDetail.description,
                 retouchingDescription = projectDetail.retouchingDescription,
@@ -114,7 +114,7 @@ class ProjectMapper {
                 shootingAt = projectItem.shootingAt,
                 spot = projectItem.spot.name,
                 timeOption = projectItem.timeOption.name,
-                concepts = projectItem.concepts.map { it.name },
+                concepts = projectItem.concepts.map { it.code },
                 isBookmarked = projectItem.isBookmarked,
             )
 

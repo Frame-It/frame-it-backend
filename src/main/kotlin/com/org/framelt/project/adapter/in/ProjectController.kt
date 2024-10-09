@@ -63,7 +63,7 @@ class ProjectController(
         @RequestParam(required = false) timeOption: String?,
         @RequestParam(required = false) spot: String?,
         @RequestParam(required = false) locationType: String?,
-        @RequestParam(required = false) concepts: String?,
+        @RequestParam(required = false) concepts: List<String>?,
         @OptionalAuth userId: Long,
     ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val projectFilterCommand =
