@@ -9,4 +9,5 @@ data class UserProjectItemResponse(
     val timeOption: String,
     val spot: String,
     val status: String,
+    val isHost: Boolean,
 )

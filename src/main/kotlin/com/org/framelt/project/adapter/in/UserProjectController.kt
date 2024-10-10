@@ -1,7 +1,7 @@
 package com.org.framelt.project.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
-import com.org.framelt.project.adapter.`in`.response.UserProjectItemResponse
+import com.org.framelt.project.adapter.`in`.response.UserProjectsResponse
 import com.org.framelt.project.application.port.`in`.UserProjectUseCase
 import com.org.framelt.project.common.ProjectMapper
 import org.springframework.http.ResponseEntity
@@ -17,7 +17,7 @@ class UserProjectController(
     fun showProejctsOfUser(
         @RequestParam(required = false) status: String?,
         @Authorization userId: Long,
-    ): ResponseEntity<List<UserProjectItemResponse>> {
+    ): ResponseEntity<UserProjectsResponse> {
         val command = ProjectMapper.toCommand(userId, status)
         val result = userProjectUseCase.readProjectsByUserId(command)
         val response = ProjectMapper.toResponse(result)
