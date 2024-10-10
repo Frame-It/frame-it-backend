@@ -14,9 +14,6 @@ class UserProjectService(
     val projectMemberQueryPort: ProjectMemberQueryPort,
 ) : UserProjectUseCase {
     override fun readProjectsByUserId(userProjectReadCommand: UserProjectReadCommand): List<UserProjectModel> {
-        require(userProjectReadCommand.userId == userProjectReadCommand.requestUserId) {
-            "다른 유저가 참여한 프로젝트 목록은 조회할 수 없습니다."
-        }
         val recruitingProjects = projectQueryPort.readByHostIdAndStatus(userProjectReadCommand.userId, Status.RECRUITING)
         val userProjects = projectMemberQueryPort.readAllByUserId(userProjectReadCommand.userId).map { it.project }
         return (recruitingProjects + userProjects).map {
