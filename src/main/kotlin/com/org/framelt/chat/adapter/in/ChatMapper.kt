@@ -11,27 +11,30 @@ class ChatMapper {
             return CreateChatCommand(userId, request.participantId)
         }
 
-        fun toSendMessageCommand(userId: Long, command: SendMessageRequest): SendMessageCommand {
-            return SendMessageCommand(userId, command.chatId, command.content)
+        fun toSendMessageCommand(userId: Long, chatId: Long, command: SendMessageRequest): SendMessageCommand {
+            return SendMessageCommand(userId, chatId,command.receiverId, command.content)
         }
 
         fun toResponse(sender: User, chat: Chatting): ChattingResponse {
-            val participantResponses = chat.participant.map { user ->
-                ChatUserInfoResponse(
-                    id = user.id!!,
-                    name = user.name,
-                    profileImageUrl = sender.profileImageUrl.toString()
-                )
-            }
+            // Map participants in the chat, excluding the sender themselves
+            val participantResponses = chat.participants
+                .filter { it.user.id != sender.id } // Exclude the sender from participants list
+                .map { participant ->
+                    ChatUserInfoResponse(
+                        id = participant.user.id ?: 0L, // Handle null safety for ID
+                        name = participant.user.name,
+                        profileImageUrl = participant.user.profileImageUrl ?: "" // Use participant's profile image
+                    )
+                }
 
-
+            // Map messages and check whether each message is sent by the current user (isMe)
             val messageResponses = chat.messages.map { message ->
                 MessageResponse(
                     messageId = message.id,
                     sender = ChatUserInfoResponse(
-                        id = sender.id!!,
-                        name = sender.name,
-                        profileImageUrl = sender.profileImageUrl.toString()
+                        id = message.sender.id ?: 0L,
+                        name = message.sender.name,
+                        profileImageUrl = message.sender.profileImageUrl ?: ""
                     ),
                     timeStamp = message.timeScript,
                     content = message.content,

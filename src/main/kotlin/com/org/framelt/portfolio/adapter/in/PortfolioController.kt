@@ -57,7 +57,7 @@ class PortfolioController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/user/{id}")
     fun readByUserId(
         @PathVariable id: Long,
         pageable: Pageable,

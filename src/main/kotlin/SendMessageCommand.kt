@@ -1,1 +1,1 @@
-data class SendMessageCommand(val userId: Long, val chatId: Long, val content: String)
+data class SendMessageCommand(val userId: Long, val chatId: Long, val receiverId :Long,val content: String)

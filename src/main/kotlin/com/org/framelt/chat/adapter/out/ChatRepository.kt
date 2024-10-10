@@ -13,72 +13,47 @@ class ChatRepository(
 ) : ChatCommendPort, ChatReadPort {
 
     override fun save(chat: Chatting): Chatting {
-        val userEntities = chat.participant.map { participant ->
-            UserJpaEntity(
-                id = participant.id,
-                name = participant.name,
-                nickname = participant.nickname,
-                birthDate = participant.birthDate,
-                isQuit = participant.isQuit,
-                profileImageUrl = participant.profileImageUrl,
-                bio = participant.bio,
-                identity = participant.identity,
-                career = participant.career,
-                shootingConcepts = participant.shootingConcepts,
-                notificationsEnabled = participant.notificationsEnabled,
-                email = participant.email,
-                deviseToken = participant.deviseToken
+        val chatEntity = ChatJpaEntity()
+        val participantEntities = chat.participants.map { participant ->
+            ChatParticipantJpaEntity(
+                chat = chatEntity,
+                user = UserJpaEntity.fromDomain(participant.user),
+                unreadCount = participant.unreadCount
             )
-        }
-        val chatEntity = ChatJpaEntity(userEntities)
+        }.toMutableList()
+
+        chatEntity.participants.addAll(participantEntities)
+
         val savedChatEntity = chatJpaRepository.save(chatEntity)
         return savedChatEntity.toDomain()
     }
 
 
     override fun update(sender: User, chat: Chatting): Chatting {
-        val userEntities = chat.participant.map { participant ->
-            UserJpaEntity(
+        val participantEntities = chat.participants.map { participant ->
+            ChatParticipantJpaEntity(
                 id = participant.id,
-                name = participant.name,
-                nickname = participant.nickname,
-                birthDate = participant.birthDate,
-                isQuit = participant.isQuit,
-                profileImageUrl = participant.profileImageUrl,
-                bio = participant.bio,
-                identity = participant.identity,
-                career = participant.career,
-                shootingConcepts = participant.shootingConcepts,
-                notificationsEnabled = participant.notificationsEnabled,
-                email = participant.email,
-                deviseToken = participant.deviseToken
+                chat = ChatJpaEntity(id = chat.id), // Create a lightweight ChatJpaEntity reference
+                user = UserJpaEntity.fromDomain(participant.user),
+                unreadCount = participant.unreadCount
             )
         }
-        val senderEntity = UserJpaEntity(
-            id = sender.id,
-            name = sender.name,
-            nickname = sender.nickname,
-            birthDate = sender.birthDate,
-            isQuit = sender.isQuit,
-            profileImageUrl = sender.profileImageUrl,
-            bio = sender.bio,
-            identity = sender.identity,
-            career = sender.career,
-            shootingConcepts = sender.shootingConcepts,
-            notificationsEnabled = sender.notificationsEnabled,
-            email = sender.email,
-            deviseToken = sender.deviseToken
-        )
-        val chatEntity = ChatJpaEntity(userEntities)
+
         val messageEntities = chat.messages.map { message ->
             MessageJpaEntity(
-                sender = senderEntity,
-                chat = chatEntity,
+                id = message.id,
+                sender = UserJpaEntity.fromDomain(message.sender),
+                chat = ChatJpaEntity(id = chat.id), // Use the chat ID to reference the chat
                 timeScript = message.timeScript,
                 content = message.content
             )
         }.toMutableList()
-        chatEntity.updateMessage(messageEntities)
+
+        val chatEntity = ChatJpaEntity(
+            id = chat.id,
+            participants = participantEntities.toMutableList(),
+            messages = messageEntities
+        )
 
         val savedChatEntity = chatJpaRepository.save(chatEntity)
         return savedChatEntity.toDomain()
@@ -86,5 +61,9 @@ class ChatRepository(
 
     override fun findById(chatId: Long): Chatting? {
         return chatJpaRepository.findById(chatId).orElse(null)?.toDomain()
+    }
+
+    override fun findAllByUserId(userId: Long): List<Chatting> {
+        return chatJpaRepository.findAllByParticipantsId(userId).map { it.toDomain() }
     }
 }

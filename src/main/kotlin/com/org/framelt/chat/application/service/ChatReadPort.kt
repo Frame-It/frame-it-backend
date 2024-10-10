@@ -8,4 +8,5 @@ fun ChatReadPort.getById(id: Long): Chatting{
 
 interface ChatReadPort {
     fun findById(id: Long): Chatting?
+    fun findAllByUserId(userId: Long): List<Chatting>
 }

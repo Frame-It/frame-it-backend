@@ -4,6 +4,7 @@ data class PortfolioDetailResponse(
     val id: Long,
     val title: String,
     val userId: Long,
+    val profileImageUrl : String,
     val userName: String,
     val description: String? = null,
     val photosUrl: List<String>,
