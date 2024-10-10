@@ -67,10 +67,10 @@ class ProjectQueryDslRepository(
         return projectJpaEntity.locationType.eq(LocationType.of(locationType!!))
     }
 
-    private fun conceptsIn(concepts: List<String>?): BooleanExpression? {
+    private fun conceptsIn(concepts: List<Concept>?): BooleanExpression? {
         if (concepts.isNullOrEmpty()) {
             return null
         }
-        return projectJpaEntity.concepts.any().`in`(concepts.map { Concept.of(it) })
+        return projectJpaEntity.concepts.any().`in`(concepts)
     }
 }
