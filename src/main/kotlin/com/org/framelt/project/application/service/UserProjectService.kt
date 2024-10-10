@@ -15,8 +15,15 @@ class UserProjectService(
 ) : UserProjectUseCase {
     override fun readProjectsByUserId(userProjectReadCommand: UserProjectReadCommand): List<UserProjectModel> {
         val recruitingProjects = projectQueryPort.readByHostIdAndStatus(userProjectReadCommand.userId, Status.RECRUITING)
-        val userProjects = projectMemberQueryPort.readAllByUserId(userProjectReadCommand.userId).map { it.project }
-        return (recruitingProjects + userProjects).map {
+        val inProgressOrCompletedProjects = projectMemberQueryPort.readAllByUserId(userProjectReadCommand.userId).map { it.project }
+        val userProjects = recruitingProjects + inProgressOrCompletedProjects
+
+        val filteredProjects =
+            userProjectReadCommand.status?.let { status ->
+                userProjects.filter { it.status == status }
+            } ?: userProjects
+
+        return (filteredProjects).map {
             UserProjectModel(
                 id = it.id!!,
                 title = it.title,

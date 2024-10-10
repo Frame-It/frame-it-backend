@@ -19,7 +19,9 @@ import com.org.framelt.project.application.port.`in`.ProjectReviewCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.UserProjectModel
+import com.org.framelt.project.application.port.`in`.UserProjectReadCommand
 import com.org.framelt.project.domain.Concept
+import com.org.framelt.project.domain.Status
 import com.org.framelt.user.domain.Identity
 import java.time.LocalDate
 
@@ -173,5 +175,14 @@ class ProjectMapper {
                     status = it.status.name,
                 )
             }
+
+        fun toCommand(
+            userId: Long,
+            status: String?,
+        ): UserProjectReadCommand =
+            UserProjectReadCommand(
+                userId = userId,
+                status = Status.fromNullable(status),
+            )
     }
 }
