@@ -7,6 +7,9 @@ import com.org.framelt.portfolio.application.port.out.PortfolioCommendPort
 import com.org.framelt.portfolio.application.port.out.PortfolioReadPort
 import com.org.framelt.portfolio.domain.Portfolio
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
+import com.org.framelt.user.domain.Identity
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 
@@ -34,13 +37,35 @@ class PortfolioService(
 
     override fun read(command: PortfolioReadCommend): PortfolioDetailResponse {
         val readPortfolio = portfolioReadPort.readById(command.id)
-        readPortfolio.isOwnedByUser(command.userId)
         return PortfolioMapper.toDetailResponse(readPortfolio)
     }
 
-    override fun readAll(command: PortfolioReadAllCommend): List<PortfolioResponse> {
-        val readAllPortfolio = portfolioReadPort.readByUserId(command.userId)
+    override fun readAll(pageable: Pageable): Page<PortfolioResponse> {
+        val readAllPortfolio = portfolioReadPort.readAll(pageable)
+        return PortfolioMapper.toResponse(readAllPortfolio)
+    }
+
+    override fun readByUserId(command: PortfolioReadAllCommend, pageable: Pageable): Page<PortfolioResponse> {
+        val readAllPortfolio = portfolioReadPort.readByUserId(command.userId, pageable)
         readAllPortfolio.filter { it.isOwnedByUser(command.userId) }
+        return PortfolioMapper.toResponse(readAllPortfolio)
+    }
+
+    override fun readAllByMe(command: PortfolioReadAllCommend, pageable: Pageable): Page<PortfolioResponse> {
+        val readAllPortfolio = portfolioReadPort.readByUserId(command.userId, pageable)
+        readAllPortfolio.filter { it.isOwnedByUser(command.userId) }
+        return PortfolioMapper.toResponse(readAllPortfolio)
+    }
+
+    override fun readAllByPhotographer(pageable: Pageable): Page<PortfolioResponse> {
+        val readAllPortfolio = portfolioReadPort.readByPhotographer(pageable)
+        readAllPortfolio.filter { it.isOwnedByIdentity(Identity.PHOTOGRAPHER) }
+        return PortfolioMapper.toResponse(readAllPortfolio)
+    }
+
+    override fun readAllByModel(pageable: Pageable): Page<PortfolioResponse> {
+        val readAllPortfolio = portfolioReadPort.readByModel(pageable)
+        readAllPortfolio.filter { it.isOwnedByIdentity(Identity.MODEL) }
         return PortfolioMapper.toResponse(readAllPortfolio)
     }
 

@@ -1,5 +1,6 @@
 package com.org.framelt.portfolio.domain
 
+import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.User
 
 class Portfolio(
@@ -28,5 +29,9 @@ class Portfolio(
 
     fun getId(): Long {
         return id ?: throw RuntimeException("해당 포트폴리오는 잘못된 데이터입니다.")
+    }
+
+    fun isOwnedByIdentity(identity: Identity): Boolean {
+        return manage.identity.equals(identity)
     }
 }
