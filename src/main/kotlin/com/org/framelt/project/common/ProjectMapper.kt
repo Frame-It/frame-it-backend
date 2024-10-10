@@ -9,6 +9,7 @@ import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementDetailRe
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailManagerResponse
 import com.org.framelt.project.adapter.`in`.response.UserProjectItemResponse
+import com.org.framelt.project.adapter.`in`.response.UserProjectsResponse
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplicantCancelCommand
@@ -18,8 +19,10 @@ import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
-import com.org.framelt.project.application.port.`in`.UserProjectModel
+import com.org.framelt.project.application.port.`in`.UserProjectReadCommand
+import com.org.framelt.project.application.port.`in`.UserProjectsModel
 import com.org.framelt.project.domain.Concept
+import com.org.framelt.project.domain.Status
 import com.org.framelt.user.domain.Identity
 import java.time.LocalDate
 
@@ -162,16 +165,30 @@ class ProjectMapper {
                 userId = userId,
             )
 
-        fun toResponse(userProjects: List<UserProjectModel>): List<UserProjectItemResponse> =
-            userProjects.map {
-                UserProjectItemResponse(
-                    id = it.id,
-                    title = it.title,
-                    shootingAt = it.shootingAt,
-                    timeOption = it.timeOption.name,
-                    spot = it.spot.name,
-                    status = it.status.name,
-                )
-            }
+        fun toResponse(userProjects: UserProjectsModel): UserProjectsResponse =
+            UserProjectsResponse(
+                nickname = userProjects.nickname,
+                projects =
+                    userProjects.projects.map {
+                        UserProjectItemResponse(
+                            id = it.id,
+                            title = it.title,
+                            shootingAt = it.shootingAt,
+                            timeOption = it.timeOption.name,
+                            spot = it.spot.name,
+                            status = it.status.name,
+                            isHost = it.isHost,
+                        )
+                    },
+            )
+
+        fun toCommand(
+            userId: Long,
+            status: String?,
+        ): UserProjectReadCommand =
+            UserProjectReadCommand(
+                userId = userId,
+                status = Status.fromNullable(status),
+            )
     }
 }

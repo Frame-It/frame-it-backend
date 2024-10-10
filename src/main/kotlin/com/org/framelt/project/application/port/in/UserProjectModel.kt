@@ -12,4 +12,5 @@ data class UserProjectModel(
     val timeOption: TimeOption,
     val spot: Spot,
     val status: Status,
+    val isHost: Boolean,
 )
