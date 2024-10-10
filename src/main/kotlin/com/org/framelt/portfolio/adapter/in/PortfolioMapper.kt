@@ -25,6 +25,7 @@ class PortfolioMapper {
                     id = portfolio.getId(),
                     title = portfolio.title,
                     userId = portfolio.manage.id!!,
+                    profileImageUrl = portfolio.manage.profileImageUrl!!,
                     userName = portfolio.manage.name
                 )
             }
@@ -36,6 +37,7 @@ class PortfolioMapper {
                 title = readPortfolio.title,
                 userId = readPortfolio.manage.id!!,
                 userName = readPortfolio.manage.name,
+                profileImageUrl = readPortfolio.manage.profileImageUrl!!,
                 description = readPortfolio.description,
                 photosUrl = readPortfolio.photos,
                 hashtags = readPortfolio.hashtags,

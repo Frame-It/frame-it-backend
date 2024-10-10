@@ -24,16 +24,23 @@ class ChatController(
     @PostMapping("/{chatId}/messages")
     fun sendMessage(
         @Authorization userId: Long,
+        @PathVariable("chatId") chatId: Long,
         @RequestBody request: SendMessageRequest,
     ): ResponseEntity<Void> {
-        val command = ChatMapper.toSendMessageCommand(userId, request)
+        val command = ChatMapper.toSendMessageCommand(userId,chatId,  request)
         chatUseCase.sendMessage(command)
         return ResponseEntity.ok().build()
     }
 
+    @GetMapping
+    fun getChat(@Authorization userId: Long): ResponseEntity<List<ChatRoomInfoResponse>> {
+        val chat = chatUseCase.getChattingRoom(userId)
+        return ResponseEntity.ok(chat)
+    }
+
     // 채팅방 조회
     @GetMapping("/{chatId}")
-    fun getChat(@Authorization userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
+    fun getChattingRoom(@Authorization userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
         val chat = chatUseCase.getChat(userId, chatId)
         return ResponseEntity.ok(chat)
     }
