@@ -7,19 +7,17 @@ import com.org.framelt.project.application.port.`in`.UserProjectUseCase
 import com.org.framelt.project.common.ProjectMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class UserProjectController(
     val userProjectUseCase: UserProjectUseCase,
 ) {
-    @GetMapping("/users/{userId}/projects")
+    @GetMapping("/users/projects")
     fun showProejctsOfUser(
-        @PathVariable userId: Long,
-        @Authorization requestUserId: Long,
+        @Authorization userId: Long,
     ): ResponseEntity<List<UserProjectItemResponse>> {
-        val command = UserProjectReadCommand(userId, requestUserId)
+        val command = UserProjectReadCommand(userId)
         val result = userProjectUseCase.readProjectsByUserId(command)
         val response = ProjectMapper.toResponse(result)
         return ResponseEntity.ok(response)
