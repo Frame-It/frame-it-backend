@@ -4,7 +4,7 @@ class ProjectReview(
     val id: Long? = null,
     val reviewer: ProjectMember,
     val reviewee: ProjectMember,
-    val tags: List<String>,
+    val tags: List<ProjectReviewTag>,
     val content: String,
 ) {
     init {
