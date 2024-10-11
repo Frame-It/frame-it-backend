@@ -30,7 +30,7 @@ class PortfolioController(
         return ResponseEntity.ok(portfolioId)
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("portfolio/{id}")
     fun read(
         @PathVariable id: Long,
     ): ResponseEntity<PortfolioDetailResponse> {
