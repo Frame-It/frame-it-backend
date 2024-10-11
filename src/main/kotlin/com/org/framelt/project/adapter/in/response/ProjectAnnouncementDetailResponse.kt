@@ -9,10 +9,12 @@ data class ProjectAnnouncementDetailResponse(
     val shootingAt: LocalDateTime,
     val locationType: String,
     val spot: String,
-    val concepts: List<String>,
+    val hostConcepts: List<String>,
+    val projectConcepts: List<String>,
     val conceptPhotoUrls: List<String>,
     val retouchingDescription: String?,
     val host: ProjectDetailManagerResponse,
     val isBookmarked: Boolean,
     val isClosed: Boolean,
+    val isHost: Boolean,
 )

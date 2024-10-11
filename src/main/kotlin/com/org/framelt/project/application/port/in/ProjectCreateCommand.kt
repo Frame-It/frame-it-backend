@@ -1,6 +1,6 @@
 package com.org.framelt.project.application.port.`in`
 
-import com.org.framelt.project.domain.Concept
+import com.org.framelt.project.domain.ProjectConcept
 import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
@@ -16,7 +16,7 @@ data class ProjectCreateCommand(
     val timeOption: TimeOption,
     val locationType: LocationType,
     val spot: Spot,
-    val concepts: List<Concept>,
+    val concepts: List<ProjectConcept>,
     val conceptPhotos: List<MultipartFile>?,
     val description: String,
     val retouchingDescription: String,

@@ -29,12 +29,12 @@ class ProjectJpaEntity(
     @Enumerated(EnumType.STRING)
     val spot: Spot,
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Concept::class)
+    @ElementCollection(targetClass = ProjectConcept::class)
     @CollectionTable(
         name = "project_concepts",
         joinColumns = [JoinColumn(name = "project_id")],
     )
-    val concepts: List<Concept>,
+    val concepts: List<ProjectConcept>,
     @ElementCollection
     @CollectionTable(
         name = "project_concept_photo_urls",

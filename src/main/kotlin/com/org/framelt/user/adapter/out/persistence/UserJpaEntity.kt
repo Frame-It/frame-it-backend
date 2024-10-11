@@ -1,8 +1,8 @@
 package com.org.framelt.user.adapter.out.persistence
 
-import com.org.framelt.user.domain.Concept
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.User
+import com.org.framelt.user.domain.UserConcept
 import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
@@ -35,13 +35,13 @@ class UserJpaEntity(
     val identity: Identity,
     @Column(nullable = true)
     val career: String? = null,
-    @ElementCollection(targetClass = Concept::class)
+    @ElementCollection(targetClass = UserConcept::class)
     @CollectionTable(
         name = "user_shooting_concepts",
         joinColumns = [JoinColumn(name = "user_id")],
     )
     @Enumerated(EnumType.STRING)
-    val shootingConcepts: List<Concept>,
+    val shootingConcepts: List<UserConcept>,
     @Column(nullable = true)
     val description: String? = null,
     @Column(nullable = true)

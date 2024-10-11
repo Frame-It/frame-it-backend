@@ -1,7 +1,7 @@
 package com.org.framelt.project.application.port.`in`
 
-import com.org.framelt.project.domain.Concept
 import com.org.framelt.project.domain.Project
+import com.org.framelt.project.domain.ProjectConcept
 import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
@@ -14,7 +14,7 @@ data class BookmarkedProjectReadModel(
     val spot: Spot,
     val shootingAt: LocalDateTime,
     val timeOption: TimeOption,
-    val concepts: List<Concept>,
+    val concepts: List<ProjectConcept>,
 ) {
     companion object {
         fun fromDomain(project: Project): BookmarkedProjectReadModel =

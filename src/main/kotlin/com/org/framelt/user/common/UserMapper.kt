@@ -8,7 +8,7 @@ import com.org.framelt.user.application.port.`in`.SignUpCommand
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckCommand
 import com.org.framelt.user.application.port.`in`.UserProfileUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserQuitCommand
-import com.org.framelt.user.domain.Concept
+import com.org.framelt.user.domain.UserConcept
 
 class UserMapper {
     companion object {
@@ -50,7 +50,7 @@ class UserMapper {
                 profileImage = userProfileUpdateRequest.profileImage,
                 nickname = userProfileUpdateRequest.nickname,
                 description = userProfileUpdateRequest.description,
-                concepts = userProfileUpdateRequest.concepts.map { Concept.fromCode(it) },
+                concepts = userProfileUpdateRequest.concepts.map { UserConcept.fromCode(it) },
             )
     }
 }

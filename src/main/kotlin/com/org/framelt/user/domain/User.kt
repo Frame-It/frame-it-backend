@@ -11,7 +11,7 @@ class User(
     val bio: String? = null,
     var identity: Identity,
     val career: String? = null,
-    val shootingConcepts: List<Concept>,
+    val shootingConcepts: List<UserConcept>,
     var description: String? = null,
     var birthDate: LocalDate? = null,
     var notificationsEnabled: Boolean, // 보유
@@ -42,7 +42,7 @@ class User(
         profileImageUrl: String?,
         nickname: String,
         description: String,
-        concepts: List<Concept>,
+        concepts: List<UserConcept>,
     ): User =
         User(
             id = this.id,

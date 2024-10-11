@@ -102,7 +102,8 @@ class ProjectService(
             shootingAt = project.shootingAt,
             locationType = project.locationType,
             spot = project.spot,
-            concepts = project.concepts,
+            hostConcepts = project.host.shootingConcepts,
+            projectConcepts = project.concepts,
             conceptPhotoUrls = project.conceptPhotoUrls,
             retouchingDescription = project.retouchingDescription,
             host = project.host.id!!,
@@ -115,6 +116,7 @@ class ProjectService(
                     closureChecker = projectClosureChecker,
                     applicantCount = applicantCount,
                 ),
+            isHost = project.host.id == projectAnnouncementDetailCommand.userId,
         )
     }
 

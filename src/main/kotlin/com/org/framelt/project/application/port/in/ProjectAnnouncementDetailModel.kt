@@ -1,8 +1,9 @@
 package com.org.framelt.project.application.port.`in`
 
-import com.org.framelt.project.domain.Concept
+import com.org.framelt.project.domain.ProjectConcept
 import com.org.framelt.project.domain.Spot
 import com.org.framelt.user.domain.LocationType
+import com.org.framelt.user.domain.UserConcept
 import java.time.LocalDateTime
 
 data class ProjectAnnouncementDetailModel(
@@ -12,7 +13,8 @@ data class ProjectAnnouncementDetailModel(
     val shootingAt: LocalDateTime,
     val locationType: LocationType,
     val spot: Spot,
-    val concepts: List<Concept>,
+    val hostConcepts: List<UserConcept>,
+    val projectConcepts: List<ProjectConcept>,
     val conceptPhotoUrls: List<String>,
     val retouchingDescription: String?,
     val host: Long,
@@ -21,4 +23,5 @@ data class ProjectAnnouncementDetailModel(
     val hostDescription: String?,
     val isBookmarked: Boolean,
     val isClosed: Boolean,
+    val isHost: Boolean,
 )

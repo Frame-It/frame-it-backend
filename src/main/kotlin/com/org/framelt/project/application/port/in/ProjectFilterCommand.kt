@@ -1,6 +1,6 @@
 package com.org.framelt.project.application.port.`in`
 
-import com.org.framelt.project.domain.Concept
+import com.org.framelt.project.domain.ProjectConcept
 import java.time.LocalDate
 
 data class ProjectFilterCommand(
@@ -10,6 +10,6 @@ data class ProjectFilterCommand(
     val timeOption: String?,
     val spot: String?,
     val locationType: String?,
-    val concepts: List<Concept>?,
+    val concepts: List<ProjectConcept>?,
     val userId: Long,
 )
