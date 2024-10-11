@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-@Profile(value = ["local"])
+@Profile(value = ["!prod"])
 @RestController
 class FakeLoginController(
     val userJpaRepository: UserJpaRepository,
