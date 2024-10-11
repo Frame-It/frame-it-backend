@@ -1,10 +1,13 @@
 package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.domain.ProjectReview
+import com.org.framelt.project.domain.ProjectReviewTag
 import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -22,12 +25,13 @@ class ProjectReviewJpaEntity(
     @ManyToOne
     @JoinColumn(name = "reviewee_id")
     val reviewee: ProjectMemberJpaEntity,
-    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = ProjectReviewTag::class)
     @CollectionTable(
         name = "project_review_feedback_tag",
         joinColumns = [JoinColumn(name = "project_review_id")],
     )
-    val tags: List<String>,
+    val tags: List<ProjectReviewTag>,
     @Column(nullable = false)
     val content: String,
 ) {

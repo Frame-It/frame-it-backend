@@ -11,7 +11,7 @@ data class ProjectReviewResponse(
         fun from(projectReview: ProjectReviewModel): ProjectReviewResponse =
             ProjectReviewResponse(
                 reviewerNickname = projectReview.reviewerNickname,
-                tags = projectReview.tags,
+                tags = projectReview.tags.map { it.code },
                 content = projectReview.content,
             )
     }

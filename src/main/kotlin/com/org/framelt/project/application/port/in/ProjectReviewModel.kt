@@ -1,10 +1,11 @@
 package com.org.framelt.project.application.port.`in`
 
 import com.org.framelt.project.domain.ProjectReview
+import com.org.framelt.project.domain.ProjectReviewTag
 
 data class ProjectReviewModel(
     val reviewerNickname: String,
-    val tags: List<String>,
+    val tags: List<ProjectReviewTag>,
     val content: String,
 ) {
     companion object {

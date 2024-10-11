@@ -22,6 +22,7 @@ import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.UserProjectReadCommand
 import com.org.framelt.project.application.port.`in`.UserProjectsModel
 import com.org.framelt.project.domain.ProjectConcept
+import com.org.framelt.project.domain.ProjectReviewTag
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.domain.Identity
 import java.time.LocalDate
@@ -154,7 +155,7 @@ class ProjectMapper {
                 projectId = projectId,
                 reviewerId = reviewerId,
                 revieweeId = projectReviewRequest.revieweeId,
-                tags = projectReviewRequest.tags,
+                tags = projectReviewRequest.tags.map { ProjectReviewTag.fromCode(it) },
                 content = projectReviewRequest.content,
             )
 

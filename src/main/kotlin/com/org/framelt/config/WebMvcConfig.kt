@@ -18,11 +18,9 @@ class WebMvcConfig(
     val optionalAuthArgumentResolver: OptionalAuthArgumentResolver,
 ) : WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
-
         registry
             .addInterceptor(authInterceptor)
             .addPathPatterns("/**")
-            .excludePathPatterns("/local/oauth2/code/**")
             .excludePathPatterns("/login/**", "/login.html")
             .excludePathPatterns("/users/nicknames/check")
             .excludePathPatterns("/users/{userId}/in-progress-projects/exists")
@@ -31,9 +29,8 @@ class WebMvcConfig(
                 "/portfolios/portfolio/{id}",
                 "/portfolios/model",
                 "/portfolios/photography",
-                "/portfolios/user/{id}"
-            )
-            .excludePathPatterns("/fake/login")
+                "/portfolios/user/{id}",
+            ).excludePathPatterns("/fake/login")
             .excludePathPatterns("/projects/announcement")
         registry
             .addInterceptor(optionalAuthInterceptor)
