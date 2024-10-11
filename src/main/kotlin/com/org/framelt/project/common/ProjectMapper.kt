@@ -93,7 +93,8 @@ class ProjectMapper {
                 shootingAt = projectDetail.shootingAt,
                 locationType = projectDetail.locationType.name,
                 spot = projectDetail.spot.name,
-                concepts = projectDetail.concepts.map { it.code },
+                hostConcepts = projectDetail.hostConcepts.map { it.code },
+                projectConcepts = projectDetail.projectConcepts.map { it.code },
                 conceptPhotoUrls = projectDetail.conceptPhotoUrls,
                 description = projectDetail.description,
                 retouchingDescription = projectDetail.retouchingDescription,
@@ -106,6 +107,7 @@ class ProjectMapper {
                     ),
                 isBookmarked = projectDetail.isBookmarked,
                 isClosed = projectDetail.isClosed,
+                isHost = projectDetail.isHost,
             )
 
         fun toResponse(projectItem: ProjectAnnouncementItemModel): ProjectAnnouncementItemResponse =
