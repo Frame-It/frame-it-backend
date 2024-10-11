@@ -25,6 +25,13 @@ class WebMvcConfig(
             .excludePathPatterns("/login/**", "/login.html")
             .excludePathPatterns("/users/nicknames/check")
             .excludePathPatterns("/users/{userId}/in-progress-projects/exists")
+            .excludePathPatterns(
+                "/portfolios",
+                "/portfolios/{id}",
+                "/portfolios/me",
+                "/portfolios/user/{id}",
+                "/portfolios/model",
+                "/portfolios/photography")
             .excludePathPatterns("/fake/login")
             .excludePathPatterns("/projects/announcement")
 

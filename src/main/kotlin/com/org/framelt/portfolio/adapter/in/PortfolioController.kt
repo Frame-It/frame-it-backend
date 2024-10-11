@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/portfolio")
+@RequestMapping("/portfolios")
 class PortfolioController(
     private val portfolioCreateUseCase: PortfolioCreateUseCase,
 ) {
 
-    @PostMapping
+    @PostMapping("/portfolio")
     fun create(
         @Authorization userId: Long,
         @RequestParam("photos") photos: List<MultipartFile>,
