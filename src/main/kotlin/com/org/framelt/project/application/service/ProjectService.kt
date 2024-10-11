@@ -1,5 +1,6 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.notification.application.service.NotificationLetter
 import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailGuestModel
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailHostModel
@@ -38,6 +39,8 @@ import com.org.framelt.project.domain.ProjectClosureChecker
 import com.org.framelt.project.domain.ProjectMember
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
+import com.org.framelt.user.domain.User
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 
@@ -54,6 +57,7 @@ class ProjectService(
     val projectBookmarkQueryPort: ProjectBookmarkQueryPort,
     val projectClosureChecker: ProjectClosureChecker,
     val fileUploadClient: FileUploadClient,
+    val eventPublisher: ApplicationEventPublisher,
 ) : ProjectCreateUseCase,
     ProjectUpdateUseCase,
     ProjectReadUseCase,
@@ -301,7 +305,8 @@ class ProjectService(
                 applyContent = projectApplyCommand.applyContent,
             ),
         )
-        // TODO: 프로젝트 호스트에게 신청 알림 전송
+
+        sendNotificationTo(project.host, "프로젝트 지원 알림", "${applicant.nickname}님이 지원했어요!")
         return ProjectApplyModel(project.title)
     }
 
@@ -362,7 +367,9 @@ class ProjectService(
 
         project.start()
         projectCommandPort.save(project)
-        // TODO: 프로젝트 호스트/게스트에게 시작 알림 전송
+
+        sendNotificationTo(project.host, "프로젝트 시작 알림", "프로젝트를 시작합니다.")
+        sendNotificationTo(projectApplicant.applicant, "프로젝트 시작 알림", "프로젝트를 시작합니다.")
     }
 
     override fun complete(projectCompleteCommand: ProjectCompleteCommand): ProjectCompleteModel {
@@ -375,12 +382,24 @@ class ProjectService(
         projectMemberCommandPort.save(projectMember)
 
         val projectMembers = projectMemberQueryPort.readAllByProjectId(projectCompleteCommand.projectId)
+        val anotherMember = projectMembers.first { it.member.id != projectCompleteCommand.memberId }
+        sendNotificationTo(anotherMember.member, "프로젝트 완료 알림", "${projectMember.member.nickname}님이 프로젝트를 완료했어요.")
         if (projectMembers.all { it.hasCompletedProject }) {
             val project = projectMember.project
             project.complete()
             projectCommandPort.save(project)
-            // TODO: 프로젝트 호스트/게스트에게 완료 알림 전송
         }
         return ProjectCompleteModel(projectMember.project.status)
+    }
+
+    fun sendNotificationTo(
+        user: User,
+        title: String,
+        content: String,
+    ) {
+        if (!user.notificationsEnabled) {
+            return
+        }
+        eventPublisher.publishEvent(NotificationLetter(user.deviseToken!!, title, content))
     }
 }
