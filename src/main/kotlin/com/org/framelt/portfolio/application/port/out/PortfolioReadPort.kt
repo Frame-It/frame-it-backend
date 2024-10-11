@@ -6,8 +6,17 @@ import org.springframework.data.domain.Pageable
 
 interface PortfolioReadPort {
     fun readById(portfolioId: Long): Portfolio
-    fun readByUserId(userId: Long, pageable: Pageable): Page<Portfolio>
+
+    fun readByUserId(
+        userId: Long,
+        pageable: Pageable,
+    ): Page<Portfolio>
+
+    fun readByUserId(userId: Long): List<Portfolio>
+
     fun readAll(pageable: Pageable): Page<Portfolio>
+
     fun readByPhotographer(pageable: Pageable): Page<Portfolio>
+
     fun readByModel(pageable: Pageable): Page<Portfolio>
 }

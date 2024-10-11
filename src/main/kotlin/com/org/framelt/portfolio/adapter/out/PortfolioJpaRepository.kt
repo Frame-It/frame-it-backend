@@ -6,7 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface PortfolioJpaRepository : JpaRepository<PortfolioJpaEntity, Long> {
-    fun findAllByManageId(userId: Long, pageable: Pageable): Page<PortfolioJpaEntity>
+    fun findAllByManageId(
+        userId: Long,
+        pageable: Pageable,
+    ): Page<PortfolioJpaEntity>
+
+    fun findAllByManageId(userId: Long): List<PortfolioJpaEntity>
 
     @Query("SELECT p FROM PortfolioJpaEntity p WHERE p.manage.identity = 'PHOTOGRAPHER'")
     fun findAllByPhotographer(pageable: Pageable): Page<PortfolioJpaEntity>

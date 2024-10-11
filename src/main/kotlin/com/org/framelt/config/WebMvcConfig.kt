@@ -31,9 +31,10 @@ class WebMvcConfig(
                 "/portfolios/me",
                 "/portfolios/user/{id}",
                 "/portfolios/model",
-                "/portfolios/photography")
-            .excludePathPatterns("/fake/login")
+                "/portfolios/photography",
+            ).excludePathPatterns("/fake/login")
             .excludePathPatterns("/projects/announcement")
+            .excludePathPatterns("/users/{userId}/studio")
 
         registry
             .addInterceptor(optionalAuthInterceptor)

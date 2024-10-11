@@ -4,10 +4,12 @@ import com.org.framelt.user.adapter.`in`.request.SignUpRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameCheckRequest
 import com.org.framelt.user.adapter.`in`.request.UserProfileUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserQuitRequest
+import com.org.framelt.user.adapter.`in`.response.UserStudioResponse
 import com.org.framelt.user.application.port.`in`.SignUpCommand
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckCommand
 import com.org.framelt.user.application.port.`in`.UserProfileUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserQuitCommand
+import com.org.framelt.user.application.port.`in`.UserStudioModel
 import com.org.framelt.user.domain.UserConcept
 
 class UserMapper {
@@ -51,6 +53,16 @@ class UserMapper {
                 nickname = userProfileUpdateRequest.nickname,
                 description = userProfileUpdateRequest.description,
                 concepts = userProfileUpdateRequest.concepts.map { UserConcept.fromCode(it) },
+            )
+
+        fun toResponse(userStudioModel: UserStudioModel): UserStudioResponse =
+            UserStudioResponse(
+                id = userStudioModel.id,
+                nickname = userStudioModel.nickname,
+                identity = userStudioModel.identity.name,
+                profileImageUrl = userStudioModel.profileImageUrl,
+                portfolioCount = userStudioModel.portfolioCount,
+                projectCount = userStudioModel.projectCount,
             )
     }
 }

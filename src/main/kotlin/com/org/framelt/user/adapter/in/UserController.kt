@@ -8,11 +8,13 @@ import com.org.framelt.user.adapter.`in`.request.UserQuitRequest
 import com.org.framelt.user.adapter.`in`.response.InProgressProjectsCheckResponse
 import com.org.framelt.user.adapter.`in`.response.UserAccountInfoResponse
 import com.org.framelt.user.adapter.`in`.response.UserNicknameCheckResponse
+import com.org.framelt.user.adapter.`in`.response.UserStudioResponse
 import com.org.framelt.user.application.port.`in`.SignUpUseCase
 import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
 import com.org.framelt.user.application.port.`in`.UserProfileUseCase
 import com.org.framelt.user.application.port.`in`.UserQuitUseCase
+import com.org.framelt.user.application.port.`in`.UserStudioUseCase
 import com.org.framelt.user.common.UserMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     val signUpUseCase: SignUpUseCase,
     val userAccountReadUseCase: UserAccountReadUseCase,
+    val userStudioUseCase: UserStudioUseCase,
     val userNicknameCheckUseCase: UserNicknameCheckUseCase,
     val userQuitUseCase: UserQuitUseCase,
     val userProfileUseCase: UserProfileUseCase,
@@ -49,6 +52,15 @@ class UserController(
     ): ResponseEntity<UserAccountInfoResponse> {
         val accountInfo = userAccountReadUseCase.getAccountInfo(userId)
         val response = UserAccountInfoResponse.from(accountInfo)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/users/{userId}/studio")
+    fun showUserStudio(
+        @PathVariable userId: Long,
+    ): ResponseEntity<UserStudioResponse> {
+        val result = userStudioUseCase.getStudio(userId)
+        val response = UserMapper.toResponse(result)
         return ResponseEntity.ok(response)
     }
 
