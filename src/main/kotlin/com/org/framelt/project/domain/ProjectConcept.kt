@@ -1,6 +1,6 @@
 package com.org.framelt.project.domain
 
-enum class Concept(
+enum class ProjectConcept(
     val code: String,
 ) {
     MONOTONE("PC-001"),
@@ -19,9 +19,9 @@ enum class Concept(
     ;
 
     companion object {
-        fun of(concept: String): Concept = valueOf(concept.uppercase())
+        fun of(concept: String): ProjectConcept = valueOf(concept.uppercase())
 
-        fun fromCode(code: String): Concept =
+        fun fromCode(code: String): ProjectConcept =
             entries.find { it.code == code } ?: throw IllegalArgumentException("존재하지 않는 프로젝트 컨셉  코드입니다: $code")
     }
 }

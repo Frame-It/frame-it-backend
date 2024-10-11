@@ -1,6 +1,6 @@
 package com.org.framelt.user.domain
 
-enum class Concept(
+enum class UserConcept(
     val code: String,
 ) {
     MONOTONE("UC-001"),
@@ -19,7 +19,7 @@ enum class Concept(
     ;
 
     companion object {
-        fun fromCode(code: String): Concept =
+        fun fromCode(code: String): UserConcept =
             entries.find { it.code == code } ?: throw IllegalArgumentException("존재하지 않는 사용자 컨셉 코드입니다: $code")
     }
 }

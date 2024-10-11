@@ -2,7 +2,7 @@ package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.adapter.out.QProjectJpaEntity.projectJpaEntity
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
-import com.org.framelt.project.domain.Concept
+import com.org.framelt.project.domain.ProjectConcept
 import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
@@ -67,7 +67,7 @@ class ProjectQueryDslRepository(
         return projectJpaEntity.locationType.eq(LocationType.of(locationType!!))
     }
 
-    private fun conceptsIn(concepts: List<Concept>?): BooleanExpression? {
+    private fun conceptsIn(concepts: List<ProjectConcept>?): BooleanExpression? {
         if (concepts.isNullOrEmpty()) {
             return null
         }

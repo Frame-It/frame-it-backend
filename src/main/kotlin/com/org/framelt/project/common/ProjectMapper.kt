@@ -21,7 +21,7 @@ import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.UserProjectReadCommand
 import com.org.framelt.project.application.port.`in`.UserProjectsModel
-import com.org.framelt.project.domain.Concept
+import com.org.framelt.project.domain.ProjectConcept
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.domain.Identity
 import java.time.LocalDate
@@ -40,7 +40,7 @@ class ProjectMapper {
                 timeOption = request.timeOption,
                 locationType = request.locationType,
                 spot = request.spot,
-                concepts = request.concepts.map { Concept.fromCode(it) },
+                concepts = request.concepts.map { ProjectConcept.fromCode(it) },
                 conceptPhotos = request.conceptPhotos,
                 description = request.description,
                 retouchingDescription = request.retouchingDescription,
@@ -59,7 +59,7 @@ class ProjectMapper {
                 timeOption = request.timeOption,
                 locationType = request.locationType,
                 spot = request.spot,
-                concepts = request.concepts.map { Concept.fromCode(it) },
+                concepts = request.concepts.map { ProjectConcept.fromCode(it) },
                 conceptPhotos = request.conceptPhotos,
                 description = request.description,
                 retouchingDescription = request.retouchingDescription,
@@ -82,7 +82,7 @@ class ProjectMapper {
                 timeOption = timeOption,
                 spot = spot,
                 locationType = locationType,
-                concepts = concepts?.map { Concept.fromCode(it) },
+                concepts = concepts?.map { ProjectConcept.fromCode(it) },
                 userId = userId,
             )
 
