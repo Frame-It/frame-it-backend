@@ -22,7 +22,9 @@ class PortfolioService(
 ) : PortfolioCreateUseCase {
     override fun create(command: PortfolioCreateCommend): Long {
         val user = userQueryPort.readById(command.userId)
-        val togethers = userQueryPort.readByIds(command.portfoliosCreateRequest.togethers)
+        val togethers =
+            command.portfoliosCreateRequest.togethers?.let { userQueryPort.readByIds(it) }
+                ?: emptyList()
         val fileLinks =
             command.portfoliosCreateRequest.photos.map { photo ->
                 fileUploadClient
@@ -30,14 +32,15 @@ class PortfolioService(
                     .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
             }
 
-        val portfolio = Portfolio(
-            user,
-            command.portfoliosCreateRequest.title,
-            command.portfoliosCreateRequest.description,
-            fileLinks,
-            command.portfoliosCreateRequest.hashtags,
-            togethers
-        )
+        val portfolio =
+            Portfolio(
+                user,
+                command.portfoliosCreateRequest.title,
+                command.portfoliosCreateRequest.description,
+                fileLinks,
+                command.portfoliosCreateRequest.hashtags,
+                togethers,
+            )
         val savePortfolio = portfolioCommendPort.create(portfolio)
         return savePortfolio.getId()
     }
@@ -52,13 +55,19 @@ class PortfolioService(
         return PortfolioMapper.toResponse(readAllPortfolio)
     }
 
-    override fun readByUserId(command: PortfolioReadAllCommend, pageable: Pageable): Page<PortfolioResponse> {
+    override fun readByUserId(
+        command: PortfolioReadAllCommend,
+        pageable: Pageable,
+    ): Page<PortfolioResponse> {
         val readAllPortfolio = portfolioReadPort.readByUserId(command.userId, pageable)
         readAllPortfolio.filter { it.isOwnedByUser(command.userId) }
         return PortfolioMapper.toResponse(readAllPortfolio)
     }
 
-    override fun readAllByMe(command: PortfolioReadAllCommend, pageable: Pageable): Page<PortfolioResponse> {
+    override fun readAllByMe(
+        command: PortfolioReadAllCommend,
+        pageable: Pageable,
+    ): Page<PortfolioResponse> {
         val readAllPortfolio = portfolioReadPort.readByUserId(command.userId, pageable)
         readAllPortfolio.filter { it.isOwnedByUser(command.userId) }
         return PortfolioMapper.toResponse(readAllPortfolio)
