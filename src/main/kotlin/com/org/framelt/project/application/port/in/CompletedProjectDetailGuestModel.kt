@@ -8,7 +8,7 @@ import com.org.framelt.project.domain.Status
 import com.org.framelt.project.domain.TimeOption
 import java.time.LocalDateTime
 
-data class CompletedProjectDetailModel(
+data class CompletedProjectDetailGuestModel(
     val title: String,
     val spot: Spot,
     val timeOption: TimeOption,
@@ -22,19 +22,19 @@ data class CompletedProjectDetailModel(
     companion object {
         fun fromDomain(
             project: Project,
-            myProjectReview: ProjectReview?,
-            projectMember: ProjectMember,
-            projectReviewOfMember: ProjectReview?,
-        ) = CompletedProjectDetailModel(
+            hostProjectReview: ProjectReview?,
+            guest: ProjectMember,
+            guestProjectReview: ProjectReview?,
+        ) = CompletedProjectDetailGuestModel(
             title = project.title,
             spot = project.spot,
             timeOption = project.timeOption,
             shootingAt = project.shootingAt,
             status = project.status,
-            isReviewDone = myProjectReview != null,
-            reviewId = myProjectReview?.id,
-            isHost = !projectMember.isHost,
-            projectMember = CompletedProjectMemberModel.fromDomain(projectMember, projectReviewOfMember),
+            isReviewDone = hostProjectReview != null,
+            reviewId = hostProjectReview?.id,
+            isHost = !guest.isHost,
+            projectMember = CompletedProjectMemberModel.fromDomain(guest, guestProjectReview),
         )
     }
 }

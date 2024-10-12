@@ -1,7 +1,8 @@
 package com.org.framelt.project.application.service
 
 import com.org.framelt.portfolio.adapter.out.FileUploadClient
-import com.org.framelt.project.application.port.`in`.CompletedProjectDetailModel
+import com.org.framelt.project.application.port.`in`.CompletedProjectDetailGuestModel
+import com.org.framelt.project.application.port.`in`.CompletedProjectDetailHostModel
 import com.org.framelt.project.application.port.`in`.InProgressProjectDetailHostModel
 import com.org.framelt.project.application.port.`in`.InProgressProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailCommand
@@ -203,10 +204,35 @@ class ProjectService(
         return InProgressProjectDetailModel.fromDomain(project, host)
     }
 
-    override fun getCompletedProject(
+    override fun getCompletedProjectForHost(
         projectId: Long,
         userId: Long,
-    ): CompletedProjectDetailModel {
+    ): CompletedProjectDetailHostModel {
+        val project = projectQueryPort.readById(projectId)
+        validateProjectStatus(project, Status.COMPLETED)
+
+        val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
+        val host = projectMembers.first { it.member.id == userId }
+        val guest = projectMembers.first { it.member.id != userId }
+
+        val applicantOfGuest = projectApplicantQueryPort.readByProjectIdAndApplicantId(projectId, guest.member.id!!)
+
+        val hostProjectReview = projectReviewQueryPort.readByReviewerIdAndRevieweeId(host.id!!, guest.id!!)
+        val guestProjectReview = projectReviewQueryPort.readByReviewerIdAndRevieweeId(guest.id, host.id)
+
+        return CompletedProjectDetailHostModel.fromDomain(
+            project = project,
+            hostProjectReview = hostProjectReview,
+            guest = guest,
+            guestProjectReview = guestProjectReview,
+            applicantOfGuest = applicantOfGuest,
+        )
+    }
+
+    override fun getCompletedProjectForGuest(
+        projectId: Long,
+        userId: Long,
+    ): CompletedProjectDetailGuestModel {
         val project = projectQueryPort.readById(projectId)
         validateProjectStatus(project, Status.COMPLETED)
 
@@ -217,11 +243,11 @@ class ProjectService(
         val myProjectReview = projectReviewQueryPort.readByReviewerIdAndRevieweeId(projectMember.id!!, otherProjectMember.id!!)
         val projectReviewOfMember = projectReviewQueryPort.readByReviewerIdAndRevieweeId(otherProjectMember.id, projectMember.id)
 
-        return CompletedProjectDetailModel.fromDomain(
+        return CompletedProjectDetailGuestModel.fromDomain(
             project = project,
-            myProjectReview = myProjectReview,
-            projectMember = otherProjectMember,
-            projectReviewOfMember = projectReviewOfMember,
+            hostProjectReview = myProjectReview,
+            guest = otherProjectMember,
+            guestProjectReview = projectReviewOfMember,
         )
     }
 
