@@ -19,7 +19,7 @@ class PortfolioController(
     @PostMapping("/portfolio")
     fun create(
         @Authorization userId: Long,
-        @RequestBody portfoliosCreateRequest: PortfoliosCreateRequest,
+        @ModelAttribute portfoliosCreateRequest: PortfoliosCreateRequest,
     ): ResponseEntity<Long> {
         val command = PortfolioCreateCommend(userId, portfoliosCreateRequest)
         val portfolioId = portfolioCreateUseCase.create(command)
