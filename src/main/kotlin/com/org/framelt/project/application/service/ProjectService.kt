@@ -198,9 +198,9 @@ class ProjectService(
         validateProjectStatus(project, Status.IN_PROGRESS)
 
         val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
-        val otherProjectMember = projectMembers.first { it.member.id != userId }
+        val host = projectMembers.first { it.member.id != userId }
 
-        return InProgressProjectDetailModel.fromDomain(project, otherProjectMember)
+        return InProgressProjectDetailModel.fromDomain(project, host)
     }
 
     override fun getCompletedProject(
