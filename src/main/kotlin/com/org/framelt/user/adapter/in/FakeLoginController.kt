@@ -25,7 +25,7 @@ class FakeLoginController(
         val user =
             userJpaRepository.findByEmail(email)
                 ?: userJpaRepository.save(UserJpaEntity.fromDomain(User.beforeCompleteSignUp(email)))
-        val response = LoginResponse(jwtPort.createToken(user.id.toString()), user.identity != Identity.NONE)
+        val response = LoginResponse(jwtPort.createToken(user.id.toString()), user.identity != Identity.NONE, user.identity.name)
         return ResponseEntity.ok(response)
     }
 }
