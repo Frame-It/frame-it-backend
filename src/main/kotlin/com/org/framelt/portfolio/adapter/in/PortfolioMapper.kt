@@ -25,7 +25,8 @@ class PortfolioMapper {
                     id = portfolio.getId(),
                     title = portfolio.title,
                     userId = portfolio.manage.id!!,
-                    profileImageUrl = portfolio.manage.profileImageUrl,
+                    profileImageUrl = portfolio.manage.profileImageUrl ?: null,
+                    portfolioImageUrl = portfolio.primaryPhoto,
                     userName = portfolio.manage.name
                 )
             }
