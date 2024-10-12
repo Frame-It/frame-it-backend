@@ -2,6 +2,7 @@ package com.org.framelt.portfolio.adapter.out
 
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "portfolios")
@@ -40,6 +41,5 @@ class PortfolioJpaEntity(
         inverseJoinColumns = [JoinColumn(name = "user_id")]
     )
     val collaborators: List<UserJpaEntity>,
-
-
-    )
+    val createAt: LocalDateTime,
+)

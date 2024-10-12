@@ -2,6 +2,7 @@ package com.org.framelt.portfolio.domain
 
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.User
+import java.time.LocalDateTime
 
 class Portfolio(
     val id: Long? = null,
@@ -12,6 +13,7 @@ class Portfolio(
     val photos: List<String>,
     val hashtags: List<String>? = null,
     val collaborators: List<User>,
+    val createAt: LocalDateTime = LocalDateTime.now(),
 ) {
 
     constructor(

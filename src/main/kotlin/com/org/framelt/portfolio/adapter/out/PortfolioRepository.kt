@@ -101,6 +101,7 @@ class PortfolioRepository(
                         deviseToken = it.deviseToken,
                     )
                 },
+            createAt = portfolio.createAt
         )
 
     private fun toDomain(portfolioEntity: PortfolioJpaEntity): Portfolio =
@@ -113,5 +114,6 @@ class PortfolioRepository(
             photos = portfolioEntity.photos,
             hashtags = portfolioEntity.hashtags,
             collaborators = portfolioEntity.collaborators.map { it.toDomain() },
+            createAt = portfolioEntity.createAt
         )
 }

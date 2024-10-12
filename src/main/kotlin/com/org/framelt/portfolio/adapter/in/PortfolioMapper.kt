@@ -44,7 +44,8 @@ class PortfolioMapper {
                 description = readPortfolio.description,
                 photosUrl = readPortfolio.photos,
                 hashtags = readPortfolio.hashtags,
-                collaborators = readPortfolio.collaborators.joinToString(", ") { it.name }
+                collaborators = readPortfolio.collaborators.joinToString(", ") { it.name },
+                createdAt = readPortfolio.createAt.toString()
             )
         }
     }
