@@ -2,6 +2,7 @@ package com.org.framelt.project.application.service
 
 import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailModel
+import com.org.framelt.project.application.port.`in`.InProgressProjectDetailHostModel
 import com.org.framelt.project.application.port.`in`.InProgressProjectDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailCommand
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
@@ -175,7 +176,21 @@ class ProjectService(
         return RecruitingProjectDetailGuestModel.fromDomain(project, applicant)
     }
 
-    override fun getInProgressProject(
+    override fun getInProgressProjectForHost(
+        projectId: Long,
+        userId: Long,
+    ): InProgressProjectDetailHostModel {
+        val project = projectQueryPort.readById(projectId)
+        validateProjectStatus(project, Status.IN_PROGRESS)
+
+        val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
+        val guest = projectMembers.first { it.member.id != userId }
+        val applicantOfGuest = projectApplicantQueryPort.readByProjectIdAndApplicantId(projectId, guest.member.id!!)
+
+        return InProgressProjectDetailHostModel.fromDomain(project, applicantOfGuest)
+    }
+
+    override fun getInProgressProjectForGuest(
         projectId: Long,
         userId: Long,
     ): InProgressProjectDetailModel {

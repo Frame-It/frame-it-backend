@@ -15,7 +15,12 @@ interface ProjectReadUseCase {
         userId: Long,
     ): RecruitingProjectDetailGuestModel
 
-    fun getInProgressProject(
+    fun getInProgressProjectForHost(
+        projectId: Long,
+        userId: Long,
+    ): InProgressProjectDetailHostModel
+
+    fun getInProgressProjectForGuest(
         projectId: Long,
         userId: Long,
     ): InProgressProjectDetailModel

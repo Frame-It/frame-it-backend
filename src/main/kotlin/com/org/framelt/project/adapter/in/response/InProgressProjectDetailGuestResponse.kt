@@ -3,7 +3,7 @@ package com.org.framelt.project.adapter.`in`.response
 import com.org.framelt.project.application.port.`in`.InProgressProjectDetailModel
 import java.time.LocalDateTime
 
-data class InProgressProjectDetailResponse(
+data class InProgressProjectDetailGuestResponse(
     val title: String,
     val spot: String,
     val timeOption: String,
@@ -14,7 +14,7 @@ data class InProgressProjectDetailResponse(
 ) {
     companion object {
         fun from(inProgressProjectDetailModel: InProgressProjectDetailModel) =
-            InProgressProjectDetailResponse(
+            InProgressProjectDetailGuestResponse(
                 title = inProgressProjectDetailModel.title,
                 spot = inProgressProjectDetailModel.spot.name,
                 timeOption = inProgressProjectDetailModel.timeOption.name,

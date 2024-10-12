@@ -5,8 +5,13 @@ import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.toDomain
 import jakarta.persistence.*
 import org.hibernate.annotations.SQLRestriction
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.LocalDateTime
 
 @Entity(name = "project_applicant")
+@EntityListeners(AuditingEntityListener::class)
 @SQLRestriction("is_canceled = false")
 class ProjectApplicantJpaEntity(
     @Id
@@ -24,6 +29,11 @@ class ProjectApplicantJpaEntity(
     val isCanceled: Boolean = false,
     @Column(nullable = true)
     val cancelReason: String? = null,
+    @CreatedDate
+    @Column(updatable = false)
+    val createdAt: LocalDateTime,
+    @LastModifiedDate
+    val modifiedAt: LocalDateTime,
 ) {
     companion object {
         fun fromDomain(projectApplicant: ProjectApplicant): ProjectApplicantJpaEntity =
@@ -34,6 +44,8 @@ class ProjectApplicantJpaEntity(
                 applyContent = projectApplicant.applyContent,
                 isCanceled = projectApplicant.isCanceled,
                 cancelReason = projectApplicant.cancelReason,
+                createdAt = projectApplicant.appliedAt,
+                modifiedAt = projectApplicant.modifiedAt,
             )
     }
 }
@@ -46,4 +58,6 @@ fun ProjectApplicantJpaEntity.toDomain(): ProjectApplicant =
         applyContent = applyContent,
         isCanceled = isCanceled,
         cancelReason = cancelReason,
+        appliedAt = createdAt,
+        modifiedAt = modifiedAt,
     )

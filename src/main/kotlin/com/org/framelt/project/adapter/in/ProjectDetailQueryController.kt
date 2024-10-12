@@ -2,7 +2,8 @@ package com.org.framelt.project.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
 import com.org.framelt.project.adapter.`in`.response.CompletedProjectDetailResponse
-import com.org.framelt.project.adapter.`in`.response.InProgressProjectDetailResponse
+import com.org.framelt.project.adapter.`in`.response.InProgressProjectDetailGuestResponse
+import com.org.framelt.project.adapter.`in`.response.InProgressProjectDetailHostResponse
 import com.org.framelt.project.adapter.`in`.response.RecruitingProjectDetailGuestResponse
 import com.org.framelt.project.adapter.`in`.response.RecruitingProjectDetailHostResponse
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
@@ -35,13 +36,23 @@ class ProjectDetailQueryController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/in-progress-projects/{projectId}")
-    fun showInProgressProject(
+    @GetMapping("/in-progress-projects/{projectId}/host")
+    fun showInProgressProjectForHost(
         @PathVariable projectId: Long,
         @Authorization userId: Long,
-    ): ResponseEntity<InProgressProjectDetailResponse> {
-        val result = projectReadUseCase.getInProgressProject(projectId, userId)
-        val response = InProgressProjectDetailResponse.from(result)
+    ): ResponseEntity<InProgressProjectDetailHostResponse> {
+        val result = projectReadUseCase.getInProgressProjectForHost(projectId, userId)
+        val response = InProgressProjectDetailHostResponse.from(result)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/in-progress-projects/{projectId}/guest")
+    fun showInProgressProjectForGuest(
+        @PathVariable projectId: Long,
+        @Authorization userId: Long,
+    ): ResponseEntity<InProgressProjectDetailGuestResponse> {
+        val result = projectReadUseCase.getInProgressProjectForGuest(projectId, userId)
+        val response = InProgressProjectDetailGuestResponse.from(result)
         return ResponseEntity.ok(response)
     }
 
