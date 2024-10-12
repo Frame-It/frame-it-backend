@@ -55,8 +55,17 @@ class UserController(
         return ResponseEntity.ok(response)
     }
 
+    @GetMapping("/users/studio")
+    fun showMyStudio(
+        @Authorization userId: Long,
+    ): ResponseEntity<UserStudioResponse> {
+        val result = userStudioUseCase.getStudio(userId)
+        val response = UserMapper.toResponse(result)
+        return ResponseEntity.ok(response)
+    }
+
     @GetMapping("/users/{userId}/studio")
-    fun showUserStudio(
+    fun showGuestStudio(
         @PathVariable userId: Long,
     ): ResponseEntity<UserStudioResponse> {
         val result = userStudioUseCase.getStudio(userId)
