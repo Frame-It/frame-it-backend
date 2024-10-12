@@ -22,15 +22,22 @@ class PortfolioService(
 ) : PortfolioCreateUseCase {
     override fun create(command: PortfolioCreateCommend): Long {
         val user = userQueryPort.readById(command.userId)
-        val togethers = userQueryPort.readByIds(command.togethers)
+        val togethers = userQueryPort.readByIds(command.portfoliosCreateRequest.togethers)
         val fileLinks =
-            command.photos.map { photo ->
+            command.portfoliosCreateRequest.photos.map { photo ->
                 fileUploadClient
                     .upload(photo.originalFilename!!, MediaType.IMAGE_JPEG, photo.bytes)
                     .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
             }
 
-        val portfolio = Portfolio(user, command.title, command.description, fileLinks, command.hashtags, togethers)
+        val portfolio = Portfolio(
+            user,
+            command.portfoliosCreateRequest.title,
+            command.portfoliosCreateRequest.description,
+            fileLinks,
+            command.portfoliosCreateRequest.hashtags,
+            togethers
+        )
         val savePortfolio = portfolioCommendPort.create(portfolio)
         return savePortfolio.getId()
     }

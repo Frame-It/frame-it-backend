@@ -8,16 +8,16 @@ import org.springframework.data.domain.Page
 class PortfolioMapper {
 
     companion object {
-        fun toCreate(userId: Long, request: PortfolioCreateRequest): PortfolioCreateCommend {
-            return PortfolioCreateCommend(
-                userId,
-                photos = request.images,
-                title = request.title,
-                description = request.description,
-                hashtags = request.hashTags,
-                togethers = request.togethers
-            )
-        }
+//        fun toCreate(userId: Long, request: PortfolioCreateRequest): PortfolioCreateCommend {
+//            return PortfolioCreateCommend(
+//                userId,
+//                photos = request.images,
+//                title = request.title,
+//                description = request.description,
+//                hashtags = request.hashTags,
+//                togethers = request.togethers
+//            )
+//        }
 
         fun toResponse(readAllPortfolio: Page<Portfolio>): Page<PortfolioResponse> {
             return readAllPortfolio.map { portfolio ->

@@ -1,5 +1,6 @@
 package com.org.framelt.config
 
+import com.google.auth.http.AuthHttpConstants.AUTHORIZATION
 import com.org.framelt.config.auth.AuthInterceptor
 import com.org.framelt.config.auth.MemberIdArgumentResolver
 import com.org.framelt.config.guest.OptionalAuthArgumentResolver
@@ -45,10 +46,10 @@ class WebMvcConfig(
     override fun addCorsMappings(registry: CorsRegistry) {
         registry
             .addMapping("/**")
-            .allowedOriginPatterns("*")
-            .allowedMethods("*")
-            .allowedHeaders("*")
+            .allowedOrigins("http://localhost:3000", "http://localhost:8080")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
             .allowCredentials(true)
+            .exposedHeaders(AUTHORIZATION, "*")
             .maxAge(3600)
     }
 }

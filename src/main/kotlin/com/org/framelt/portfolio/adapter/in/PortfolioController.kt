@@ -19,13 +19,9 @@ class PortfolioController(
     @PostMapping("/portfolio")
     fun create(
         @Authorization userId: Long,
-        @RequestParam("photos") photos: List<MultipartFile>,
-        @RequestParam("title") title: String,
-        @RequestParam("description") description: String,
-        @RequestParam("hashtags") hashtags: List<String>,
-        @RequestParam("togethers") togethers: List<Long>,
+        @RequestBody portfoliosCreateRequest: PortfoliosCreateRequest,
     ): ResponseEntity<Long> {
-        val command = PortfolioCreateCommend(userId, photos, title, description, hashtags, togethers)
+        val command = PortfolioCreateCommend(userId, portfoliosCreateRequest)
         val portfolioId = portfolioCreateUseCase.create(command)
         return ResponseEntity.ok(portfolioId)
     }
