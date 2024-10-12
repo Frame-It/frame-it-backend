@@ -64,7 +64,7 @@ class Project(
         status = Status.CANCELED
     }
 
-    fun isCompleted(): Boolean = status == Status.COMPLETED
+    fun isRecruiting(): Boolean = status == Status.RECRUITING
 
     fun isClosed(
         closureChecker: ProjectClosureChecker,
