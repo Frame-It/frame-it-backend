@@ -188,7 +188,9 @@ class ProjectService(
         val guest = projectMembers.first { it.member.id != userId }
         val applicantOfGuest = projectApplicantQueryPort.readByProjectIdAndApplicantId(projectId, guest.member.id!!)
 
-        return InProgressProjectDetailHostModel.fromDomain(project, applicantOfGuest)
+        val review = projectReviewQueryPort.readByReviewerIdAndRevieweeId(userId, guest.member.id)
+
+        return InProgressProjectDetailHostModel.fromDomain(project, applicantOfGuest, review)
     }
 
     override fun getInProgressProjectForGuest(
@@ -201,7 +203,9 @@ class ProjectService(
         val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
         val host = projectMembers.first { it.member.id != userId }
 
-        return InProgressProjectDetailModel.fromDomain(project, host)
+        val review = projectReviewQueryPort.readByReviewerIdAndRevieweeId(userId, host.member.id!!)
+
+        return InProgressProjectDetailModel.fromDomain(project, host, review)
     }
 
     override fun getCompletedProjectForHost(

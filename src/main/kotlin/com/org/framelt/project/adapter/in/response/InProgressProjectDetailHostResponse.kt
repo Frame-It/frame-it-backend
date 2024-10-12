@@ -9,6 +9,8 @@ data class InProgressProjectDetailHostResponse(
     val shootingAt: LocalDateTime,
     val status: String,
     val guest: GuestResponse,
+    val isReviewDone: Boolean,
+    val reviewId: Long?,
 ) {
     companion object {
         fun from(model: InProgressProjectDetailHostModel): InProgressProjectDetailHostResponse =
@@ -18,6 +20,8 @@ data class InProgressProjectDetailHostResponse(
                 shootingAt = model.shootingAt,
                 status = model.status.name,
                 guest = GuestResponse.from(model.guest),
+                isReviewDone = model.isReviewDone,
+                reviewId = model.reviewId,
             )
     }
 }
