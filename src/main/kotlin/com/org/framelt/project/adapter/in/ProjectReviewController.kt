@@ -2,6 +2,7 @@ package com.org.framelt.project.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
 import com.org.framelt.project.adapter.`in`.request.ProjectReviewRequest
+import com.org.framelt.project.adapter.`in`.response.ProjectReviewCreateResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectReviewResponse
 import com.org.framelt.project.application.port.`in`.ProjectReviewCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadUseCase
@@ -24,10 +25,11 @@ class ProjectReviewController(
         @PathVariable projectId: Long,
         @Authorization reviewerId: Long,
         @RequestBody projectReviewRequest: ProjectReviewRequest,
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<ProjectReviewCreateResponse> {
         val projectReviewCommand = ProjectMapper.toCommand(projectId, reviewerId, projectReviewRequest)
-        projectReviewCreateUseCase.review(projectReviewCommand)
-        return ResponseEntity.ok().build()
+        val result = projectReviewCreateUseCase.review(projectReviewCommand)
+        val response = ProjectReviewCreateResponse(result.id)
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/projects/reviews/{reviewId}")

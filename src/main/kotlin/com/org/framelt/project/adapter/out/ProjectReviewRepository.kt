@@ -10,9 +10,9 @@ class ProjectReviewRepository(
     private val projectReviewJpaRepository: ProjectReviewJpaRepository,
 ) : ProjectReviewCommandPort,
     ProjectReviewQueryPort {
-    override fun save(projectReview: ProjectReview) {
+    override fun save(projectReview: ProjectReview): ProjectReview {
         val projectReviewJpaEntity = ProjectReviewJpaEntity.fromDomain(projectReview)
-        projectReviewJpaRepository.save(projectReviewJpaEntity)
+        return projectReviewJpaRepository.save(projectReviewJpaEntity).toDomain()
     }
 
     override fun readByReviewerIdAndRevieweeId(

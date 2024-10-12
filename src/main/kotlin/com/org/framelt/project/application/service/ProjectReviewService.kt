@@ -5,6 +5,7 @@ import com.org.framelt.project.application.port.`in`.ProjectReviewCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReviewModel
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewReadUseCase
+import com.org.framelt.project.application.port.`in`.ProjectReviewResult
 import com.org.framelt.project.application.port.`in`.UserProjectReviewReadCommand
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.application.port.out.ProjectReviewCommandPort
@@ -19,7 +20,7 @@ class ProjectReviewService(
     val projectReviewQueryPort: ProjectReviewQueryPort,
 ) : ProjectReviewCreateUseCase,
     ProjectReviewReadUseCase {
-    override fun review(projectReviewCommand: ProjectReviewCommand) {
+    override fun review(projectReviewCommand: ProjectReviewCommand): ProjectReviewResult {
         val reviewer = projectMemberQueryPort.readByMemberIdAndProjectId(projectReviewCommand.reviewerId, projectReviewCommand.projectId)
         val reviewee = projectMemberQueryPort.readByMemberIdAndProjectId(projectReviewCommand.revieweeId, projectReviewCommand.projectId)
 
@@ -30,7 +31,7 @@ class ProjectReviewService(
                 tags = projectReviewCommand.tags,
                 content = projectReviewCommand.content,
             )
-        projectReviewCommandPort.save(projectReview)
+        return ProjectReviewResult(projectReviewCommandPort.save(projectReview).id!!)
     }
 
     override fun getProjectReview(projectReviewReadCommand: ProjectReviewReadCommand): ProjectReviewModel {
