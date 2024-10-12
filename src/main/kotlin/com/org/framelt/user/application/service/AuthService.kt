@@ -28,6 +28,7 @@ class AuthService(
         return LoginResult(
             accessToken = jwtPort.createToken(user.id!!.toString()),
             signUpCompleted = user.isSignUpCompleted(),
+            identity = user.identity,
         )
     }
 
