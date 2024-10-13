@@ -10,12 +10,11 @@ class Portfolio(
     val title: String,
     val description: String? = null,
     val primaryPhoto: String,
-    val photos: List<String>,
+    var photos: List<String>,
     val hashtags: List<String>? = null,
     val collaborators: List<User>,
     val createAt: LocalDateTime = LocalDateTime.now(),
 ) {
-
     constructor(
         manage: User,
         title: String,
@@ -36,6 +35,17 @@ class Portfolio(
     fun isOwnedByIdentity(identity: Identity): Boolean {
         return manage.identity.equals(identity)
     }
+    fun deletePhotos(deletePhotos: List<String>?) {
+        if (!deletePhotos.isNullOrEmpty()) {
+            this.photos = this.photos.filterNot { deletePhotos.contains(it) }
+        }
+    }
+
+    fun addPhotos(addPhotos: List<String>?) {
+        if (!addPhotos.isNullOrEmpty()) {
+            this.photos = this.photos + addPhotos
+        }
+    }
 
     fun update(
         title: String?,
@@ -44,9 +54,9 @@ class Portfolio(
         hashtags: List<String>?,
         togethers: List<User>?,
     ): Portfolio {
+        addPhotos(fileLinks)
         val updatedTitle = title ?: this.title
         val updatedDescription = description ?: this.description
-        val updatedFileLinks = fileLinks ?: this.photos
         val updatedHashtags = hashtags ?: this.hashtags
         val updatedTogethers = togethers ?: this.collaborators
 
@@ -55,8 +65,8 @@ class Portfolio(
             manage = this.manage,
             title = updatedTitle,
             description = updatedDescription,
-            primaryPhoto = updatedFileLinks[0],
-            photos = updatedFileLinks,
+            primaryPhoto = photos[0],
+            photos = photos,
             hashtags = updatedHashtags,
             collaborators = updatedTogethers,
             createAt = this.createAt

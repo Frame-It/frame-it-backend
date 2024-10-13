@@ -89,8 +89,9 @@ class PortfolioService(
         val user = userQueryPort.readById(command.userId)
         val togethers = command.togethers?.let { userQueryPort.readByIds(it) }
         val findPortfolio = portfolioReadPort.readById(command.portfolioId)
+        findPortfolio.deletePhotos(command.deletePhotos)
         val fileLinks =
-            command.photos?.map { photo ->
+            command.addPhotos?.map { photo ->
                 fileUploadClient
                     .upload(photo.name, MediaType.IMAGE_JPEG, photo.bytes)
                     .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
