@@ -30,9 +30,14 @@ class ProjectApplicantJpaEntity(
     val isCanceled: Boolean = false,
     @Column(nullable = true)
     val cancelContent: String? = null,
+    // @Enumerated(EnumType.STRING)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
-    val cancelReason: ProjectApplicantCancelReason? = null,
+    @ElementCollection(targetClass = ProjectApplicantCancelReason::class)
+    @CollectionTable(
+        name = "project_applicant_cancel_reasons",
+        joinColumns = [JoinColumn(name = "project_applicant_id")],
+    )
+    val cancelReasons: MutableList<ProjectApplicantCancelReason>,
     @CreatedDate
     @Column(updatable = false)
     val createdAt: LocalDateTime,
@@ -48,7 +53,7 @@ class ProjectApplicantJpaEntity(
                 applyContent = projectApplicant.applyContent,
                 isCanceled = projectApplicant.isCanceled,
                 cancelContent = projectApplicant.cancelContent,
-                cancelReason = projectApplicant.cancelReason,
+                cancelReasons = projectApplicant.cancelReasons,
                 createdAt = projectApplicant.appliedAt,
                 modifiedAt = projectApplicant.modifiedAt,
             )
@@ -62,7 +67,7 @@ fun ProjectApplicantJpaEntity.toDomain(): ProjectApplicant =
         applicant = applicant.toDomain(),
         applyContent = applyContent,
         isCanceled = isCanceled,
-        cancelReason = cancelReason,
+        cancelReasons = cancelReasons,
         cancelContent = cancelContent,
         appliedAt = createdAt,
         modifiedAt = modifiedAt,

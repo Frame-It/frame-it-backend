@@ -9,7 +9,7 @@ class ProjectApplicant(
     val applicant: User,
     val applyContent: String,
     var isCanceled: Boolean = false,
-    var cancelReason: ProjectApplicantCancelReason? = null,
+    val cancelReasons: MutableList<ProjectApplicantCancelReason> = mutableListOf(),
     var cancelContent: String? = null,
     val appliedAt: LocalDateTime = LocalDateTime.now(),
     val modifiedAt: LocalDateTime = LocalDateTime.now(),
@@ -21,11 +21,11 @@ class ProjectApplicant(
 
     fun cancel(
         content: String,
-        reason: ProjectApplicantCancelReason,
+        reasons: List<ProjectApplicantCancelReason>,
     ) {
         require(!isCanceled) { "이미 취소된 지원입니다." }
         isCanceled = true
-        cancelReason = reason
+        cancelReasons.addAll(reasons)
         cancelContent = content
     }
 

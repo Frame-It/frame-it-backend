@@ -145,7 +145,7 @@ class ProjectMapper {
             ProjectApplicantCancelCommand(
                 projectId = projectId,
                 applicantId = applicantId,
-                cancelReason = ProjectApplicantCancelReason.fromCode(projectApplicationCancelRequest.cancelReason),
+                cancelReason = projectApplicationCancelRequest.cancelReasons.map { ProjectApplicantCancelReason.fromCode(it) },
                 content = projectApplicationCancelRequest.content,
             )
 

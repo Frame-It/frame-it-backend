@@ -5,6 +5,6 @@ import com.org.framelt.project.domain.ProjectApplicantCancelReason
 data class ProjectApplicantCancelCommand(
     val projectId: Long,
     val applicantId: Long,
-    val cancelReason: ProjectApplicantCancelReason,
+    val cancelReason: List<ProjectApplicantCancelReason>,
     val content: String,
 )
