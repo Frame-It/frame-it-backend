@@ -130,21 +130,22 @@ class ProjectService(
 
     override fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel> {
         val projects = projectQueryPort.readAll(projectFilterCommand)
-        return projects.map {
-            val projectId = it.id!!
-            val isBookmarked = projectBookmarkQueryPort.existsBookmark(projectId = projectId, userId = projectFilterCommand.userId)
-            ProjectAnnouncementItemModel(
-                id = projectId,
-                previewImageUrl = it.conceptPhotoUrls.firstOrNull(),
-                title = it.title,
-                recruitmentRole = it.recruitmentRole,
-                shootingAt = it.shootingAt,
-                spot = it.spot,
-                timeOption = it.timeOption,
-                concepts = it.concepts,
-                isBookmarked = isBookmarked,
-            )
-        }
+        return projects
+            .map {
+                val projectId = it.id!!
+                val isBookmarked = projectBookmarkQueryPort.existsBookmark(projectId = projectId, userId = projectFilterCommand.userId)
+                ProjectAnnouncementItemModel(
+                    id = projectId,
+                    previewImageUrl = it.conceptPhotoUrls.firstOrNull(),
+                    title = it.title,
+                    recruitmentRole = it.recruitmentRole,
+                    shootingAt = it.shootingAt,
+                    spot = it.spot,
+                    timeOption = it.timeOption,
+                    concepts = it.concepts,
+                    isBookmarked = isBookmarked,
+                )
+            }.sortedByDescending { it.id }
     }
 
     override fun getRecruitingProjectForHost(
