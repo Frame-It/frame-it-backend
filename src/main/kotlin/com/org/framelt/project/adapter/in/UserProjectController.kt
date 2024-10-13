@@ -16,9 +16,10 @@ class UserProjectController(
     @GetMapping("/users/projects")
     fun showProejctsOfUser(
         @RequestParam(required = false) status: String?,
+        @RequestParam(defaultValue = "false") includesApplicant: Boolean,
         @Authorization userId: Long,
     ): ResponseEntity<UserProjectsResponse> {
-        val command = ProjectMapper.toCommand(userId, status)
+        val command = ProjectMapper.toCommand(userId, status, includesApplicant)
         val result = userProjectUseCase.readProjectsByUserId(command)
         val response = ProjectMapper.toResponse(result)
         return ResponseEntity.ok(response)

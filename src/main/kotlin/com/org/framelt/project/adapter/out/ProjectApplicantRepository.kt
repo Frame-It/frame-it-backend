@@ -35,4 +35,9 @@ class ProjectApplicantRepository(
     ): Boolean = projectApplicantJpaRepository.existsByProjectIdAndApplicantId(projectId, applicantId)
 
     override fun countApplicants(id: Long): Int = projectApplicantJpaRepository.countByProjectId(id)
+
+    override fun readAllByApplicantId(applicantId: Long): List<ProjectApplicant> {
+        val projectApplicantJpaEntities = projectApplicantJpaRepository.findByApplicantId(applicantId)
+        return projectApplicantJpaEntities.map { it.toDomain() }
+    }
 }

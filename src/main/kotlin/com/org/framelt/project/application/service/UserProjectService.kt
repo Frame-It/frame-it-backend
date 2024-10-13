@@ -4,6 +4,7 @@ import com.org.framelt.project.application.port.`in`.UserProjectModel
 import com.org.framelt.project.application.port.`in`.UserProjectReadCommand
 import com.org.framelt.project.application.port.`in`.UserProjectUseCase
 import com.org.framelt.project.application.port.`in`.UserProjectsModel
+import com.org.framelt.project.application.port.out.ProjectApplicantQueryPort
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.application.port.out.ProjectQueryPort
 import com.org.framelt.project.domain.Status
@@ -14,11 +15,21 @@ import org.springframework.stereotype.Service
 class UserProjectService(
     val projectQueryPort: ProjectQueryPort,
     val projectMemberQueryPort: ProjectMemberQueryPort,
+    val projectApplicantQueryPort: ProjectApplicantQueryPort,
     val userQueryPort: UserQueryPort,
 ) : UserProjectUseCase {
     override fun readProjectsByUserId(userProjectReadCommand: UserProjectReadCommand): UserProjectsModel {
         val user = userQueryPort.readById(userProjectReadCommand.userId)
-        val recruitingProjects = projectQueryPort.readByHostIdAndStatus(userProjectReadCommand.userId, Status.RECRUITING)
+        val recruitingProjects =
+            projectQueryPort
+                .readByHostIdAndStatus(userProjectReadCommand.userId, Status.RECRUITING)
+                .toMutableList()
+                .apply {
+                    if (userProjectReadCommand.includesApplicant) {
+                        val recruitingProjectsAsApplicant = projectApplicantQueryPort.readAllByApplicantId(user.id!!).map { it.project }
+                        addAll(recruitingProjectsAsApplicant)
+                    }
+                }
         val inProgressOrCompletedProjects = projectMemberQueryPort.readAllByUserId(userProjectReadCommand.userId).map { it.project }
         val userProjects = recruitingProjects + inProgressOrCompletedProjects.sortedByDescending { it.id }
 

@@ -5,4 +5,5 @@ import com.org.framelt.project.domain.Status
 data class UserProjectReadCommand(
     val userId: Long,
     val status: Status?,
+    val includesApplicant: Boolean,
 )

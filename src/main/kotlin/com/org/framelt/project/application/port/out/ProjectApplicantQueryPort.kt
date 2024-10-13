@@ -16,4 +16,6 @@ interface ProjectApplicantQueryPort {
     ): Boolean
 
     fun countApplicants(id: Long): Int
+
+    fun readAllByApplicantId(applicantId: Long): List<ProjectApplicant>
 }
