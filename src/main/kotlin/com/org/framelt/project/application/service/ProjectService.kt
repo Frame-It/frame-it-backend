@@ -110,6 +110,7 @@ class ProjectService(
             retouchingDescription = project.retouchingDescription,
             host = project.host.id!!,
             hostNickname = project.host.nickname,
+            hostIdentity = project.host.identity,
             hostProfileImageUrl = project.host.profileImageUrl,
             hostDescription = project.host.description,
             isBookmarked = isBookmarked,

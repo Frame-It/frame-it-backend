@@ -105,6 +105,7 @@ class ProjectMapper {
                         nickname = projectDetail.hostNickname,
                         profileImageUrl = projectDetail.hostProfileImageUrl,
                         description = projectDetail.hostDescription,
+                        identity = projectDetail.hostIdentity.name,
                     ),
                 isBookmarked = projectDetail.isBookmarked,
                 isClosed = projectDetail.isClosed,

@@ -5,4 +5,5 @@ data class ProjectDetailManagerResponse(
     val nickname: String,
     val profileImageUrl: String?,
     val description: String?,
+    val identity: String,
 )
