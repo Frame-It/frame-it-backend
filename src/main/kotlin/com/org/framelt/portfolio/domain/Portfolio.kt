@@ -36,4 +36,30 @@ class Portfolio(
     fun isOwnedByIdentity(identity: Identity): Boolean {
         return manage.identity.equals(identity)
     }
+
+    fun update(
+        title: String?,
+        description: String?,
+        fileLinks: List<String>?,
+        hashtags: List<String>?,
+        togethers: List<User>?,
+    ): Portfolio {
+        val updatedTitle = title ?: this.title
+        val updatedDescription = description ?: this.description
+        val updatedFileLinks = fileLinks ?: this.photos
+        val updatedHashtags = hashtags ?: this.hashtags
+        val updatedTogethers = togethers ?: this.collaborators
+
+        return Portfolio(
+            id = this.id,
+            manage = this.manage,
+            title = updatedTitle,
+            description = updatedDescription,
+            primaryPhoto = updatedFileLinks[0],
+            photos = updatedFileLinks,
+            hashtags = updatedHashtags,
+            collaborators = updatedTogethers,
+            createAt = this.createAt
+        )
+    }
 }

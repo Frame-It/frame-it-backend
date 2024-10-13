@@ -89,7 +89,7 @@ class PortfolioController(
         @RequestParam("hashtags") hashtags: List<String>,
         @RequestParam("togethers") togethers: List<Long>,
     ): ResponseEntity<Void> {
-        val command = PortfolioUpdateCommend(userId, photos, title, description, hashtags, togethers)
+        val command = PortfolioUpdateCommend(id, userId, photos, title, description, hashtags, togethers)
         portfolioCreateUseCase.update(command)
         return ResponseEntity.ok().build()
     }

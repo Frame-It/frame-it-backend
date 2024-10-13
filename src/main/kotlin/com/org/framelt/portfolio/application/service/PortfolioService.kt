@@ -87,16 +87,23 @@ class PortfolioService(
 
     override fun update(command: PortfolioUpdateCommend) {
         val user = userQueryPort.readById(command.userId)
-        val togethers = userQueryPort.readByIds(command.togethers)
+        val togethers = command.togethers?.let { userQueryPort.readByIds(it) }
+        val findPortfolio = portfolioReadPort.readById(command.portfolioId)
         val fileLinks =
-            command.photos.map { photo ->
+            command.photos?.map { photo ->
                 fileUploadClient
                     .upload(photo.name, MediaType.IMAGE_JPEG, photo.bytes)
                     .orElseThrow { IllegalArgumentException("사진 업로드에 실패 했습니다. ${photo.name}") }
             }
 
-        val portfolio = Portfolio(user, command.title, command.description, fileLinks, command.hashtags, togethers)
-        portfolioCommendPort.update(portfolio)
+        val updatePortfolio = findPortfolio.update(
+            command.title,
+            command.description,
+            fileLinks,
+            command.hashtags,
+            togethers
+        )
+        portfolioCommendPort.update(updatePortfolio)
     }
 
     override fun delete(command: PortfolioDeleteCommend) {
