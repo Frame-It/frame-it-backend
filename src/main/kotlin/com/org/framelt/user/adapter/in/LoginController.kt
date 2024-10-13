@@ -1,5 +1,6 @@
 package com.org.framelt.user.adapter.`in`
 
+import com.org.framelt.config.auth.Authorization
 import com.org.framelt.user.adapter.`in`.response.LoginResponse
 import com.org.framelt.user.application.port.`in`.LoginCommand
 import com.org.framelt.user.application.port.`in`.LoginUseCase
@@ -29,4 +30,9 @@ class LoginController(
             )
         return ResponseEntity.ok(response)
     }
+
+    @GetMapping("/tokens/validate")
+    fun validateToken(
+        @Authorization userId: Long,
+    ): ResponseEntity<Unit> = ResponseEntity.ok().build()
 }

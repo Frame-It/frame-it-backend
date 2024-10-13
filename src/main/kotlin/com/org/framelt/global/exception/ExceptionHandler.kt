@@ -20,7 +20,7 @@ class ExceptionHandler(
     fun handleExpiredJwtException(e: ExpiredJwtException): ResponseEntity<ErrorResponse> =
         ResponseEntity
             .status(HttpStatus.FORBIDDEN)
-            .body(ErrorResponse(e.message))
+            .body(ErrorResponse("토큰이 만료되었습니다."))
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> =
