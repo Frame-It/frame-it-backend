@@ -9,6 +9,7 @@ import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementDetailResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectApplyResponse
+import com.org.framelt.project.adapter.`in`.response.ProjectCompleteResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectCreateResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectUpdateResponse
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailCommand
@@ -154,9 +155,10 @@ class ProjectController(
     fun complete(
         @Authorization memberId: Long,
         @PathVariable projectId: Long,
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<ProjectCompleteResponse> {
         val projectCompleteCommand = ProjectCompleteCommand(projectId, memberId)
-        projectCompleteUseCase.complete(projectCompleteCommand)
-        return ResponseEntity.ok().build()
+        val result = projectCompleteUseCase.complete(projectCompleteCommand)
+        val response = ProjectCompleteResponse(result.projectStatus.name)
+        return ResponseEntity.ok(response)
     }
 }

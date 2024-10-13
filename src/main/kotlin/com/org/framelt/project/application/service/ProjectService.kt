@@ -14,6 +14,7 @@ import com.org.framelt.project.application.port.`in`.ProjectApplyCommand
 import com.org.framelt.project.application.port.`in`.ProjectApplyModel
 import com.org.framelt.project.application.port.`in`.ProjectApplyUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCompleteCommand
+import com.org.framelt.project.application.port.`in`.ProjectCompleteModel
 import com.org.framelt.project.application.port.`in`.ProjectCompleteUseCase
 import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
@@ -363,7 +364,7 @@ class ProjectService(
         // TODO: 프로젝트 호스트/게스트에게 시작 알림 전송
     }
 
-    override fun complete(projectCompleteCommand: ProjectCompleteCommand) {
+    override fun complete(projectCompleteCommand: ProjectCompleteCommand): ProjectCompleteModel {
         val projectMember =
             projectMemberQueryPort.readByMemberIdAndProjectId(
                 memberId = projectCompleteCommand.memberId,
@@ -379,5 +380,6 @@ class ProjectService(
             projectCommandPort.save(project)
             // TODO: 프로젝트 호스트/게스트에게 완료 알림 전송
         }
+        return ProjectCompleteModel(projectMember.project.status)
     }
 }
