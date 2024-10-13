@@ -8,6 +8,7 @@ data class ProjectAnnouncementDetailResponse(
     val description: String,
     val shootingAt: LocalDateTime,
     val locationType: String,
+    val timeOption: String,
     val spot: String,
     val hostConcepts: List<String>,
     val projectConcepts: List<String>,

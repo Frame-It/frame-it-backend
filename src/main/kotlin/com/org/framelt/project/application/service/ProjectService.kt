@@ -104,6 +104,7 @@ class ProjectService(
             description = project.description,
             shootingAt = project.shootingAt,
             locationType = project.locationType,
+            timeOption = project.timeOption,
             spot = project.spot,
             hostConcepts = project.host.shootingConcepts,
             projectConcepts = project.concepts,
