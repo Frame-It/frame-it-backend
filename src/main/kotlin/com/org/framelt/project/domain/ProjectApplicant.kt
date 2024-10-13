@@ -9,7 +9,8 @@ class ProjectApplicant(
     val applicant: User,
     val applyContent: String,
     var isCanceled: Boolean = false,
-    var cancelReason: String? = null,
+    var cancelReason: ProjectApplicantCancelReason? = null,
+    var cancelContent: String? = null,
     val appliedAt: LocalDateTime = LocalDateTime.now(),
     val modifiedAt: LocalDateTime = LocalDateTime.now(),
 ) {
@@ -18,10 +19,14 @@ class ProjectApplicant(
         require(applicant.identity == project.recruitmentRole) { "모집 역할과 사용자 역할이 일치하지 않습니다." }
     }
 
-    fun cancel(reason: String) {
+    fun cancel(
+        content: String,
+        reason: ProjectApplicantCancelReason,
+    ) {
         require(!isCanceled) { "이미 취소된 지원입니다." }
         isCanceled = true
         cancelReason = reason
+        cancelContent = content
     }
 
     fun accepted(projectId: Long) {

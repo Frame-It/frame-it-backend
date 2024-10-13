@@ -329,7 +329,7 @@ class ProjectService(
                 projectId = projectApplicantCancelCommand.projectId,
                 applicantId = projectApplicantCancelCommand.applicantId,
             )
-        projectApplicant.cancel(projectApplicantCancelCommand.cancelReason)
+        projectApplicant.cancel(projectApplicantCancelCommand.content, projectApplicantCancelCommand.cancelReason)
         projectApplicantCommandPort.save(projectApplicant)
     }
 

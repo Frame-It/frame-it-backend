@@ -21,6 +21,7 @@ import com.org.framelt.project.application.port.`in`.ProjectReviewReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.UserProjectReadCommand
 import com.org.framelt.project.application.port.`in`.UserProjectsModel
+import com.org.framelt.project.domain.ProjectApplicantCancelReason
 import com.org.framelt.project.domain.ProjectConcept
 import com.org.framelt.project.domain.ProjectReviewTag
 import com.org.framelt.project.domain.Status
@@ -144,7 +145,8 @@ class ProjectMapper {
             ProjectApplicantCancelCommand(
                 projectId = projectId,
                 applicantId = applicantId,
-                cancelReason = projectApplicationCancelRequest.cancelReason,
+                cancelReason = ProjectApplicantCancelReason.fromCode(projectApplicationCancelRequest.cancelReason),
+                content = projectApplicationCancelRequest.content,
             )
 
         fun toCommand(

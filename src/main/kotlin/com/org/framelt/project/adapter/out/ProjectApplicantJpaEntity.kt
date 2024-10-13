@@ -1,6 +1,7 @@
 package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.domain.ProjectApplicant
+import com.org.framelt.project.domain.ProjectApplicantCancelReason
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.toDomain
 import jakarta.persistence.*
@@ -28,7 +29,10 @@ class ProjectApplicantJpaEntity(
     @Column(nullable = false)
     val isCanceled: Boolean = false,
     @Column(nullable = true)
-    val cancelReason: String? = null,
+    val cancelContent: String? = null,
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    val cancelReason: ProjectApplicantCancelReason? = null,
     @CreatedDate
     @Column(updatable = false)
     val createdAt: LocalDateTime,
@@ -43,6 +47,7 @@ class ProjectApplicantJpaEntity(
                 applicant = UserJpaEntity.fromDomain(projectApplicant.applicant),
                 applyContent = projectApplicant.applyContent,
                 isCanceled = projectApplicant.isCanceled,
+                cancelContent = projectApplicant.cancelContent,
                 cancelReason = projectApplicant.cancelReason,
                 createdAt = projectApplicant.appliedAt,
                 modifiedAt = projectApplicant.modifiedAt,
@@ -58,6 +63,7 @@ fun ProjectApplicantJpaEntity.toDomain(): ProjectApplicant =
         applyContent = applyContent,
         isCanceled = isCanceled,
         cancelReason = cancelReason,
+        cancelContent = cancelContent,
         appliedAt = createdAt,
         modifiedAt = modifiedAt,
     )
