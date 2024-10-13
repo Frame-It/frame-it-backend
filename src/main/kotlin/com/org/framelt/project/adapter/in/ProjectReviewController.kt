@@ -28,7 +28,7 @@ class ProjectReviewController(
     ): ResponseEntity<ProjectReviewCreateResponse> {
         val projectReviewCommand = ProjectMapper.toCommand(projectId, reviewerId, projectReviewRequest)
         val result = projectReviewCreateUseCase.review(projectReviewCommand)
-        val response = ProjectReviewCreateResponse(result.id)
+        val response = ProjectReviewCreateResponse(result.id, result.projectStatus.name)
         return ResponseEntity.ok(response)
     }
 

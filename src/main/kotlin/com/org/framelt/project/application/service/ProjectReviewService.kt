@@ -31,7 +31,8 @@ class ProjectReviewService(
                 tags = projectReviewCommand.tags,
                 content = projectReviewCommand.content,
             )
-        return ProjectReviewResult(projectReviewCommandPort.save(projectReview).id!!)
+        val project = reviewer.project
+        return ProjectReviewResult(projectReviewCommandPort.save(projectReview).id!!, project.status)
     }
 
     override fun getProjectReview(projectReviewReadCommand: ProjectReviewReadCommand): ProjectReviewModel {
