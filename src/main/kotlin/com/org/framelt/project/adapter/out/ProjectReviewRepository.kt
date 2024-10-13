@@ -15,15 +15,10 @@ class ProjectReviewRepository(
         return projectReviewJpaRepository.save(projectReviewJpaEntity).toDomain()
     }
 
-    override fun readByReviewerIdAndRevieweeId(
-        reviewerId: Long,
-        revieweeId: Long,
-    ): ProjectReview? =
+    override fun readByReviewerId(reviewerId: Long): ProjectReview? =
         projectReviewJpaRepository
-            .findByReviewerMemberIdAndRevieweeMemberId(
-                reviewerMemberId = reviewerId,
-                revieweeMemberId = revieweeId,
-            )?.toDomain()
+            .findByReviewerId(reviewerId)
+            ?.toDomain()
 
     override fun findById(id: Long): ProjectReview? = projectReviewJpaRepository.findById(id)?.toDomain()
 

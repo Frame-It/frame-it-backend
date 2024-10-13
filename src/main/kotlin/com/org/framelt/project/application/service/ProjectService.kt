@@ -185,10 +185,11 @@ class ProjectService(
         validateProjectStatus(project, Status.IN_PROGRESS)
 
         val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
+        val host = projectMembers.first { it.member.id == userId }
         val guest = projectMembers.first { it.member.id != userId }
         val applicantOfGuest = projectApplicantQueryPort.readByProjectIdAndApplicantId(projectId, guest.member.id!!)
 
-        val review = projectReviewQueryPort.readByReviewerIdAndRevieweeId(userId, guest.member.id)
+        val review = projectReviewQueryPort.readByReviewerId(host.id!!)
 
         return InProgressProjectDetailHostModel.fromDomain(project, applicantOfGuest, review)
     }
@@ -202,8 +203,9 @@ class ProjectService(
 
         val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
         val host = projectMembers.first { it.member.id != userId }
+        val guest = projectMembers.first { it.member.id == userId }
 
-        val review = projectReviewQueryPort.readByReviewerIdAndRevieweeId(userId, host.member.id!!)
+        val review = projectReviewQueryPort.readByReviewerId(guest.id!!)
 
         return InProgressProjectDetailModel.fromDomain(project, host, review)
     }
@@ -221,8 +223,8 @@ class ProjectService(
 
         val applicantOfGuest = projectApplicantQueryPort.readByProjectIdAndApplicantId(projectId, guest.member.id!!)
 
-        val hostProjectReview = projectReviewQueryPort.readByReviewerIdAndRevieweeId(host.id!!, guest.id!!)
-        val guestProjectReview = projectReviewQueryPort.readByReviewerIdAndRevieweeId(guest.id, host.id)
+        val hostProjectReview = projectReviewQueryPort.readByReviewerId(host.id!!)
+        val guestProjectReview = projectReviewQueryPort.readByReviewerId(guest.id!!)
 
         return CompletedProjectDetailHostModel.fromDomain(
             project = project,
@@ -241,17 +243,17 @@ class ProjectService(
         validateProjectStatus(project, Status.COMPLETED)
 
         val projectMembers = projectMemberQueryPort.readAllByProjectId(projectId)
-        val projectMember = projectMembers.first { it.member.id == userId }
-        val otherProjectMember = projectMembers.first { it.member.id != userId }
+        val guest = projectMembers.first { it.member.id == userId }
+        val host = projectMembers.first { it.member.id != userId }
 
-        val myProjectReview = projectReviewQueryPort.readByReviewerIdAndRevieweeId(projectMember.id!!, otherProjectMember.id!!)
-        val projectReviewOfMember = projectReviewQueryPort.readByReviewerIdAndRevieweeId(otherProjectMember.id, projectMember.id)
+        val guestProjectReview = projectReviewQueryPort.readByReviewerId(guest.id!!)
+        val hostProjectReview = projectReviewQueryPort.readByReviewerId(host.id!!)
 
         return CompletedProjectDetailGuestModel.fromDomain(
             project = project,
-            hostProjectReview = myProjectReview,
-            guest = otherProjectMember,
-            guestProjectReview = projectReviewOfMember,
+            hostProjectReview = hostProjectReview,
+            host = host,
+            guestProjectReview = guestProjectReview,
         )
     }
 

@@ -20,16 +20,16 @@ data class CompletedProjectDetailGuestModel(
         fun fromDomain(
             project: Project,
             hostProjectReview: ProjectReview?,
-            guest: ProjectMember,
+            host: ProjectMember,
             guestProjectReview: ProjectReview?,
         ) = CompletedProjectDetailGuestModel(
             title = project.title,
             spot = project.spot,
             shootingAt = project.shootingAt,
             status = project.status,
-            isReviewDone = hostProjectReview != null,
-            reviewId = hostProjectReview?.id,
-            host = CompletedProjectHostModel.fromDomain(guest, guestProjectReview),
+            isReviewDone = guestProjectReview != null,
+            reviewId = guestProjectReview?.id,
+            host = CompletedProjectHostModel.fromDomain(host, hostProjectReview),
         )
     }
 }

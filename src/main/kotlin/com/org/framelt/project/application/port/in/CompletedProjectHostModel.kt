@@ -12,14 +12,14 @@ data class CompletedProjectHostModel(
 ) {
     companion object {
         fun fromDomain(
-            projectMember: ProjectMember,
-            projectReview: ProjectReview?,
+            host: ProjectMember,
+            hostProjectReview: ProjectReview?,
         ) = CompletedProjectHostModel(
-            id = projectMember.member.id!!,
-            nickname = projectMember.member.nickname,
-            profileImageUrl = projectMember.member.profileImageUrl,
-            isReviewDone = projectReview != null,
-            reviewId = projectReview?.id,
+            id = host.member.id!!,
+            nickname = host.member.nickname,
+            profileImageUrl = host.member.profileImageUrl,
+            isReviewDone = hostProjectReview != null,
+            reviewId = hostProjectReview?.id,
         )
     }
 }
