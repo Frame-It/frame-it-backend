@@ -28,6 +28,8 @@ class UserStudioService(
             profileImageUrl = user.profileImageUrl,
             portfolioCount = portfolios.size,
             projectCount = (recruitingProjects + inProgressOrCompletedProjects).size,
+            description = user.description,
+            concepts = user.shootingConcepts,
         )
     }
 }

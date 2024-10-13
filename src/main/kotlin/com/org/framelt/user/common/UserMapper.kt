@@ -63,6 +63,8 @@ class UserMapper {
                 profileImageUrl = userStudioModel.profileImageUrl,
                 portfolioCount = userStudioModel.portfolioCount,
                 projectCount = userStudioModel.projectCount,
+                description = userStudioModel.description,
+                concepts = userStudioModel.concepts.map { it.code },
             )
     }
 }

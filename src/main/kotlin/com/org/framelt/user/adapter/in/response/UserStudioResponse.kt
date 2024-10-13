@@ -7,4 +7,6 @@ data class UserStudioResponse(
     val profileImageUrl: String?,
     val portfolioCount: Int,
     val projectCount: Int,
+    val description: String?,
+    val concepts: List<String>,
 )
