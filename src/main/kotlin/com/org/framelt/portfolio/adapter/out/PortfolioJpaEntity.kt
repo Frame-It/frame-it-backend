@@ -34,12 +34,8 @@ class PortfolioJpaEntity(
     @Column(name = "hashtag")
     val hashtags: List<String>? = null,
 
-    @ManyToMany
-    @JoinTable(
-        name = "portfolio_collaborators",
-        joinColumns = [JoinColumn(name = "portfolio_id")],
-        inverseJoinColumns = [JoinColumn(name = "user_id")]
-    )
-    val collaborators: List<UserJpaEntity>,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "collaborator_id")
+    val collaborator: UserJpaEntity?,
     val createAt: LocalDateTime,
 )

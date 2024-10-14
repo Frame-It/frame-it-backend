@@ -22,9 +22,7 @@ class PortfolioService(
 ) : PortfolioCreateUseCase {
     override fun create(command: PortfolioCreateCommend): Long {
         val user = userQueryPort.readById(command.userId)
-        val togethers =
-            command.portfoliosCreateRequest.togethers?.let { userQueryPort.readByIds(it) }
-                ?: emptyList()
+        val together = command.portfoliosCreateRequest.together?.let { userQueryPort.readByUsername(it) }
         val fileLinks =
             command.portfoliosCreateRequest.photos.map { photo ->
                 fileUploadClient
@@ -39,7 +37,7 @@ class PortfolioService(
                 command.portfoliosCreateRequest.description,
                 fileLinks,
                 command.portfoliosCreateRequest.hashtags,
-                togethers,
+                together,
             )
         val savePortfolio = portfolioCommendPort.create(portfolio)
         return savePortfolio.getId()
@@ -87,7 +85,7 @@ class PortfolioService(
 
     override fun update(command: PortfolioUpdateCommend) {
         val user = userQueryPort.readById(command.userId)
-        val togethers = command.togethers?.let { userQueryPort.readByIds(it) }
+        val together = command.together?.let { userQueryPort.readByUsername(it) }
         val findPortfolio = portfolioReadPort.readById(command.portfolioId)
         findPortfolio.deletePhotos(command.deletePhotos)
         val fileLinks =
@@ -102,7 +100,7 @@ class PortfolioService(
             command.description,
             fileLinks,
             command.hashtags,
-            togethers
+            together
         )
         portfolioCommendPort.update(updatePortfolio)
     }

@@ -12,7 +12,7 @@ class Portfolio(
     val primaryPhoto: String,
     var photos: List<String>,
     val hashtags: List<String>? = null,
-    val collaborators: List<User>,
+    val collaborator: User?,
     val createAt: LocalDateTime = LocalDateTime.now(),
 ) {
     constructor(
@@ -21,8 +21,8 @@ class Portfolio(
         description: String?,
         photos: List<String>,
         hashtags: List<String>?,
-        collaborators: List<User>,
-    ) : this(null, manage, title, description, photos.get(0), photos, hashtags, collaborators)
+        collaborator: User?,
+    ) : this(null, manage, title, description, photos.get(0), photos, hashtags, collaborator)
 
     fun isOwnedByUser(userId: Long): Boolean {
         return manage.id == userId
@@ -35,6 +35,7 @@ class Portfolio(
     fun isOwnedByIdentity(identity: Identity): Boolean {
         return manage.identity.equals(identity)
     }
+
     fun deletePhotos(deletePhotos: List<String>?) {
         if (!deletePhotos.isNullOrEmpty()) {
             this.photos = this.photos.filterNot { deletePhotos.contains(it) }
@@ -52,13 +53,13 @@ class Portfolio(
         description: String?,
         fileLinks: List<String>?,
         hashtags: List<String>?,
-        togethers: List<User>?,
+        togethers: User?,
     ): Portfolio {
         addPhotos(fileLinks)
         val updatedTitle = title ?: this.title
         val updatedDescription = description ?: this.description
-        val updatedHashtags = hashtags ?: this.hashtags
-        val updatedTogethers = togethers ?: this.collaborators
+        val updatedHashtags = hashtags
+        val updatedTogether = togethers ?: this.collaborator
 
         return Portfolio(
             id = this.id,
@@ -68,7 +69,7 @@ class Portfolio(
             primaryPhoto = photos[0],
             photos = photos,
             hashtags = updatedHashtags,
-            collaborators = updatedTogethers,
+            collaborator = updatedTogether,
             createAt = this.createAt
         )
     }

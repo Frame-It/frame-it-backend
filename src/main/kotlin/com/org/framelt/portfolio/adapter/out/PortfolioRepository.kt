@@ -62,45 +62,43 @@ class PortfolioRepository(
     private fun toEntity(portfolio: Portfolio): PortfolioJpaEntity =
         PortfolioJpaEntity(
             id = portfolio.id,
-            manage =
-                UserJpaEntity(
-                    id = portfolio.manage.id,
-                    name = portfolio.manage.name,
-                    nickname = portfolio.manage.nickname,
-                    birthDate = portfolio.manage.birthDate,
-                    isQuit = portfolio.manage.isQuit,
-                    profileImageUrl = portfolio.manage.profileImageUrl,
-                    bio = portfolio.manage.bio,
-                    identity = portfolio.manage.identity,
-                    career = portfolio.manage.career,
-                    shootingConcepts = portfolio.manage.shootingConcepts,
-                    notificationsEnabled = portfolio.manage.notificationsEnabled,
-                    email = portfolio.manage.email,
-                    deviseToken = portfolio.manage.deviseToken,
-                ),
+            manage = UserJpaEntity(
+                id = portfolio.manage.id,
+                name = portfolio.manage.name,
+                nickname = portfolio.manage.nickname,
+                birthDate = portfolio.manage.birthDate,
+                isQuit = portfolio.manage.isQuit,
+                profileImageUrl = portfolio.manage.profileImageUrl,
+                bio = portfolio.manage.bio,
+                identity = portfolio.manage.identity,
+                career = portfolio.manage.career,
+                shootingConcepts = portfolio.manage.shootingConcepts,
+                notificationsEnabled = portfolio.manage.notificationsEnabled,
+                email = portfolio.manage.email,
+                deviseToken = portfolio.manage.deviseToken,
+            ),
             title = portfolio.title,
             description = portfolio.description,
             primaryPhoto = portfolio.primaryPhoto,
             photos = portfolio.photos,
             hashtags = portfolio.hashtags,
-            collaborators =
-                portfolio.collaborators.map {
-                    UserJpaEntity(
-                        id = it.id,
-                        name = it.name,
-                        nickname = it.nickname,
-                        birthDate = it.birthDate,
-                        isQuit = it.isQuit,
-                        profileImageUrl = it.profileImageUrl,
-                        bio = it.bio,
-                        identity = it.identity,
-                        career = it.career,
-                        shootingConcepts = it.shootingConcepts,
-                        notificationsEnabled = it.notificationsEnabled,
-                        email = it.email,
-                        deviseToken = it.deviseToken,
-                    )
-                },
+            collaborator = portfolio.collaborator?.let {
+                UserJpaEntity(
+                    id = it.id,
+                    name = it.name,
+                    nickname = it.nickname,
+                    birthDate = it.birthDate,
+                    isQuit = it.isQuit,
+                    profileImageUrl = it.profileImageUrl,
+                    bio = it.bio,
+                    identity = it.identity,
+                    career = it.career,
+                    shootingConcepts = it.shootingConcepts,
+                    notificationsEnabled = it.notificationsEnabled,
+                    email = it.email,
+                    deviseToken = it.deviseToken,
+                )
+            },
             createAt = portfolio.createAt
         )
 
@@ -113,7 +111,7 @@ class PortfolioRepository(
             primaryPhoto = portfolioEntity.primaryPhoto,
             photos = portfolioEntity.photos,
             hashtags = portfolioEntity.hashtags,
-            collaborators = portfolioEntity.collaborators.map { it.toDomain() },
+            collaborator = portfolioEntity.collaborator?.toDomain(),
             createAt = portfolioEntity.createAt
         )
 }

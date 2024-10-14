@@ -10,5 +10,5 @@ data class PortfolioUpdateCommend(
     val title: String?,
     val description: String?,
     val hashtags: List<String>?,
-    val togethers: List<Long>?,
+    val together: String?,
 )

@@ -51,6 +51,10 @@ class UserRepository(
         return userEntities.map { it.toDomain() }
     }
 
+    override fun readByUsername(username: String): User? {
+        val userEntity = userJpaRepository.findByNickname(username)
+        return userEntity?.toDomain() ?: throw IllegalArgumentException("일치하는 사용자가 없습니다.")    }
+
     override fun findByProviderAndProviderUserId(
         provider: OAuthProvider,
         providerUserId: String,
