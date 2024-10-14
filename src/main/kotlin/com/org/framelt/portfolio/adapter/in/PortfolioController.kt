@@ -83,12 +83,12 @@ class PortfolioController(
     fun update(
         @Authorization userId: Long,
         @PathVariable id: Long,
-        @RequestParam("addPhotos") addPhotos: List<MultipartFile>,
-        @RequestParam("deletePhotos") deletePhotos: List<String>,
-        @RequestParam("title") title: String,
-        @RequestParam("description") description: String,
-        @RequestParam("hashtags") hashtags: List<String>,
-        @RequestParam("togethers") togethers: List<Long>,
+        @RequestParam("addPhotos") addPhotos: List<MultipartFile>?,
+        @RequestParam("deletePhotos") deletePhotos: List<String>?,
+        @RequestParam("title") title: String?,
+        @RequestParam("description") description: String?,
+        @RequestParam("hashtags") hashtags: List<String>?,
+        @RequestParam("togethers") togethers: List<Long>?,
     ): ResponseEntity<Void> {
         val command = PortfolioUpdateCommend(id, userId, addPhotos,deletePhotos , title, description, hashtags, togethers)
         portfolioCreateUseCase.update(command)
