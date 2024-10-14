@@ -1,5 +1,6 @@
 package com.org.framelt.portfolio.adapter.out
 
+import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -18,4 +19,6 @@ interface PortfolioJpaRepository : JpaRepository<PortfolioJpaEntity, Long> {
 
     @Query("SELECT p FROM PortfolioJpaEntity p WHERE p.manage.identity = 'MODEL'")
     fun findAllByModel(pageable: Pageable): Page<PortfolioJpaEntity>
+
+    fun deleteAllByManage(manage: UserJpaEntity)
 }

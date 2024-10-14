@@ -1,5 +1,6 @@
 package com.org.framelt.user.adapter.out.persistence
 
+import com.org.framelt.portfolio.adapter.out.PortfolioJpaRepository
 import com.org.framelt.project.adapter.out.ProjectJpaRepository
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
@@ -13,6 +14,7 @@ class UserRepository(
     private val oAuthUserJpaRepository: OAuthUserJpaRepository,
     private val quitUserJpaRepository: QuitUserJpaRepository,
     private val projectJpaRepository: ProjectJpaRepository,
+    private val portfolioJpaRepository: PortfolioJpaRepository,
 ) : UserQueryPort,
     UserCommandPort {
     override fun save(
@@ -53,7 +55,8 @@ class UserRepository(
 
     override fun readByUsername(username: String): User? {
         val userEntity = userJpaRepository.findByNickname(username)
-        return userEntity?.toDomain() ?: throw IllegalArgumentException("일치하는 사용자가 없습니다.")    }
+        return userEntity?.toDomain() ?: throw IllegalArgumentException("일치하는 사용자가 없습니다.")
+    }
 
     override fun findByProviderAndProviderUserId(
         provider: OAuthProvider,
@@ -77,7 +80,7 @@ class UserRepository(
         userJpaRepository.save(userJpaEntity)
         oAuthUserJpaRepository.deleteByUser(userJpaEntity)
         projectJpaRepository.deleteAllByHost(userJpaEntity)
-        // TODO: 포트폴리오 데이터 삭제 처리
+        portfolioJpaRepository.deleteAllByManage(userJpaEntity)
         quitUserJpaRepository.save(QuitUserJpaEntity.fromDomain(userJpaEntity, quitReason))
     }
 }
