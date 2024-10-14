@@ -34,6 +34,7 @@ class Project(
         retouchingDescription: String?,
     ): Project {
         require(host.id == hostId) { "프로젝트의 작성자만 수정 가능합니다." }
+        val addedPhotoUrls = this.conceptPhotoUrls + conceptPhotoUrls
         return Project(
             id = this.id,
             host = this.host,
@@ -44,7 +45,7 @@ class Project(
             locationType = locationType,
             spot = spot,
             concepts = concepts,
-            conceptPhotoUrls = conceptPhotoUrls,
+            conceptPhotoUrls = addedPhotoUrls,
             description = description,
             retouchingDescription = retouchingDescription,
         )
