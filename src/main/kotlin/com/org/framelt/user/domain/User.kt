@@ -41,7 +41,6 @@ class User(
 
     fun updateProfile(
         profileImageUrl: String?,
-        nickname: String,
         description: String,
         concepts: List<UserConcept>,
     ): User =

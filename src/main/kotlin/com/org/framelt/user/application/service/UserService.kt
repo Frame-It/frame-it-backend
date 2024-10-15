@@ -88,7 +88,6 @@ class UserService(
 
         val updatedUser =
             user.updateProfile(
-                nickname = userProfileUpdateCommand.nickname,
                 profileImageUrl = profileImageUrl,
                 description = userProfileUpdateCommand.description,
                 concepts = userProfileUpdateCommand.concepts,

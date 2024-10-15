@@ -50,7 +50,6 @@ class UserMapper {
                 userId = userId,
                 updateUserId = updateUserId,
                 profileImage = userProfileUpdateRequest.profileImage,
-                nickname = userProfileUpdateRequest.nickname,
                 description = userProfileUpdateRequest.description,
                 concepts = userProfileUpdateRequest.concepts.map { UserConcept.fromCode(it) },
             )
