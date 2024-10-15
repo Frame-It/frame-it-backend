@@ -12,6 +12,10 @@ class ChatRepository(
     private val chatJpaRepository: ChatJpaRepository,
 ) : ChatCommendPort, ChatReadPort {
 
+    override fun findChatBetweenUsers(firstUserId: Long, secondUserId: Long): ChatJpaEntity? {
+        return chatJpaRepository.findChatBetweenUsers(firstUserId, secondUserId)
+    }
+
     override fun save(chat: Chatting): Chatting {
         val chatEntity = ChatJpaEntity()
         val participantEntities = chat.participants.map { participant ->

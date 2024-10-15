@@ -22,11 +22,14 @@ class ChatService(
     override fun createChat(command: CreateChatCommand): Long {
         val sender = userQueryPort.readById(command.userId)
         val receiver = userQueryPort.readById(command.participantId)
-
+        val existingChat = chatCommendPort.findChatBetweenUsers(sender.id!!, receiver.id!!)
+        existingChat?.let {
+            throw IllegalArgumentException("이미 생성된 채팅방 입니다. 채팅방ID: ${it.id}")
+        }
         val newChat = Chatting(listOf(Participant(sender), Participant(receiver)))
 
         val saveChat = chatCommendPort.save(newChat) ?: throw IllegalStateException("Save chat fail")
-        return saveChat.id;
+        return saveChat.id
     }
 
     override fun sendMessage(command: SendMessageCommand) {
