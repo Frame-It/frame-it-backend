@@ -9,23 +9,31 @@ import java.time.LocalDateTime
 
 data class BookmarkedProjectReadModel(
     val id: Long,
+    val previewImageUrl: String?,
     val title: String,
     val recruitmentRole: Identity,
-    val spot: Spot,
     val shootingAt: LocalDateTime,
+    val spot: Spot,
     val timeOption: TimeOption,
     val concepts: List<ProjectConcept>,
+    val isBookmarked: Boolean,
 ) {
     companion object {
-        fun fromDomain(project: Project): BookmarkedProjectReadModel =
+        fun fromDomain(
+            project: Project,
+            previewImageUrl: String?,
+            isBookmarked: Boolean,
+        ): BookmarkedProjectReadModel =
             BookmarkedProjectReadModel(
                 id = project.id!!,
+                previewImageUrl = previewImageUrl,
                 title = project.title,
                 recruitmentRole = project.recruitmentRole,
                 spot = project.spot,
                 shootingAt = project.shootingAt,
                 timeOption = project.timeOption,
                 concepts = project.concepts,
+                isBookmarked = isBookmarked,
             )
     }
 }

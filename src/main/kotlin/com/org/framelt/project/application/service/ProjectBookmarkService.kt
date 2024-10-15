@@ -52,7 +52,16 @@ class ProjectBookmarkService(
     }
 
     override fun readBookmarkedProjects(bookmarkedProjectsReadCommand: BookmarkedProjectsReadCommand): List<BookmarkedProjectReadModel> {
-        val bookmarkedProjects = projectBookmarkQueryPort.readByUserId(bookmarkedProjectsReadCommand.userId)
-        return bookmarkedProjects.map { BookmarkedProjectReadModel.fromDomain(it.project) }
+        val userId = bookmarkedProjectsReadCommand.userId
+        val bookmarkedProjects = projectBookmarkQueryPort.readByUserId(userId)
+        return bookmarkedProjects.map {
+            val project = it.project
+            val isBookmarked = projectBookmarkQueryPort.existsBookmark(projectId = project.id!!, userId = userId)
+            BookmarkedProjectReadModel.fromDomain(
+                project = project,
+                previewImageUrl = project.conceptPhotoUrls.firstOrNull(),
+                isBookmarked = isBookmarked,
+            )
+        }
     }
 }

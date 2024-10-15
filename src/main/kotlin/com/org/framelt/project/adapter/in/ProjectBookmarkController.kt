@@ -1,11 +1,12 @@
 package com.org.framelt.project.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
-import com.org.framelt.project.adapter.`in`.response.BookmarkedProjectReadResponse
+import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
 import com.org.framelt.project.application.port.`in`.BookmarkedProjectsReadCommand
 import com.org.framelt.project.application.port.`in`.ProjectBookmarkCommand
 import com.org.framelt.project.application.port.`in`.ProjectBookmarkUseCase
 import com.org.framelt.project.application.port.`in`.ProjectUnbookmarkCommand
+import com.org.framelt.project.common.ProjectMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -40,10 +41,10 @@ class ProjectBookmarkController(
     @GetMapping("/projects/bookmarks")
     fun readBookmarkedProjects(
         @Authorization userId: Long,
-    ): ResponseEntity<List<BookmarkedProjectReadResponse>> {
+    ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val bookmarkedProjectsReadCommand = BookmarkedProjectsReadCommand(userId)
         val bookmarkedProjects = projectBookmarkUseCase.readBookmarkedProjects(bookmarkedProjectsReadCommand)
-        val response = bookmarkedProjects.map { BookmarkedProjectReadResponse.from(it) }
+        val response = ProjectMapper.toResponse(bookmarkedProjects)
         return ResponseEntity.ok(response)
     }
 }

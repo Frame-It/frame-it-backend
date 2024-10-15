@@ -10,6 +10,7 @@ import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResp
 import com.org.framelt.project.adapter.`in`.response.ProjectDetailManagerResponse
 import com.org.framelt.project.adapter.`in`.response.UserProjectItemResponse
 import com.org.framelt.project.adapter.`in`.response.UserProjectsResponse
+import com.org.framelt.project.application.port.`in`.BookmarkedProjectReadModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementDetailModel
 import com.org.framelt.project.application.port.`in`.ProjectAnnouncementItemModel
 import com.org.framelt.project.application.port.`in`.ProjectApplicantCancelCommand
@@ -199,5 +200,20 @@ class ProjectMapper {
                 status = Status.fromNullable(status),
                 includesApplicant = includesApplicant,
             )
+
+        fun toResponse(bookmarkedProjects: List<BookmarkedProjectReadModel>): List<ProjectAnnouncementItemResponse> =
+            bookmarkedProjects.map {
+                ProjectAnnouncementItemResponse(
+                    id = it.id,
+                    previewImageUrl = it.previewImageUrl,
+                    title = it.title,
+                    recruitmentRole = it.recruitmentRole.name,
+                    shootingAt = it.shootingAt,
+                    spot = it.spot.name,
+                    timeOption = it.timeOption.name,
+                    concepts = it.concepts.map { it.code },
+                    isBookmarked = it.isBookmarked,
+                )
+            }
     }
 }
