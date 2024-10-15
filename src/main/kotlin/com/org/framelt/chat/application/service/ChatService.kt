@@ -76,6 +76,7 @@ class ChatService(
         }
     }
 
-
-
+    override fun getChatRoomId(userId: Long, participantId: Long): Long? {
+        return chatCommendPort.findChatBetweenUsers(userId, participantId)?.id
+    }
 }

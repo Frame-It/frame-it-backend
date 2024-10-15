@@ -12,8 +12,8 @@ class ChatRepository(
     private val chatJpaRepository: ChatJpaRepository,
 ) : ChatCommendPort, ChatReadPort {
 
-    override fun findChatBetweenUsers(firstUserId: Long, secondUserId: Long): ChatJpaEntity? {
-        return chatJpaRepository.findChatBetweenUsers(firstUserId, secondUserId)
+    override fun findChatBetweenUsers(firstUserId: Long, secondUserId: Long): Chatting? {
+        return chatJpaRepository.findChatBetweenUsers(firstUserId, secondUserId)?.toDomain()
     }
 
     override fun save(chat: Chatting): Chatting {

@@ -7,5 +7,5 @@ import com.org.framelt.user.domain.User
 interface ChatCommendPort {
     fun save(chat: Chatting): Chatting?
     fun update(sender: User, chat: Chatting): Chatting?
-    fun findChatBetweenUsers(firstUserId: Long, secondUserId: Long): ChatJpaEntity?
+    fun findChatBetweenUsers(firstUserId: Long, secondUserId: Long): Chatting?
 }

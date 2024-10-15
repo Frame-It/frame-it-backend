@@ -10,4 +10,5 @@ interface ChatUseCase {
     fun sendMessage(command: SendMessageCommand)
     fun getChat(userId: Long, chatId: Long): ChattingResponse
     fun getChattingRoom(userId: Long): List<ChatRoomInfoResponse>
+    fun getChatRoomId(userId: Long, participantId: Long): Long?
 }

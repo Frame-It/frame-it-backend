@@ -27,7 +27,7 @@ class ChatController(
         @PathVariable("chatId") chatId: Long,
         @RequestBody request: SendMessageRequest,
     ): ResponseEntity<Void> {
-        val command = ChatMapper.toSendMessageCommand(userId,chatId,  request)
+        val command = ChatMapper.toSendMessageCommand(userId, chatId, request)
         chatUseCase.sendMessage(command)
         return ResponseEntity.ok().build()
     }
@@ -38,7 +38,15 @@ class ChatController(
         return ResponseEntity.ok(chat)
     }
 
-    // 채팅방 조회
+    @GetMapping("users/{participantId}")
+    fun getChatRoomId(
+        @Authorization userId: Long,
+        @PathVariable participantId: Long,
+    ): ResponseEntity<Long> {
+        val chatId = chatUseCase.getChatRoomId(userId, participantId)
+        return ResponseEntity.ok(chatId)
+    }
+
     @GetMapping("/{chatId}")
     fun getChattingRoom(@Authorization userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
         val chat = chatUseCase.getChat(userId, chatId)
