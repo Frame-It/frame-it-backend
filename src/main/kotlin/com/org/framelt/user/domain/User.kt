@@ -35,6 +35,7 @@ class User(
 
     fun quit() {
         isQuit = true
+        nickname = "quit_" + UUID.randomUUID().toString()
         email = "quit_" + UUID.randomUUID().toString()
     }
 
