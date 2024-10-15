@@ -85,7 +85,7 @@ class UserService(
                         MediaType.IMAGE_JPEG,
                         it.bytes,
                     ).get()
-            } ?: user.profileImageUrl
+            } ?: if (userProfileUpdateCommand.isDelete) null else user.profileImageUrl
 
         val updatedUser =
             user.updateProfile(

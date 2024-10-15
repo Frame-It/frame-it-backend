@@ -6,4 +6,5 @@ data class UserProfileUpdateRequest(
     val profileImage: MultipartFile?,
     val description: String?,
     val concepts: List<String>?,
+    val isDelete: Boolean,
 )

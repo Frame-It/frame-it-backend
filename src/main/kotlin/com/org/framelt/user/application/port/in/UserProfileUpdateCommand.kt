@@ -9,4 +9,5 @@ data class UserProfileUpdateCommand(
     val profileImage: MultipartFile?,
     val description: String?,
     val concepts: List<UserConcept>?,
+    val isDelete: Boolean,
 )

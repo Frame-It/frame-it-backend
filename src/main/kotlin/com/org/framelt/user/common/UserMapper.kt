@@ -54,6 +54,7 @@ class UserMapper {
                 profileImage = userProfileUpdateRequest.profileImage,
                 description = userProfileUpdateRequest.description,
                 concepts = userProfileUpdateRequest.concepts?.map { UserConcept.fromCode(it) },
+                isDelete = userProfileUpdateRequest.isDelete,
             )
 
         fun toCommand(
