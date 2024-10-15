@@ -6,9 +6,10 @@ import com.org.framelt.portfolio.domain.Portfolio
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.toDomain
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
-
 @Repository
 class PortfolioRepository(
     private val portfolioJpaRepository: PortfolioJpaRepository,
@@ -37,14 +38,22 @@ class PortfolioRepository(
         return toDomain(portfolioEntity)
     }
 
-    override fun readAll(pageable: Pageable): Page<Portfolio> = portfolioJpaRepository.findAll(pageable).map { toDomain(it) }
+    override fun readAll(pageable: Pageable): Page<Portfolio> {
+        val sortedPageable = PageRequest.of(
+            pageable.pageNumber,
+            pageable.pageSize,
+            Sort.by(Sort.Direction.DESC, "createAt")
+        )
+
+        return portfolioJpaRepository.findAll(sortedPageable).map { toDomain(it) }
+    }
+
 
     override fun readByPhotographer(pageable: Pageable): Page<Portfolio> =
-        portfolioJpaRepository.findAllByPhotographer(pageable).map {
-            toDomain(it)
-        }
+        portfolioJpaRepository.findAllByPhotographer(pageable).map { toDomain(it) }
 
-    override fun readByModel(pageable: Pageable): Page<Portfolio> = portfolioJpaRepository.findAllByModel(pageable).map { toDomain(it) }
+    override fun readByModel(pageable: Pageable): Page<Portfolio> =
+        portfolioJpaRepository.findAllByModel(pageable).map { toDomain(it) }
 
     override fun readByUserId(
         userId: Long,
@@ -115,3 +124,4 @@ class PortfolioRepository(
             createAt = portfolioEntity.createAt
         )
 }
+
