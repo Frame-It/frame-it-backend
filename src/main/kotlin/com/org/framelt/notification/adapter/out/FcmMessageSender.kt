@@ -41,12 +41,18 @@ class FcmMessageSender(
     }
 
     override fun sendTo(letter: NotificationLetter) {
+        val deviceToken = letter.receiver.deviseToken
+
+        if (deviceToken.isNullOrEmpty()) {
+            return
+        }
+
         val notification = Notification.builder()
             .setTitle(letter.title)
             .setBody(letter.content)
             .build()
         val message = Message.builder()
-            .setToken(letter.targetToken)
+            .setToken(deviceToken)
             .setNotification(notification)
             .build()
 

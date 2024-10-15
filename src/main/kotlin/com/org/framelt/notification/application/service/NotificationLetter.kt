@@ -1,5 +1,10 @@
 package com.org.framelt.notification.application.service
 
-data class NotificationLetter(val targetToken: String, val title: String, val content: String) {
+import com.org.framelt.user.domain.User
 
-}
+data class NotificationLetter(
+    val sender: User,
+    val receiver: User,
+    val title: String,
+    val content: String,
+)
