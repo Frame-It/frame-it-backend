@@ -12,6 +12,7 @@ data class RecruitingProjectDetailGuestModel(
     val spot: Spot,
     val timeOption: TimeOption,
     val shootingAt: LocalDateTime,
+    val hostId: Long,
     val status: Status,
     val myApplication: ApplicantModel,
 ) {
@@ -25,6 +26,7 @@ data class RecruitingProjectDetailGuestModel(
                 spot = project.spot,
                 timeOption = project.timeOption,
                 shootingAt = project.shootingAt,
+                hostId = project.host.id!!,
                 status = project.status,
                 myApplication = ApplicantModel.fromDomain(applicant),
             )

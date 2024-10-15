@@ -8,6 +8,7 @@ data class RecruitingProjectDetailGuestResponse(
     val spot: String,
     val timeOption: String,
     val shootingAt: LocalDateTime,
+    val hostId: Long,
     val status: String,
     val myApplication: ApplicantResponse,
 ) {
@@ -18,6 +19,7 @@ data class RecruitingProjectDetailGuestResponse(
                 spot = recruitingProjectDetailGuestModel.spot.name,
                 timeOption = recruitingProjectDetailGuestModel.timeOption.name,
                 shootingAt = recruitingProjectDetailGuestModel.shootingAt,
+                hostId = recruitingProjectDetailGuestModel.hostId,
                 status = recruitingProjectDetailGuestModel.status.name,
                 myApplication = ApplicantResponse.from(recruitingProjectDetailGuestModel.myApplication),
             )
