@@ -7,6 +7,6 @@ data class UserProfileUpdateCommand(
     val userId: Long,
     val updateUserId: Long,
     val profileImage: MultipartFile?,
-    val description: String,
-    val concepts: List<UserConcept>,
+    val description: String?,
+    val concepts: List<UserConcept>?,
 )

@@ -53,7 +53,7 @@ class UserMapper {
                 updateUserId = updateUserId,
                 profileImage = userProfileUpdateRequest.profileImage,
                 description = userProfileUpdateRequest.description,
-                concepts = userProfileUpdateRequest.concepts.map { UserConcept.fromCode(it) },
+                concepts = userProfileUpdateRequest.concepts?.map { UserConcept.fromCode(it) },
             )
 
         fun toCommand(

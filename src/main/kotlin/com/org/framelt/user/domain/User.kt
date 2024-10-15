@@ -41,19 +41,19 @@ class User(
 
     fun updateProfile(
         profileImageUrl: String?,
-        description: String,
-        concepts: List<UserConcept>,
+        description: String?,
+        concepts: List<UserConcept>?,
     ): User =
         User(
             id = this.id,
             name = this.name,
             nickname = nickname,
-            profileImageUrl = profileImageUrl,
+            profileImageUrl = profileImageUrl ?: this.profileImageUrl,
             bio = this.bio,
             identity = this.identity,
             career = this.career,
-            shootingConcepts = concepts,
-            description = description,
+            shootingConcepts = concepts ?: this.shootingConcepts,
+            description = description ?: this.description,
             birthDate = this.birthDate,
             notificationsEnabled = this.notificationsEnabled,
             email = this.email,
