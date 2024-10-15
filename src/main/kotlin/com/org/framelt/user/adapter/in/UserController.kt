@@ -3,6 +3,7 @@ package com.org.framelt.user.adapter.`in`
 import com.org.framelt.config.auth.Authorization
 import com.org.framelt.user.adapter.`in`.request.SignUpRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameCheckRequest
+import com.org.framelt.user.adapter.`in`.request.UserNicknameUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserProfileUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserQuitRequest
 import com.org.framelt.user.adapter.`in`.response.InProgressProjectsCheckResponse
@@ -110,6 +111,17 @@ class UserController(
     ): ResponseEntity<Unit> {
         val userProfileUpdateCommand = UserMapper.toCommand(userProfileUpdateRequest, userId, updateUserId)
         userProfileUseCase.updateProfile(userProfileUpdateCommand)
+        return ResponseEntity.noContent().build()
+    }
+
+    @PatchMapping("/users/{updateUserId}/nickname")
+    fun updateNickname(
+        @PathVariable updateUserId: Long,
+        @RequestBody userNicknameUpdateRequest: UserNicknameUpdateRequest,
+        @Authorization userId: Long,
+    ): ResponseEntity<Unit> {
+        val userProfileUpdateCommand = UserMapper.toCommand(userNicknameUpdateRequest, userId, updateUserId)
+        userProfileUseCase.updateNickname(userProfileUpdateCommand)
         return ResponseEntity.noContent().build()
     }
 }

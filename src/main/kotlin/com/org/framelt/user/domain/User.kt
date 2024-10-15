@@ -63,6 +63,10 @@ class User(
 
     fun isSignUpCompleted(): Boolean = identity != Identity.NONE
 
+    fun updateNickname(nickname: String) {
+        this.nickname = nickname
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

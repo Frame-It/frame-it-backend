@@ -9,6 +9,7 @@ import com.org.framelt.user.application.port.`in`.UserAccountInfoModel
 import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckCommand
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
+import com.org.framelt.user.application.port.`in`.UserNicknameUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserProfileUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserProfileUseCase
 import com.org.framelt.user.application.port.`in`.UserQuitCommand
@@ -93,5 +94,16 @@ class UserService(
                 concepts = userProfileUpdateCommand.concepts,
             )
         userCommandPort.save(updatedUser)
+    }
+
+    override fun updateNickname(userNicknameUpdateCommand: UserNicknameUpdateCommand) {
+        require(userNicknameUpdateCommand.userId == userNicknameUpdateCommand.updateUserId) { "닉네임 수정 권한이 없습니다." }
+
+        val nickname = userNicknameUpdateCommand.nickname
+        require(!isNicknameDuplicated(UserNicknameCheckCommand(nickname))) { "이미 존재하는 닉네임은 사용할 수 없습니다." }
+
+        val user = userQueryPort.readById(userNicknameUpdateCommand.userId)
+        user.updateNickname(nickname)
+        userCommandPort.save(user)
     }
 }

@@ -2,11 +2,13 @@ package com.org.framelt.user.common
 
 import com.org.framelt.user.adapter.`in`.request.SignUpRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameCheckRequest
+import com.org.framelt.user.adapter.`in`.request.UserNicknameUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserProfileUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserQuitRequest
 import com.org.framelt.user.adapter.`in`.response.UserStudioResponse
 import com.org.framelt.user.application.port.`in`.SignUpCommand
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckCommand
+import com.org.framelt.user.application.port.`in`.UserNicknameUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserProfileUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserQuitCommand
 import com.org.framelt.user.application.port.`in`.UserStudioModel
@@ -52,6 +54,17 @@ class UserMapper {
                 profileImage = userProfileUpdateRequest.profileImage,
                 description = userProfileUpdateRequest.description,
                 concepts = userProfileUpdateRequest.concepts.map { UserConcept.fromCode(it) },
+            )
+
+        fun toCommand(
+            userNicknameUpdateRequest: UserNicknameUpdateRequest,
+            userId: Long,
+            updateUserId: Long,
+        ): UserNicknameUpdateCommand =
+            UserNicknameUpdateCommand(
+                userId = userId,
+                updateUserId = updateUserId,
+                nickname = userNicknameUpdateRequest.nickname,
             )
 
         fun toResponse(userStudioModel: UserStudioModel): UserStudioResponse =
