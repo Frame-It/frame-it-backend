@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 공통 패턴 설정 -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %green([%thread]) %highlight(%-5level) %cyan(%logger{36}) - %msg%n"/>
+
+    <!-- local, test 프로필 -->
+    <springProfile name="local, test">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- dev 프로필 -->
+    <springProfile name="dev">
+        <appender name="ROLLING_FILE_DEV" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/frame-it.log</file>
+            <append>true</append>
+`
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>logs/frame-it-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <maxFileSize>100MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>5GB</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="ROLLING_FILE_DEV"/>
+        </root>
+    </springProfile>
+
+    <!-- prod 프로필 -->
+    <springProfile name="prod">
+        <appender name="ROLLING_FILE_PROD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/frame-it.log</file>
+            <append>true</append>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>logs/frame-it-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+                <maxFileSize>100MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>5GB</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="ROLLING_FILE_PROD"/>
+        </root>
+    </springProfile>
+
+</configuration>
