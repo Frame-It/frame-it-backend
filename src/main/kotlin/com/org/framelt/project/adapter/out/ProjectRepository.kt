@@ -24,8 +24,11 @@ class ProjectRepository(
         return projectEntity.toDomain()
     }
 
-    override fun readAll(projectFilterCommand: ProjectFilterCommand): List<Project> {
-        val projectEntities = projectQueryDslRepository.findAllByFilter(projectFilterCommand)
+    override fun readAllByFilterAndStatus(
+        projectFilterCommand: ProjectFilterCommand,
+        status: Status,
+    ): List<Project> {
+        val projectEntities = projectQueryDslRepository.findAllByFilterAndStatus(projectFilterCommand, status)
         return projectEntities.map { it.toDomain() }
     }
 

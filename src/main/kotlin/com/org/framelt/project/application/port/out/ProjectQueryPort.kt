@@ -7,7 +7,10 @@ import com.org.framelt.project.domain.Status
 interface ProjectQueryPort {
     fun readById(id: Long): Project
 
-    fun readAll(projectFilterCommand: ProjectFilterCommand): List<Project>
+    fun readAllByFilterAndStatus(
+        projectFilterCommand: ProjectFilterCommand,
+        status: Status,
+    ): List<Project>
 
     fun readByHostIdAndStatus(
         hostId: Long,

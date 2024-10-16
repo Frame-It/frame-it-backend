@@ -4,6 +4,7 @@ import com.org.framelt.project.adapter.out.QProjectJpaEntity.projectJpaEntity
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.domain.ProjectConcept
 import com.org.framelt.project.domain.Spot
+import com.org.framelt.project.domain.Status
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.LocationType
@@ -17,7 +18,10 @@ import java.time.LocalDate
 class ProjectQueryDslRepository(
     private val jpaQueryFactory: JPAQueryFactory,
 ) {
-    fun findAllByFilter(projectFilterCommand: ProjectFilterCommand): List<ProjectJpaEntity> =
+    fun findAllByFilterAndStatus(
+        projectFilterCommand: ProjectFilterCommand,
+        status: Status,
+    ): List<ProjectJpaEntity> =
         jpaQueryFactory
             .selectFrom(projectJpaEntity)
             .where(
@@ -27,6 +31,7 @@ class ProjectQueryDslRepository(
                 matchesSpot(projectFilterCommand.spot),
                 matchesLocationType(projectFilterCommand.locationType),
                 conceptsIn(projectFilterCommand.concepts),
+                matchesStatus(status),
             ).fetch()
 
     private fun matchesRecruitmentRole(recruitmentRole: String?): BooleanExpression? {
@@ -73,4 +78,6 @@ class ProjectQueryDslRepository(
         }
         return projectJpaEntity.concepts.any().`in`(concepts)
     }
+
+    private fun matchesStatus(status: Status): BooleanExpression = projectJpaEntity.status.eq(status)
 }
