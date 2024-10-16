@@ -21,6 +21,11 @@ class Project(
     var status: Status = Status.RECRUITING,
     var viewCount: Int = 0,
 ) {
+    init {
+        require(recruitmentRole != host.identity) { "모집 역할은 작성자와 다른 역할이어야 합니다." }
+        require(viewCount >= 0) { "조회수는 0 이상이어야 합니다." }
+    }
+
     fun update(
         hostId: Long,
         title: String,
