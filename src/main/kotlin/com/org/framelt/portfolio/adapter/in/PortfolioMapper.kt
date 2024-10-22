@@ -39,6 +39,7 @@ class PortfolioMapper {
                 title = readPortfolio.title,
                 userId = readPortfolio.manage.id!!,
                 userName = readPortfolio.manage.name,
+                userNickname = readPortfolio.manage.nickname,
                 identity = readPortfolio.manage.identity.toString(),
                 profileImageUrl = readPortfolio.manage.profileImageUrl,
                 description = readPortfolio.description,
