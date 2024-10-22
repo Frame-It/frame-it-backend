@@ -6,6 +6,7 @@ import com.org.framelt.project.application.port.`in`.UserProjectUseCase
 import com.org.framelt.project.common.ProjectMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
@@ -20,6 +21,16 @@ class UserProjectController(
         @Authorization userId: Long,
     ): ResponseEntity<UserProjectsResponse> {
         val command = ProjectMapper.toCommand(userId, status, includesApplicant)
+        val result = userProjectUseCase.readProjectsByUserId(command)
+        val response = ProjectMapper.toResponse(result)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/users/{userId}/projects")
+    fun showProjectsOfGuest(
+        @PathVariable userId: Long,
+    ): ResponseEntity<UserProjectsResponse> {
+        val command = ProjectMapper.toCommand(userId, null, false)
         val result = userProjectUseCase.readProjectsByUserId(command)
         val response = ProjectMapper.toResponse(result)
         return ResponseEntity.ok(response)
