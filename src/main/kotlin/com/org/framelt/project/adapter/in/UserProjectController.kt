@@ -15,12 +15,18 @@ class UserProjectController(
     val userProjectUseCase: UserProjectUseCase,
 ) {
     @GetMapping("/users/projects")
-    fun showProejctsOfUser(
+    fun showProjectsOfUser(
         @RequestParam(required = false) status: String?,
         @RequestParam(defaultValue = "false") includesApplicant: Boolean,
         @Authorization userId: Long,
     ): ResponseEntity<UserProjectsResponse> {
-        val command = ProjectMapper.toCommand(userId, status, includesApplicant)
+        val command =
+            ProjectMapper.toCommand(
+                viewerId = userId,
+                userId = userId,
+                status = status,
+                includesApplicant = includesApplicant,
+            )
         val result = userProjectUseCase.readProjectsByUserId(command)
         val response = ProjectMapper.toResponse(result)
         return ResponseEntity.ok(response)
@@ -29,8 +35,15 @@ class UserProjectController(
     @GetMapping("/users/{userId}/projects")
     fun showProjectsOfGuest(
         @PathVariable userId: Long,
+        @Authorization viewerId: Long,
     ): ResponseEntity<UserProjectsResponse> {
-        val command = ProjectMapper.toCommand(userId, null, false)
+        val command =
+            ProjectMapper.toCommand(
+                viewerId = viewerId,
+                userId = userId,
+                status = null,
+                includesApplicant = false,
+            )
         val result = userProjectUseCase.readProjectsByUserId(command)
         val response = ProjectMapper.toResponse(result)
         return ResponseEntity.ok(response)

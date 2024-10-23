@@ -47,7 +47,7 @@ class UserProjectService(
                     timeOption = it.timeOption,
                     spot = it.spot,
                     status = it.status,
-                    isHost = it.host == user,
+                    isHost = it.host.id == userProjectReadCommand.viewerId,
                 )
             }
 

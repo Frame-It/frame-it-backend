@@ -191,11 +191,13 @@ class ProjectMapper {
             )
 
         fun toCommand(
+            viewerId: Long,
             userId: Long,
             status: String?,
             includesApplicant: Boolean,
         ): UserProjectReadCommand =
             UserProjectReadCommand(
+                viewerId = viewerId,
                 userId = userId,
                 status = Status.fromNullable(status),
                 includesApplicant = includesApplicant,
