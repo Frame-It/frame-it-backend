@@ -14,4 +14,6 @@ interface OAuthUserJpaRepository : Repository<OAuthUserJpaEntity, Long> {
     fun deleteByUser(userJpaEntity: UserJpaEntity)
 
     fun findById(id: Long): OAuthUserJpaEntity?
+
+    fun findByEmail(email: String): OAuthUserJpaEntity?
 }
