@@ -12,4 +12,8 @@ interface OAuthUserJpaRepository : Repository<OAuthUserJpaEntity, Long> {
     fun save(oAuthUserJpaEntity: OAuthUserJpaEntity): OAuthUserJpaEntity
 
     fun deleteByUser(userJpaEntity: UserJpaEntity)
+
+    fun findById(id: Long): OAuthUserJpaEntity?
+
+    fun findByEmail(email: String): OAuthUserJpaEntity?
 }
