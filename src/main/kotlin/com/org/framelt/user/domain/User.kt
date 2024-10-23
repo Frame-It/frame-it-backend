@@ -19,20 +19,6 @@ class User(
     val deviseToken: String? = null,
     var isQuit: Boolean = false,
 ) {
-    fun fillProfile(
-        name: String,
-        nickname: String,
-        identity: Identity,
-        birthDate: LocalDate,
-        notificationsEnabled: Boolean,
-    ) {
-        this.name = name
-        this.nickname = nickname
-        this.identity = identity
-        this.birthDate = birthDate
-        this.notificationsEnabled = notificationsEnabled
-    }
-
     fun quit() {
         isQuit = true
         nickname = "quit_" + UUID.randomUUID().toString()
@@ -61,8 +47,6 @@ class User(
             isQuit = this.isQuit,
         )
 
-    fun isSignUpCompleted(): Boolean = identity != Identity.NONE
-
     fun updateNickname(nickname: String) {
         this.nickname = nickname
     }
@@ -77,18 +61,4 @@ class User(
     }
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
-
-    companion object {
-        fun beforeCompleteSignUp(email: String) =
-            User(
-                name = IN_SIGN_UP_PROGRESS,
-                nickname = IN_SIGN_UP_PROGRESS + UUID.randomUUID().toString(),
-                identity = Identity.NONE,
-                shootingConcepts = emptyList(),
-                notificationsEnabled = false,
-                email = email,
-            )
-
-        private const val IN_SIGN_UP_PROGRESS = "Unknown"
-    }
 }

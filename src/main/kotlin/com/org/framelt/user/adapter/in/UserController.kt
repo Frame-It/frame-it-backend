@@ -1,7 +1,6 @@
 package com.org.framelt.user.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
-import com.org.framelt.user.adapter.`in`.request.SignUpRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameCheckRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserProfileUpdateRequest
@@ -10,7 +9,6 @@ import com.org.framelt.user.adapter.`in`.response.InProgressProjectsCheckRespons
 import com.org.framelt.user.adapter.`in`.response.UserAccountInfoResponse
 import com.org.framelt.user.adapter.`in`.response.UserNicknameCheckResponse
 import com.org.framelt.user.adapter.`in`.response.UserStudioResponse
-import com.org.framelt.user.application.port.`in`.SignUpUseCase
 import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
 import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
 import com.org.framelt.user.application.port.`in`.UserProfileUseCase
@@ -24,29 +22,17 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class UserController(
-    val signUpUseCase: SignUpUseCase,
     val userAccountReadUseCase: UserAccountReadUseCase,
     val userStudioUseCase: UserStudioUseCase,
     val userNicknameCheckUseCase: UserNicknameCheckUseCase,
     val userQuitUseCase: UserQuitUseCase,
     val userProfileUseCase: UserProfileUseCase,
 ) {
-    @PutMapping("/users")
-    fun signUp(
-        @Authorization userId: Long,
-        @RequestBody signUpRequest: SignUpRequest,
-    ): ResponseEntity<Unit> {
-        val signUpCommand = UserMapper.toCommand(signUpRequest, userId)
-        signUpUseCase.signUp(signUpCommand)
-        return ResponseEntity.ok().build()
-    }
-
     @GetMapping("/users")
     fun getAccountInfo(
         @Authorization userId: Long,

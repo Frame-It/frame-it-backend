@@ -23,4 +23,11 @@ class OAuthUserRepository(
         val savedOAuthUserJpaEntity = oAuthUserJpaRepository.save(oAuthUserJpaEntity)
         return savedOAuthUserJpaEntity.toModel()
     }
+
+    override fun readById(id: Long): OAuthUserModel {
+        val oAuthUserJpaEntity =
+            oAuthUserJpaRepository.findById(id)
+                ?: throw IllegalArgumentException("OAuth 회원이 존재하지 않습니다: $id")
+        return oAuthUserJpaEntity.toModel()
+    }
 }

@@ -8,4 +8,6 @@ interface OAuthUserQueryPort {
         provider: OAuthProvider,
         providerUserId: String,
     ): OAuthUserModel?
+
+    fun readById(id: Long): OAuthUserModel
 }

@@ -12,17 +12,15 @@ import com.org.framelt.user.application.port.`in`.UserNicknameUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserProfileUpdateCommand
 import com.org.framelt.user.application.port.`in`.UserQuitCommand
 import com.org.framelt.user.application.port.`in`.UserStudioModel
+import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.UserConcept
 
 class UserMapper {
     companion object {
-        fun toCommand(
-            signUpRequest: SignUpRequest,
-            userId: Long,
-        ): SignUpCommand =
+        fun toCommand(signUpRequest: SignUpRequest): SignUpCommand =
             SignUpCommand(
-                id = userId,
-                identity = signUpRequest.identity,
+                oauthUserId = signUpRequest.oauthUserId,
+                identity = Identity.of(signUpRequest.identity),
                 name = signUpRequest.name,
                 birthDate = signUpRequest.birthDate,
                 nickname = signUpRequest.nickname,

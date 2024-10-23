@@ -20,6 +20,10 @@ class AuthInterceptor(
         if (CorsUtils.isPreFlightRequest(request)) {
             return true
         }
+        // 회원가입 요청은 인증 없이 허용(HTTP 메서드에 따른 구분하기 전 임시로 설정)
+        if (request.requestURI == "/users" && request.method == "POST") {
+            return true
+        }
         val authHeader =
             request.getHeader(HttpHeaders.AUTHORIZATION)
                 ?: throw IllegalArgumentException("인증 정보가 없습니다.")
