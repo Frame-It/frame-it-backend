@@ -1,16 +1,16 @@
 package com.org.framelt.user.application.service
 
-import com.org.framelt.notification.application.service.NotificationLetter
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
+import com.org.framelt.user.adapter.out.persistence.OAuthUserQueryPort
 import com.org.framelt.user.application.port.`in`.LoginCommand
 import com.org.framelt.user.application.port.`in`.LoginResult
 import com.org.framelt.user.application.port.`in`.LoginUseCase
 import com.org.framelt.user.application.port.out.JwtPort
 import com.org.framelt.user.application.port.out.oauth.AuthPort
-import com.org.framelt.user.application.port.out.persistence.UserCommandPort
+import com.org.framelt.user.application.port.out.persistence.OAuthUserCommandPort
+import com.org.framelt.user.application.port.out.persistence.OAuthUserModel
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
-import com.org.framelt.user.domain.User
-import org.springframework.context.ApplicationEventPublisher
+import com.org.framelt.user.domain.Identity
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,34 +18,28 @@ class AuthService(
     val authPort: AuthPort,
     val jwtPort: JwtPort,
     val userQueryPort: UserQueryPort,
-    val userCommandPort: UserCommandPort,
-    val applicationEventPublisher: ApplicationEventPublisher,
+    val oauthUserQueryPort: OAuthUserQueryPort,
+    val oauthUserCommandPort: OAuthUserCommandPort,
 ) : LoginUseCase {
     override fun login(loginCommand: LoginCommand): LoginResult {
         val authProfile = authPort.getProfile(loginCommand.provider, loginCommand.code, loginCommand.redirectUri)
         val provider = OAuthProvider.of(loginCommand.provider)
-        val user =
-            userQueryPort.findByProviderAndProviderUserId(provider, authProfile.providerUserId)
-                ?: signUp(authProfile.email, provider, authProfile.providerUserId)
+        val oauthUser =
+            oauthUserQueryPort.findByProviderAndProviderUserId(provider, authProfile.providerUserId)
+                ?: oauthUserCommandPort.save(
+                    OAuthUserModel(
+                        provider = provider,
+                        providerUserId = authProfile.providerUserId,
+                        email = authProfile.email,
+                    ),
+                )
+        val user = oauthUser.user
 
         return LoginResult(
-            accessToken = jwtPort.createToken(user.id!!.toString()),
-            signUpCompleted = user.isSignUpCompleted(),
-            identity = user.identity,
+            accessToken = jwtPort.createToken(user?.id.toString()),
+            signUpCompleted = user != null,
+            oauthUserId = oauthUser.id!!,
+            identity = user?.identity ?: Identity.NONE,
         )
-    }
-
-    private fun signUp(
-        email: String,
-        provider: OAuthProvider,
-        providerUserId: String,
-    ): User {
-        val saveUser = userCommandPort.save(
-            user = User.beforeCompleteSignUp(email),
-            provider = provider,
-            providerUserId = providerUserId,
-        )
-        applicationEventPublisher.publishEvent(NotificationLetter(saveUser, saveUser, "가입을 축하드려요!", ""))
-        return saveUser
     }
 }

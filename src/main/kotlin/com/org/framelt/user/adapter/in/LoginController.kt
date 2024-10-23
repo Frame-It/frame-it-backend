@@ -26,6 +26,7 @@ class LoginController(
             LoginResponse(
                 accessToken = loginResult.accessToken,
                 signUpCompleted = loginResult.signUpCompleted,
+                oauthUserId = loginResult.oauthUserId,
                 identity = loginResult.identity.name,
             )
         return ResponseEntity.ok(response)
