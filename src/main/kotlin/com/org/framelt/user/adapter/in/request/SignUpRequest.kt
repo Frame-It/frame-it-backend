@@ -8,5 +8,6 @@ data class SignUpRequest(
     val birthDate: LocalDate,
     val nickname: String,
     val notificationsEnabled: Boolean,
+    val deviseToken: String?,
     val oauthUserId: Long,
 )

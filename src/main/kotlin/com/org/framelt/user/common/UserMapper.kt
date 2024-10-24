@@ -24,6 +24,7 @@ class UserMapper {
                 name = signUpRequest.name,
                 birthDate = signUpRequest.birthDate,
                 nickname = signUpRequest.nickname,
+                deviseToken = signUpRequest.deviseToken,
                 notificationsEnabled = signUpRequest.notificationsEnabled,
             )
 

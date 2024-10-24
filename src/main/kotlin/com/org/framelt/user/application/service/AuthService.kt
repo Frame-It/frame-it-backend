@@ -63,6 +63,7 @@ class AuthService(
                 nickname = signUpCommand.nickname,
                 notificationsEnabled = signUpCommand.notificationsEnabled,
                 email = oauthUser.email,
+                deviseToken = signUpCommand.deviseToken,
                 shootingConcepts = emptyList(),
             )
         val savedUser = userCommandPort.save(user)

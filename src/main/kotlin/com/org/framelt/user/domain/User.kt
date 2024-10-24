@@ -16,7 +16,7 @@ class User(
     var birthDate: LocalDate? = null,
     var notificationsEnabled: Boolean, // 보유
     var email: String,
-    val deviseToken: String? = null,
+    var deviseToken: String? = null,
     var isQuit: Boolean = false,
 ) {
     fun quit() {
@@ -49,6 +49,10 @@ class User(
 
     fun updateNickname(nickname: String) {
         this.nickname = nickname
+    }
+
+    fun updateDeviseToken(deviseToken: String?) {
+        this.deviseToken = deviseToken
     }
 
     override fun equals(other: Any?): Boolean {
