@@ -66,6 +66,8 @@ class AuthService(
                 shootingConcepts = emptyList(),
             )
         val savedUser = userCommandPort.save(user)
+        val signupCompletedOauthUSer = oauthUser.completeSignup(savedUser)
+        oauthUserCommandPort.save(signupCompletedOauthUSer)
         return SignUpResult(
             accessToken = jwtPort.createToken(savedUser.id.toString()),
             identity = savedUser.identity,

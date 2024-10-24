@@ -9,4 +9,6 @@ data class OAuthUserModel(
     val provider: OAuthProvider,
     val providerUserId: String,
     val email: String,
-)
+) {
+    fun completeSignup(user: User): OAuthUserModel = copy(user = user)
+}
