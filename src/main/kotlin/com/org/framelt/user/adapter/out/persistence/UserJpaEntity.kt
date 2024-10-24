@@ -17,7 +17,6 @@ import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDate
 
 @Entity(name = "users")
-@SQLRestriction("is_quit = false")
 class UserJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

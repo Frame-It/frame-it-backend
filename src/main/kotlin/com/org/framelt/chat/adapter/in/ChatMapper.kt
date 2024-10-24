@@ -16,18 +16,20 @@ class ChatMapper {
         }
 
         fun toResponse(sender: User, chat: Chatting): ChattingResponse {
-            // Map participants in the chat, excluding the sender themselves
             val participantResponses = chat.participants
-                .filter { it.user.id != sender.id } // Exclude the sender from participants list
+                .filter { it.user.id != sender.id }
                 .map { participant ->
                     ChatUserInfoResponse(
-                        id = participant.user.id ?: 0L, // Handle null safety for ID
+                        id = participant.user.id ?: 0L,
                         name = participant.user.name,
-                        profileImageUrl = participant.user.profileImageUrl ?: "" // Use participant's profile image
+                        profileImageUrl = participant.user.profileImageUrl ?: ""
                     )
                 }
+            val isQuit = chat.participants
+                .filter { it.user.id != sender.id }
+                .any { it.user.isQuit }
 
-            // Map messages and check whether each message is sent by the current user (isMe)
+
             val messageResponses = chat.messages.map { message ->
                 MessageResponse(
                     messageId = message.id,
@@ -45,9 +47,9 @@ class ChatMapper {
             return ChattingResponse(
                 chatId = chat.id,
                 participants = participantResponses,
-                messages = messageResponses
+                messages = messageResponses,
+                isQuit = isQuit
             )
         }
-
     }
 }

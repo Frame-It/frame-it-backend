@@ -33,6 +33,11 @@ class ChatService(
 
     override fun sendMessage(command: SendMessageCommand) {
         val chat = chatReadPort.getById(command.chatId)
+        chat.participants.forEach {
+            if (it.user.nickname.startsWith("quit_")) {
+                throw IllegalArgumentException("회원탈퇴된 사용자입니다.")
+            }
+        }
         val sender = userQueryPort.readById(command.userId)
         userQueryPort.readById(command.receiverId)
         chat.addMessage(sender, command.content)
