@@ -1,5 +1,7 @@
 package com.org.framelt.user.application.service
 
+import com.org.framelt.notification.adapter.out.NotificationType
+import com.org.framelt.notification.application.service.NotificationLetter
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import com.org.framelt.user.adapter.out.persistence.OAuthUserQueryPort
 import com.org.framelt.user.application.port.`in`.LoginCommand
@@ -16,7 +18,9 @@ import com.org.framelt.user.application.port.out.persistence.OAuthUserModel
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.User
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class AuthService(
@@ -26,6 +30,7 @@ class AuthService(
     val userCommandPort: UserCommandPort,
     val oauthUserQueryPort: OAuthUserQueryPort,
     val oauthUserCommandPort: OAuthUserCommandPort,
+    val applicationEventPublisher: ApplicationEventPublisher,
 ) : LoginUseCase,
     SignUpUseCase {
     override fun login(loginCommand: LoginCommand): LoginResult {
@@ -69,6 +74,7 @@ class AuthService(
         val savedUser = userCommandPort.save(user)
         val signupCompletedOauthUSer = oauthUser.completeSignup(savedUser)
         oauthUserCommandPort.save(signupCompletedOauthUSer)
+        applicationEventPublisher.publishEvent(NotificationLetter(savedUser,savedUser,"가입 축하드려요!", "", user.id!!, NotificationType.ME, LocalDateTime.now()))
         return SignUpResult(
             accessToken = jwtPort.createToken(savedUser.id.toString()),
             identity = savedUser.identity,
