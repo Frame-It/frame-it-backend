@@ -26,14 +26,16 @@ class NotificationService(
     private val userQueryPort: UserQueryPort,
 ) : NotificationDeleteUseCase, NotificationMarkAsReadUseCase, NotificationQueryUseCase {
 
-    private fun addNotification(sender: User, receiver: User, title: String, content: String) {
+    private fun addNotification(letter: NotificationLetter) {
         val notification = Notification(
             id = 0L,
-            sender = sender,
-            receiver = receiver,
-            title = title,
-            content = content,
-            sendTime = LocalDateTime.now(),
+            sender = letter.sender,
+            receiver = letter.receiver,
+            title = letter.title,
+            content = letter.content,
+            sendTime = letter.time,
+            notificationType = letter.type.name,
+            resourcesId = letter.id,
             isRead = false
         )
         notificationCommendPort.save(notification)
@@ -58,7 +60,7 @@ class NotificationService(
     @EventListener
     @Async
     fun sendTo(letter: NotificationLetter) {
-        addNotification(letter.sender, letter.receiver, letter.title, letter.content)
+        addNotification(letter)
         notificationSendPort.sendTo(letter)
     }
 }

@@ -30,6 +30,11 @@ class NotificationJpaEntity(
     @Column(name = "send_time", nullable = false)
     val sendTime: LocalDateTime,
 
+    @Column(nullable = false)
+    val resourcesId: Long,
+
+    val notificationType: String,
+
     @Column(name = "is_read", nullable = false)
     var isRead: Boolean
 ) {
@@ -41,6 +46,8 @@ class NotificationJpaEntity(
             title = this.title,
             content = this.content,
             sendTime = this.sendTime,
+            resourcesId = this.resourcesId,
+            notificationType = this.notificationType,
             isRead = this.isRead
         )
     }

@@ -10,6 +10,8 @@ class Notification(
     val title: String,
     val content: String,
     val sendTime: LocalDateTime,
+    val resourcesId: Long,
+    val notificationType: String,
     var isRead: Boolean,
 ) {
     fun markAsRead() {

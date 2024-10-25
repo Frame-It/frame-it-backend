@@ -18,6 +18,8 @@ class NotificationRepository(
             title = notification.title,
             content = notification.content,
             sendTime = notification.sendTime,
+            resourcesId = notification.resourcesId,
+            notificationType = notification.notificationType,
             isRead = notification.isRead
         )
 

@@ -46,7 +46,13 @@ class FcmMessageSender(
         if (deviceToken.isNullOrEmpty()) {
             return
         }
-
+        val data = mapOf(
+            "title" to letter.title,
+            "content" to letter.content,
+            "type" to letter.type.name,
+            "id" to letter.id.toString(),
+            "time" to letter.time.toString(),
+        )
         val notification = Notification.builder()
             .setTitle(letter.title)
             .setBody(letter.content)
@@ -54,6 +60,7 @@ class FcmMessageSender(
         val message = Message.builder()
             .setToken(deviceToken)
             .setNotification(notification)
+            .putAllData(data)
             .build()
 
         try {
