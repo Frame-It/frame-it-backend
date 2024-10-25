@@ -29,9 +29,9 @@ class UserProjectService(
                         val recruitingProjectsAsApplicant = projectApplicantQueryPort.readAllByApplicantId(user.id!!).map { it.project }
                         addAll(recruitingProjectsAsApplicant)
                     }
-                }.distinctBy { it.id }
+                }
         val inProgressOrCompletedProjects = projectMemberQueryPort.readAllByUserId(userProjectReadCommand.userId).map { it.project }
-        val userProjects = recruitingProjects + inProgressOrCompletedProjects.sortedByDescending { it.id }
+        val userProjects = (recruitingProjects + inProgressOrCompletedProjects.sortedByDescending { it.id }).distinctBy { it.id }
 
         val filteredProjects =
             userProjectReadCommand.status?.let { status ->
