@@ -1,7 +1,6 @@
 package com.org.framelt.project.application.port.`in`
 
 import com.org.framelt.project.domain.ProjectConcept
-import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.LocationType
@@ -15,7 +14,7 @@ data class ProjectAnnouncementDetailModel(
     val shootingAt: LocalDateTime,
     val locationType: LocationType,
     val timeOption: TimeOption,
-    val spot: Spot,
+    val spot: String,
     val hostConcepts: List<UserConcept>,
     val projectConcepts: List<ProjectConcept>,
     val conceptPhotoUrls: List<String>,

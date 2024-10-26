@@ -16,7 +16,7 @@ data class CompletedProjectDetailGuestResponse(
         fun from(completedProjectDetailModel: CompletedProjectDetailGuestModel) =
             CompletedProjectDetailGuestResponse(
                 title = completedProjectDetailModel.title,
-                spot = completedProjectDetailModel.spot.name,
+                spot = completedProjectDetailModel.spot,
                 shootingAt = completedProjectDetailModel.shootingAt,
                 status = completedProjectDetailModel.status.name,
                 isReviewDone = completedProjectDetailModel.isReviewDone,

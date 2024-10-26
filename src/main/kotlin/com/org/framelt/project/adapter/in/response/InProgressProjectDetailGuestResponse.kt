@@ -16,7 +16,7 @@ data class InProgressProjectDetailGuestResponse(
         fun from(inProgressProjectDetailModel: InProgressProjectDetailModel) =
             InProgressProjectDetailGuestResponse(
                 title = inProgressProjectDetailModel.title,
-                spot = inProgressProjectDetailModel.spot.name,
+                spot = inProgressProjectDetailModel.spot,
                 shootingAt = inProgressProjectDetailModel.shootingAt,
                 status = inProgressProjectDetailModel.status.name,
                 host = InProgressProjectHostResponse.from(inProgressProjectDetailModel.host),

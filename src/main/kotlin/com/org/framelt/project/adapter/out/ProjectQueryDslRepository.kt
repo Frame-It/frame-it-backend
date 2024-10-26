@@ -3,7 +3,6 @@ package com.org.framelt.project.adapter.out
 import com.org.framelt.project.adapter.out.QProjectJpaEntity.projectJpaEntity
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.domain.ProjectConcept
-import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.Status
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
@@ -62,7 +61,7 @@ class ProjectQueryDslRepository(
         if (StringUtils.isNullOrEmpty(spot)) {
             return null
         }
-        return projectJpaEntity.spot.eq(Spot.of(spot!!))
+        return projectJpaEntity.spot.eq(spot)
     }
 
     private fun matchesLocationType(locationType: String?): BooleanExpression? {

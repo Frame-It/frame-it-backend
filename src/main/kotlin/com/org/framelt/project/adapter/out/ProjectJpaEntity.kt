@@ -26,8 +26,10 @@ class ProjectJpaEntity(
     val timeOption: TimeOption,
     @Enumerated(EnumType.STRING)
     val locationType: LocationType,
-    @Enumerated(EnumType.STRING)
-    val spot: Spot,
+    @Column(nullable = false)
+    val spot: String,
+    @Column(nullable = false)
+    val detailedSpot: String,
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = ProjectConcept::class)
     @CollectionTable(
@@ -61,6 +63,7 @@ class ProjectJpaEntity(
                 timeOption = project.timeOption,
                 locationType = project.locationType,
                 spot = project.spot,
+                detailedSpot = project.detailedSpot,
                 concepts = project.concepts,
                 conceptPhotoUrls = project.conceptPhotoUrls,
                 description = project.description,
@@ -81,6 +84,7 @@ fun ProjectJpaEntity.toDomain() =
         timeOption = timeOption,
         locationType = locationType,
         spot = spot,
+        detailedSpot = detailedSpot,
         concepts = concepts,
         conceptPhotoUrls = conceptPhotoUrls,
         description = description,
