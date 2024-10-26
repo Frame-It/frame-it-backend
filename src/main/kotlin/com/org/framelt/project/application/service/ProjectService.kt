@@ -2,7 +2,6 @@ package com.org.framelt.project.application.service
 
 import com.org.framelt.notification.application.service.NotificationLetter
 import com.org.framelt.notification.domain.NotificationEventType
-import com.org.framelt.notification.domain.NotificationReceiverType
 import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailGuestModel
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailHostModel
@@ -315,7 +314,8 @@ class ProjectService(
             title = "${applicant.nickname}님이 지원했어요!",
             content = "프로젝트: ${project.title}",
             id = project.id!!,
-            receiverType = NotificationReceiverType.PROJECT_HOST,
+            projectStatus = project.status,
+            isHost = true,
             eventType = NotificationEventType.PROJECT_APPLICATION,
         )
         return ProjectApplyModel(project.title)
@@ -385,7 +385,8 @@ class ProjectService(
             title = "프로젝트를 시작합니다.",
             content = "프로젝트: ${project.title}",
             id = project.id!!,
-            receiverType = NotificationReceiverType.PROJECT_HOST,
+            projectStatus = project.status,
+            isHost = host.isHost,
             eventType = NotificationEventType.PROJECT_START,
         )
         sendNotificationTo(
@@ -394,7 +395,8 @@ class ProjectService(
             title = "프로젝트를 시작합니다.",
             content = "프로젝트: ${project.title}",
             id = project.id,
-            receiverType = NotificationReceiverType.PROJECT_GUEST,
+            projectStatus = project.status,
+            isHost = guest.isHost,
             eventType = NotificationEventType.PROJECT_START,
         )
     }
@@ -408,15 +410,17 @@ class ProjectService(
         projectMember.completeProject()
         projectMemberCommandPort.save(projectMember)
 
-        val projectMembers = projectMemberQueryPort.readAllByProjectId(projectCompleteCommand.projectId)
+        val project = projectMember.project
+        val projectMembers = projectMemberQueryPort.readAllByProjectId(project.id!!)
         val anotherMember = projectMembers.first { it.member.id != projectCompleteCommand.memberId }
         sendNotificationTo(
             sender = projectMember.member,
             receiver = anotherMember.member,
             title = "${projectMember.member.nickname}님이 프로젝트를 완료했어요.",
-            content = "프로젝트: ${projectMember.project.title}",
-            id = projectCompleteCommand.projectId,
-            receiverType = if (anotherMember.isHost) NotificationReceiverType.PROJECT_HOST else NotificationReceiverType.PROJECT_GUEST,
+            content = "프로젝트: ${project.title}",
+            id = project.id,
+            projectStatus = project.status,
+            isHost = anotherMember.isHost,
             eventType = NotificationEventType.PROJECT_COMPLETE,
         )
         if (projectMembers.all { it.hasCompletedProject }) {
@@ -433,7 +437,8 @@ class ProjectService(
         title: String,
         content: String,
         id: Long,
-        receiverType: NotificationReceiverType,
+        projectStatus: Status,
+        isHost: Boolean,
         eventType: NotificationEventType,
     ) {
         if (!receiver.notificationsEnabled) {
@@ -446,7 +451,8 @@ class ProjectService(
                 title = title,
                 content = content,
                 id = id,
-                receiverType = receiverType,
+                projectStatus = projectStatus,
+                isHost = isHost,
                 eventType = eventType,
                 time = LocalDateTime.now(),
             ),

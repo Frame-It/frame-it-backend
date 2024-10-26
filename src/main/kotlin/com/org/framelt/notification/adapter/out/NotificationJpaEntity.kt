@@ -2,7 +2,7 @@ package com.org.framelt.notification.adapter.out
 
 import com.org.framelt.notification.domain.Notification
 import com.org.framelt.notification.domain.NotificationEventType
-import com.org.framelt.notification.domain.NotificationReceiverType
+import com.org.framelt.project.domain.Status
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.toDomain
 import jakarta.persistence.*
@@ -29,8 +29,10 @@ class NotificationJpaEntity(
     @Column(nullable = false)
     val resourcesId: Long,
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    val receiverType: NotificationReceiverType,
+    @Column(nullable = true)
+    val projectStatus: Status?,
+    @Column(nullable = true)
+    val isHost: Boolean?,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val eventType: NotificationEventType,
@@ -46,7 +48,8 @@ class NotificationJpaEntity(
             content = this.content,
             sendTime = this.sendTime,
             resourcesId = this.resourcesId,
-            receiverType = this.receiverType,
+            projectStatus = this.projectStatus,
+            isHost = this.isHost,
             eventType = this.eventType,
             isRead = this.isRead,
         )
