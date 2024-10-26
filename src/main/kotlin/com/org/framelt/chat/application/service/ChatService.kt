@@ -80,7 +80,7 @@ class ChatService(
                 chatId = chatRoom.id,
                 participants = participantInfo,
                 lastMessage = lastMessage,
-                lastMessageTime = lastMessageTime?.toString() ?: "No timestamp available", // Convert LocalDateTime to string for display
+                lastMessageTime = lastMessageTime?.toString() ?: "No timestamp available",
                 unreadMessageCount = unreadMessageCount,
             )
         }

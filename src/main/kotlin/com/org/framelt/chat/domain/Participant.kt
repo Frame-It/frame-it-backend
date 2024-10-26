@@ -7,8 +7,7 @@ data class Participant(
     val id: Long = 0L,
     val user: User,
     var unreadCount: Int = 0,
-    var lastMessageTime: LocalDateTime? = null, // New field to store the last message timestamp
-
+    var lastMessageTime: LocalDateTime? = null,
 ) {
     constructor(user: User) : this(0, user, 0)
 

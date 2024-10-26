@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
-import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDate
 
 @Entity(name = "users")
@@ -46,7 +45,7 @@ class UserJpaEntity(
     @Column(nullable = true)
     val birthDate: LocalDate?,
     @Column(nullable = false)
-    val notificationsEnabled: Boolean, // 보유
+    val notificationsEnabled: Boolean,
     @Column(nullable = true)
     val deviseToken: String? = null,
     @Column(nullable = false, unique = true)

@@ -12,5 +12,5 @@ data class PortfolioDetailResponse(
     val photosUrl: List<String>,
     val hashtags: List<String>? = null,
     val collaborators: String? = null,
-    val createdAt: String
+    val createdAt: String,
 )

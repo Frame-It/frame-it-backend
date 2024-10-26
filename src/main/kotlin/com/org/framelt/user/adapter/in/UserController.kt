@@ -5,11 +5,28 @@ import com.org.framelt.user.adapter.`in`.request.UserNicknameCheckRequest
 import com.org.framelt.user.adapter.`in`.request.UserNicknameUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserProfileUpdateRequest
 import com.org.framelt.user.adapter.`in`.request.UserQuitRequest
-import com.org.framelt.user.adapter.`in`.response.*
-import com.org.framelt.user.application.port.`in`.*
+import com.org.framelt.user.adapter.`in`.response.InProgressProjectsCheckResponse
+import com.org.framelt.user.adapter.`in`.response.UserAccountInfoResponse
+import com.org.framelt.user.adapter.`in`.response.UserDeviceTokenResponse
+import com.org.framelt.user.adapter.`in`.response.UserNicknameCheckResponse
+import com.org.framelt.user.adapter.`in`.response.UserStudioResponse
+import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
+import com.org.framelt.user.application.port.`in`.UserDeviseTokenUseCase
+import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
+import com.org.framelt.user.application.port.`in`.UserProfileUseCase
+import com.org.framelt.user.application.port.`in`.UserQuitUseCase
+import com.org.framelt.user.application.port.`in`.UserStudioUseCase
 import com.org.framelt.user.common.UserMapper
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class UserController(
