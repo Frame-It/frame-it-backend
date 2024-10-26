@@ -51,7 +51,7 @@ class FcmMessageSender(
             mapOf(
                 "title" to letter.title,
                 "content" to letter.content,
-                "projectStatus" to letter.projectStatus?.name,
+                "projectStatus" to (letter.projectStatus?.name ?: "null"),
                 "isHost" to letter.isHost.toString(),
                 "eventType" to letter.eventType.name,
                 "id" to letter.id.toString(),
