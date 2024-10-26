@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-admin:9.2.0'
     implementation("software.amazon.awssdk:s3")
     runtimeOnly 'com.h2database:h2'
+    implementation("com.google.firebase:firebase-admin:9.2.0")
 
     // Querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
