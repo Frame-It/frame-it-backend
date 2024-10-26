@@ -1,5 +1,6 @@
 package com.org.framelt.notification.domain
 
+import com.org.framelt.project.domain.Status
 import com.org.framelt.user.domain.User
 import java.time.LocalDateTime
 
@@ -11,7 +12,8 @@ class Notification(
     val content: String,
     val sendTime: LocalDateTime,
     val resourcesId: Long,
-    val receiverType: NotificationReceiverType,
+    val projectStatus: Status?,
+    val isHost: Boolean?,
     val eventType: NotificationEventType,
     var isRead: Boolean,
 ) {

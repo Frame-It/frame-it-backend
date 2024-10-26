@@ -2,7 +2,6 @@ package com.org.framelt.user.application.service
 
 import com.org.framelt.notification.application.service.NotificationLetter
 import com.org.framelt.notification.domain.NotificationEventType
-import com.org.framelt.notification.domain.NotificationReceiverType
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import com.org.framelt.user.adapter.out.persistence.OAuthUserQueryPort
 import com.org.framelt.user.application.port.`in`.LoginCommand
@@ -82,7 +81,8 @@ class AuthService(
                 title = "프레이밋 가입을 축하해요!",
                 content = "",
                 id = savedUser.id!!,
-                receiverType = NotificationReceiverType.ME,
+                projectStatus = null,
+                isHost = null,
                 eventType = NotificationEventType.SIGN_UP,
                 time = LocalDateTime.now(),
             ),

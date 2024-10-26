@@ -35,7 +35,8 @@ class NotificationService(
                 content = letter.content,
                 sendTime = letter.time,
                 resourcesId = letter.id,
-                receiverType = letter.receiverType,
+                projectStatus = letter.projectStatus,
+                isHost = letter.isHost,
                 eventType = letter.eventType,
                 isRead = false,
             )
@@ -55,7 +56,19 @@ class NotificationService(
     override fun getNotificationStatus(command: NotificationReadCommand): List<NotificationResponse> {
         val user = userQueryPort.readById(command.userId)
         val notification = notificationReadPort.findAllByReceiverId(command.userId)
-        return notification.map { NotificationResponse(it.id, it.title, it.content, it.sendTime, it.isRead) }.toList()
+        return notification
+            .map {
+                NotificationResponse(
+                    id = it.id,
+                    title = it.title,
+                    content = it.content,
+                    sendTime = it.sendTime,
+                    isRead = it.isRead,
+                    projectStatus = it.projectStatus?.name,
+                    isHost = it.isHost,
+                    eventType = it.eventType.name,
+                )
+            }.toList()
     }
 
     @EventListener
