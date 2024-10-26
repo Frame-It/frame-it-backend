@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
+
 @Repository
 class PortfolioRepository(
     private val portfolioJpaRepository: PortfolioJpaRepository,
@@ -39,21 +40,20 @@ class PortfolioRepository(
     }
 
     override fun readAll(pageable: Pageable): Page<Portfolio> {
-        val sortedPageable = PageRequest.of(
-            pageable.pageNumber,
-            pageable.pageSize,
-            Sort.by(Sort.Direction.DESC, "createAt")
-        )
+        val sortedPageable =
+            PageRequest.of(
+                pageable.pageNumber,
+                pageable.pageSize,
+                Sort.by(Sort.Direction.DESC, "createAt"),
+            )
 
         return portfolioJpaRepository.findAll(sortedPageable).map { toDomain(it) }
     }
 
-
     override fun readByPhotographer(pageable: Pageable): Page<Portfolio> =
         portfolioJpaRepository.findAllByPhotographer(pageable).map { toDomain(it) }
 
-    override fun readByModel(pageable: Pageable): Page<Portfolio> =
-        portfolioJpaRepository.findAllByModel(pageable).map { toDomain(it) }
+    override fun readByModel(pageable: Pageable): Page<Portfolio> = portfolioJpaRepository.findAllByModel(pageable).map { toDomain(it) }
 
     override fun readByUserId(
         userId: Long,
@@ -71,44 +71,46 @@ class PortfolioRepository(
     private fun toEntity(portfolio: Portfolio): PortfolioJpaEntity =
         PortfolioJpaEntity(
             id = portfolio.id,
-            manage = UserJpaEntity(
-                id = portfolio.manage.id,
-                name = portfolio.manage.name,
-                nickname = portfolio.manage.nickname,
-                birthDate = portfolio.manage.birthDate,
-                isQuit = portfolio.manage.isQuit,
-                profileImageUrl = portfolio.manage.profileImageUrl,
-                bio = portfolio.manage.bio,
-                identity = portfolio.manage.identity,
-                career = portfolio.manage.career,
-                shootingConcepts = portfolio.manage.shootingConcepts,
-                notificationsEnabled = portfolio.manage.notificationsEnabled,
-                email = portfolio.manage.email,
-                deviseToken = portfolio.manage.deviseToken,
-            ),
+            manage =
+                UserJpaEntity(
+                    id = portfolio.manage.id,
+                    name = portfolio.manage.name,
+                    nickname = portfolio.manage.nickname,
+                    birthDate = portfolio.manage.birthDate,
+                    isQuit = portfolio.manage.isQuit,
+                    profileImageUrl = portfolio.manage.profileImageUrl,
+                    bio = portfolio.manage.bio,
+                    identity = portfolio.manage.identity,
+                    career = portfolio.manage.career,
+                    shootingConcepts = portfolio.manage.shootingConcepts,
+                    notificationsEnabled = portfolio.manage.notificationsEnabled,
+                    email = portfolio.manage.email,
+                    deviseToken = portfolio.manage.deviseToken,
+                ),
             title = portfolio.title,
             description = portfolio.description,
             primaryPhoto = portfolio.primaryPhoto,
             photos = portfolio.photos,
             hashtags = portfolio.hashtags,
-            collaborator = portfolio.collaborator?.let {
-                UserJpaEntity(
-                    id = it.id,
-                    name = it.name,
-                    nickname = it.nickname,
-                    birthDate = it.birthDate,
-                    isQuit = it.isQuit,
-                    profileImageUrl = it.profileImageUrl,
-                    bio = it.bio,
-                    identity = it.identity,
-                    career = it.career,
-                    shootingConcepts = it.shootingConcepts,
-                    notificationsEnabled = it.notificationsEnabled,
-                    email = it.email,
-                    deviseToken = it.deviseToken,
-                )
-            },
-            createAt = portfolio.createAt
+            collaborator =
+                portfolio.collaborator?.let {
+                    UserJpaEntity(
+                        id = it.id,
+                        name = it.name,
+                        nickname = it.nickname,
+                        birthDate = it.birthDate,
+                        isQuit = it.isQuit,
+                        profileImageUrl = it.profileImageUrl,
+                        bio = it.bio,
+                        identity = it.identity,
+                        career = it.career,
+                        shootingConcepts = it.shootingConcepts,
+                        notificationsEnabled = it.notificationsEnabled,
+                        email = it.email,
+                        deviseToken = it.deviseToken,
+                    )
+                },
+            createAt = portfolio.createAt,
         )
 
     private fun toDomain(portfolioEntity: PortfolioJpaEntity): Portfolio =
@@ -121,7 +123,6 @@ class PortfolioRepository(
             photos = portfolioEntity.photos,
             hashtags = portfolioEntity.hashtags,
             collaborator = portfolioEntity.collaborator?.toDomain(),
-            createAt = portfolioEntity.createAt
+            createAt = portfolioEntity.createAt,
         )
 }
-

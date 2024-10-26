@@ -9,7 +9,10 @@ data class Chatting(
 ) {
     constructor(participants: List<Participant>) : this(0L, participants)
 
-    fun addMessage(sender: User, content: String) {
+    fun addMessage(
+        sender: User,
+        content: String,
+    ) {
         val message = Message(sender = sender, content = content)
         messages.add(message)
         participants.find { it.user.id == sender.id }?.updateLastMessageTime(message.timeScript)
@@ -21,6 +24,5 @@ data class Chatting(
 
     fun increaseUnreadCount(receiverId: Long) {
         participants.filter { it.user.id == receiverId }.map { it.addUnreadCount() }
-
     }
 }

@@ -4,7 +4,16 @@ import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.adapter.`in`.response.UserDeviceTokenResponse
-import com.org.framelt.user.application.port.`in`.*
+import com.org.framelt.user.application.port.`in`.UserAccountInfoModel
+import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
+import com.org.framelt.user.application.port.`in`.UserDeviseTokenUseCase
+import com.org.framelt.user.application.port.`in`.UserNicknameCheckCommand
+import com.org.framelt.user.application.port.`in`.UserNicknameCheckUseCase
+import com.org.framelt.user.application.port.`in`.UserNicknameUpdateCommand
+import com.org.framelt.user.application.port.`in`.UserProfileUpdateCommand
+import com.org.framelt.user.application.port.`in`.UserProfileUseCase
+import com.org.framelt.user.application.port.`in`.UserQuitCommand
+import com.org.framelt.user.application.port.`in`.UserQuitUseCase
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
 import jakarta.transaction.Transactional
@@ -84,7 +93,10 @@ class UserService(
         userCommandPort.save(user)
     }
 
-    override fun updateDeviseToken(userId: Long, deviseToken: String?) {
+    override fun updateDeviseToken(
+        userId: Long,
+        deviseToken: String?,
+    ) {
         val user = userQueryPort.readById(userId)
         user.updateDeviseToken(deviseToken)
         userCommandPort.save(user)

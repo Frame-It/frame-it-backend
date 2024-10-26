@@ -14,7 +14,7 @@ class User(
     val shootingConcepts: List<UserConcept>,
     var description: String? = null,
     var birthDate: LocalDate? = null,
-    var notificationsEnabled: Boolean, // 보유
+    var notificationsEnabled: Boolean,
     var email: String,
     var deviseToken: String? = null,
     var isQuit: Boolean = false,

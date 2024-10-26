@@ -1,8 +1,12 @@
 package com.org.framelt.portfolio.adapter.out
 
 import org.springframework.http.MediaType
-import java.util.*
+import java.util.Optional
 
 interface FileUploadClient {
-    fun upload(fileName: String, mediaType: MediaType, data: ByteArray): Optional<String>
+    fun upload(
+        fileName: String,
+        mediaType: MediaType,
+        data: ByteArray,
+    ): Optional<String>
 }

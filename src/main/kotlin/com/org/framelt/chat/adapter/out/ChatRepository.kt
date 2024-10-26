@@ -43,7 +43,7 @@ class ChatRepository(
             chat.participants.map { participant ->
                 ChatParticipantJpaEntity(
                     id = participant.id,
-                    chat = ChatJpaEntity(id = chat.id), // Create a lightweight ChatJpaEntity reference
+                    chat = ChatJpaEntity(id = chat.id),
                     user = UserJpaEntity.fromDomain(participant.user),
                     unreadCount = participant.unreadCount,
                 )
@@ -55,7 +55,7 @@ class ChatRepository(
                     MessageJpaEntity(
                         id = message.id,
                         sender = UserJpaEntity.fromDomain(message.sender),
-                        chat = ChatJpaEntity(id = chat.id), // Use the chat ID to reference the chat
+                        chat = ChatJpaEntity(id = chat.id),
                         timeScript = message.timeScript,
                         content = message.content,
                     )

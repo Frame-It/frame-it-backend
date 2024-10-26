@@ -6,7 +6,6 @@ import com.org.framelt.portfolio.domain.Portfolio
 import org.springframework.data.domain.Page
 
 class PortfolioMapper {
-
     companion object {
 //        fun toCreate(userId: Long, request: PortfolioCreateRequest): PortfolioCreateCommend {
 //            return PortfolioCreateCommend(
@@ -19,8 +18,8 @@ class PortfolioMapper {
 //            )
 //        }
 
-        fun toResponse(readAllPortfolio: Page<Portfolio>): Page<PortfolioResponse> {
-            return readAllPortfolio.map { portfolio ->
+        fun toResponse(readAllPortfolio: Page<Portfolio>): Page<PortfolioResponse> =
+            readAllPortfolio.map { portfolio ->
                 PortfolioResponse(
                     id = portfolio.getId(),
                     title = portfolio.title,
@@ -28,13 +27,12 @@ class PortfolioMapper {
                     identity = portfolio.manage.identity.toString(),
                     profileImageUrl = portfolio.manage.profileImageUrl ?: null,
                     portfolioImageUrl = portfolio.primaryPhoto,
-                    userName = portfolio.manage.name
+                    userName = portfolio.manage.name,
                 )
             }
-        }
 
-        fun toDetailResponse(readPortfolio: Portfolio): PortfolioDetailResponse {
-            return PortfolioDetailResponse(
+        fun toDetailResponse(readPortfolio: Portfolio): PortfolioDetailResponse =
+            PortfolioDetailResponse(
                 id = readPortfolio.getId(),
                 title = readPortfolio.title,
                 userId = readPortfolio.manage.id!!,
@@ -46,8 +44,7 @@ class PortfolioMapper {
                 photosUrl = readPortfolio.photos,
                 hashtags = readPortfolio.hashtags,
                 collaborators = readPortfolio.collaborator?.name,
-                createdAt = readPortfolio.createAt.toString()
+                createdAt = readPortfolio.createAt.toString(),
             )
-        }
     }
 }
