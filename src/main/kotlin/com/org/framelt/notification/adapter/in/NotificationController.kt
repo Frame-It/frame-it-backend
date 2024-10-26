@@ -28,8 +28,8 @@ class NotificationController(
         return ResponseEntity.ok().build()
     }
 
-    @GetMapping("/{notificationId}/status")
-    fun findNotifications(
+    @GetMapping
+    fun findAllNotifications(
         @Authorization userId: Long,
     ): ResponseEntity<List<NotificationResponse>> {
         val command = NotificationReadCommand(userId)
