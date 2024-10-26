@@ -81,7 +81,7 @@ class AuthService(
                 receiver = savedUser,
                 title = "프레이밋 가입을 축하해요!",
                 content = "",
-                id = user.id!!,
+                id = savedUser.id!!,
                 receiverType = NotificationReceiverType.ME,
                 eventType = NotificationEventType.SIGN_UP,
                 time = LocalDateTime.now(),
