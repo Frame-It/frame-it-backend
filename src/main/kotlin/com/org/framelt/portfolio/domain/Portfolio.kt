@@ -70,7 +70,7 @@ class Portfolio(
             photos = photos,
             hashtags = updatedHashtags,
             collaborator = updatedTogether,
-            createAt = this.createAt
+            createAt = this.createAt,
         )
     }
 }

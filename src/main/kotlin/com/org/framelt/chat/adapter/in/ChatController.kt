@@ -3,7 +3,12 @@ package com.org.framelt.chat.adapter.`in`
 import com.org.framelt.chat.application.port.`in`.ChatUseCase
 import com.org.framelt.config.auth.Authorization
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/chats")
@@ -33,7 +38,9 @@ class ChatController(
     }
 
     @GetMapping
-    fun getChat(@Authorization userId: Long): ResponseEntity<List<ChatRoomInfoResponse>> {
+    fun getChat(
+        @Authorization userId: Long,
+    ): ResponseEntity<List<ChatRoomInfoResponse>> {
         val chat = chatUseCase.getChattingRoom(userId)
         return ResponseEntity.ok(chat)
     }
@@ -48,7 +55,10 @@ class ChatController(
     }
 
     @GetMapping("/{chatId}")
-    fun getChattingRoom(@Authorization userId: Long, @PathVariable chatId: Long): ResponseEntity<ChattingResponse> {
+    fun getChattingRoom(
+        @Authorization userId: Long,
+        @PathVariable chatId: Long,
+    ): ResponseEntity<ChattingResponse> {
         val chat = chatUseCase.getChat(userId, chatId)
         return ResponseEntity.ok(chat)
     }

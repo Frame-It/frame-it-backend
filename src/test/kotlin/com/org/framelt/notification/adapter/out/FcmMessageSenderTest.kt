@@ -1,24 +1,17 @@
 package com.org.framelt.notification.adapter.out
 
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
-import com.org.framelt.notification.application.service.NotificationLetter
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
-import java.io.IOException
 import java.util.concurrent.ExecutionException
 
 @SpringJUnitConfig
 class FcmMessageSenderTest {
-
     private val log = LoggerFactory.getLogger(FcmMessageSenderTest::class.java)
 
     private lateinit var fcmMessageSender: FcmMessageSender
@@ -34,24 +27,30 @@ class FcmMessageSenderTest {
 
     @Test
     fun `send notification to Firebase successfully`() {
-        val data = mapOf(
-            "title" to "다시한번",
-            "body" to "This is a test message",
-            "link" to "http://localhost:3000/feed"
-        )
+        val data =
+            mapOf(
+                "title" to "다시한번",
+                "body" to "This is a test message",
+                "link" to "http://localhost:3000/feed",
+            )
 
+        val deviceToken = """
+           dxeRfYFBqoIKAGWRfrFKlO:APA91bFeHVZnw70zUJhE9vf7fn9XPLLrb6TG3dJ9VFdY_bjVmPN4jSGOduIOGneK38O1qjIm5o5T7Z3v8hNDSduCgDoc7xe6fboin60rkaUTRblKSV7nQvtc2qUXIuseFFR-8FT6Yjtn 
+        """ // 실제 테스트할 디바이스 토큰으로 변경
+        val notification =
+            Notification
+                .builder()
+                .setTitle("다시한번")
+                .setBody("This is a test message")
+                .build()
 
-        val deviceToken = "dxeRfYFBqoIKAGWRfrFKlO:APA91bFeHVZnw70zUJhE9vf7fn9XPLLrb6TG3dJ9VFdY_bjVmPN4jSGOduIOGneK38O1qjIm5o5T7Z3v8hNDSduCgDoc7xe6fboin60rkaUTRblKSV7nQvtc2qUXIuseFFR-8FT6Yjtn" // 실제 테스트할 디바이스 토큰으로 변경
-        val notification = Notification.builder()
-            .setTitle("다시한번")
-            .setBody("This is a test message")
-            .build()
-
-        val message = Message.builder()
-            .setToken(deviceToken)
-            .setNotification(notification)
-            .putAllData(data)
-            .build()
+        val message =
+            Message
+                .builder()
+                .setToken(deviceToken)
+                .setNotification(notification)
+                .putAllData(data)
+                .build()
 
         try {
             // When: Firebase로 메시지를 전송

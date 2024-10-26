@@ -10,5 +10,7 @@ interface NotificationJpaRepository : JpaRepository<NotificationJpaEntity, Long>
 
     @Modifying
     @Query("UPDATE NotificationJpaEntity n SET n.isRead = true WHERE n.receiver.id = :receiverId")
-    fun markAllAsReadByReceiverId(@Param("receiverId") receiverId: Long): Int
+    fun markAllAsReadByReceiverId(
+        @Param("receiverId") receiverId: Long,
+    ): Int
 }

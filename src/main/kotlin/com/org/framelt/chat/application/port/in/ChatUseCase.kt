@@ -7,8 +7,18 @@ import com.org.framelt.chat.adapter.`in`.ChattingResponse
 
 interface ChatUseCase {
     fun createChat(command: CreateChatCommand): Long
+
     fun sendMessage(command: SendMessageCommand)
-    fun getChat(userId: Long, chatId: Long): ChattingResponse
+
+    fun getChat(
+        userId: Long,
+        chatId: Long,
+    ): ChattingResponse
+
     fun getChattingRoom(userId: Long): List<ChatRoomInfoResponse>
-    fun getChatRoomId(userId: Long, participantId: Long): Long?
+
+    fun getChatRoomId(
+        userId: Long,
+        participantId: Long,
+    ): Long?
 }
