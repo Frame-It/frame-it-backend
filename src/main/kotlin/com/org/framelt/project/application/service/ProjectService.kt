@@ -1,6 +1,8 @@
 package com.org.framelt.project.application.service
 
 import com.org.framelt.notification.application.service.NotificationLetter
+import com.org.framelt.notification.domain.NotificationEventType
+import com.org.framelt.notification.domain.NotificationReceiverType
 import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailGuestModel
 import com.org.framelt.project.application.port.`in`.CompletedProjectDetailHostModel
@@ -43,6 +45,7 @@ import com.org.framelt.user.domain.User
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class ProjectService(
@@ -306,7 +309,15 @@ class ProjectService(
             ),
         )
 
-        sendNotificationTo(project.host, "프로젝트 지원 알림", "${applicant.nickname}님이 지원했어요!")
+        sendNotificationTo(
+            sender = applicant,
+            receiver = project.host,
+            title = "${applicant.nickname}님이 지원했어요!",
+            content = "프로젝트: ${project.title}",
+            id = project.id!!,
+            receiverType = NotificationReceiverType.PROJECT_HOST,
+            eventType = NotificationEventType.PROJECT_APPLICATION,
+        )
         return ProjectApplyModel(project.title)
     }
 
@@ -368,8 +379,24 @@ class ProjectService(
         project.start()
         projectCommandPort.save(project)
 
-        sendNotificationTo(project.host, "프로젝트 시작 알림", "프로젝트를 시작합니다.")
-        sendNotificationTo(projectApplicant.applicant, "프로젝트 시작 알림", "프로젝트를 시작합니다.")
+        sendNotificationTo(
+            sender = projectApplicant.applicant,
+            receiver = project.host,
+            title = "프로젝트를 시작합니다.",
+            content = "프로젝트: ${project.title}",
+            id = project.id!!,
+            receiverType = NotificationReceiverType.PROJECT_HOST,
+            eventType = NotificationEventType.PROJECT_START,
+        )
+        sendNotificationTo(
+            sender = project.host,
+            receiver = projectApplicant.applicant,
+            title = "프로젝트를 시작합니다.",
+            content = "프로젝트: ${project.title}",
+            id = project.id,
+            receiverType = NotificationReceiverType.PROJECT_GUEST,
+            eventType = NotificationEventType.PROJECT_START,
+        )
     }
 
     override fun complete(projectCompleteCommand: ProjectCompleteCommand): ProjectCompleteModel {
@@ -383,7 +410,15 @@ class ProjectService(
 
         val projectMembers = projectMemberQueryPort.readAllByProjectId(projectCompleteCommand.projectId)
         val anotherMember = projectMembers.first { it.member.id != projectCompleteCommand.memberId }
-        sendNotificationTo(anotherMember.member, "프로젝트 완료 알림", "${projectMember.member.nickname}님이 프로젝트를 완료했어요.")
+        sendNotificationTo(
+            sender = projectMember.member,
+            receiver = anotherMember.member,
+            title = "${projectMember.member.nickname}님이 프로젝트를 완료했어요.",
+            content = "프로젝트: ${projectMember.project.title}",
+            id = projectCompleteCommand.projectId,
+            receiverType = if (anotherMember.isHost) NotificationReceiverType.PROJECT_HOST else NotificationReceiverType.PROJECT_GUEST,
+            eventType = NotificationEventType.PROJECT_COMPLETE,
+        )
         if (projectMembers.all { it.hasCompletedProject }) {
             val project = projectMember.project
             project.complete()
@@ -393,13 +428,28 @@ class ProjectService(
     }
 
     fun sendNotificationTo(
-        user: User,
+        sender: User,
+        receiver: User,
         title: String,
         content: String,
+        id: Long,
+        receiverType: NotificationReceiverType,
+        eventType: NotificationEventType,
     ) {
-        if (!user.notificationsEnabled) {
+        if (!receiver.notificationsEnabled) {
             return
         }
-        eventPublisher.publishEvent(NotificationLetter(user.deviseToken!!, title, content))
+        eventPublisher.publishEvent(
+            NotificationLetter(
+                sender = sender,
+                receiver = receiver,
+                title = title,
+                content = content,
+                id = id,
+                receiverType = receiverType,
+                eventType = eventType,
+                time = LocalDateTime.now(),
+            ),
+        )
     }
 }
