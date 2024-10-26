@@ -12,11 +12,9 @@ import com.org.framelt.notification.application.port.out.NotificationCommendPort
 import com.org.framelt.notification.application.port.out.NotificationReadPort
 import com.org.framelt.notification.domain.Notification
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
-import com.org.framelt.user.domain.User
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class NotificationService(
@@ -24,20 +22,23 @@ class NotificationService(
     private val notificationReadPort: NotificationReadPort,
     private val notificationSendPort: NotificationSendPort,
     private val userQueryPort: UserQueryPort,
-) : NotificationDeleteUseCase, NotificationMarkAsReadUseCase, NotificationQueryUseCase {
-
+) : NotificationDeleteUseCase,
+    NotificationMarkAsReadUseCase,
+    NotificationQueryUseCase {
     private fun addNotification(letter: NotificationLetter) {
-        val notification = Notification(
-            id = 0L,
-            sender = letter.sender,
-            receiver = letter.receiver,
-            title = letter.title,
-            content = letter.content,
-            sendTime = letter.time,
-            notificationType = letter.type.name,
-            resourcesId = letter.id,
-            isRead = false
-        )
+        val notification =
+            Notification(
+                id = 0L,
+                sender = letter.sender,
+                receiver = letter.receiver,
+                title = letter.title,
+                content = letter.content,
+                sendTime = letter.time,
+                resourcesId = letter.id,
+                receiverType = letter.receiverType,
+                eventType = letter.eventType,
+                isRead = false,
+            )
         notificationCommendPort.save(notification)
     }
 

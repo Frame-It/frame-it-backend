@@ -9,23 +9,25 @@ import org.springframework.stereotype.Repository
 @Repository
 class NotificationRepository(
     private val notificationJpaRepository: NotificationJpaRepository,
-) : NotificationReadPort, NotificationCommendPort {
+) : NotificationReadPort,
+    NotificationCommendPort {
     override fun save(notification: Notification) {
-        val notificationEntity = NotificationJpaEntity(
-            id = 0L,
-            sender = UserJpaEntity.fromDomain(notification.sender),
-            receiver = UserJpaEntity.fromDomain(notification.receiver),
-            title = notification.title,
-            content = notification.content,
-            sendTime = notification.sendTime,
-            resourcesId = notification.resourcesId,
-            notificationType = notification.notificationType,
-            isRead = notification.isRead
-        )
+        val notificationEntity =
+            NotificationJpaEntity(
+                id = 0L,
+                sender = UserJpaEntity.fromDomain(notification.sender),
+                receiver = UserJpaEntity.fromDomain(notification.receiver),
+                title = notification.title,
+                content = notification.content,
+                sendTime = notification.sendTime,
+                resourcesId = notification.resourcesId,
+                receiverType = notification.receiverType,
+                eventType = notification.eventType,
+                isRead = notification.isRead,
+            )
 
         notificationJpaRepository.save(notificationEntity)
     }
-
 
     override fun deleteById(id: Long) {
         notificationJpaRepository.deleteById(id)

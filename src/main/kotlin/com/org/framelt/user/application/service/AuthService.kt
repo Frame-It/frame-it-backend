@@ -1,7 +1,8 @@
 package com.org.framelt.user.application.service
 
-import com.org.framelt.notification.adapter.out.NotificationType
 import com.org.framelt.notification.application.service.NotificationLetter
+import com.org.framelt.notification.domain.NotificationEventType
+import com.org.framelt.notification.domain.NotificationReceiverType
 import com.org.framelt.user.adapter.out.oauth.OAuthProvider
 import com.org.framelt.user.adapter.out.persistence.OAuthUserQueryPort
 import com.org.framelt.user.application.port.`in`.LoginCommand
@@ -74,7 +75,18 @@ class AuthService(
         val savedUser = userCommandPort.save(user)
         val signupCompletedOauthUSer = oauthUser.completeSignup(savedUser)
         oauthUserCommandPort.save(signupCompletedOauthUSer)
-        applicationEventPublisher.publishEvent(NotificationLetter(savedUser,savedUser,"가입 축하드려요!", "", user.id!!, NotificationType.ME, LocalDateTime.now()))
+        applicationEventPublisher.publishEvent(
+            NotificationLetter(
+                sender = savedUser,
+                receiver = savedUser,
+                title = "프레이밋 가입을 축하해요!",
+                content = "",
+                id = user.id!!,
+                receiverType = NotificationReceiverType.ME,
+                eventType = NotificationEventType.SIGN_UP,
+                time = LocalDateTime.now(),
+            ),
+        )
         return SignUpResult(
             accessToken = jwtPort.createToken(savedUser.id.toString()),
             identity = savedUser.identity,

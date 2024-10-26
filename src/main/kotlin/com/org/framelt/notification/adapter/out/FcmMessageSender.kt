@@ -21,16 +21,17 @@ class FcmMessageSender(
     @Value("\${fcm.certification.path}")
     private val fcmCertificationPath: String,
 ) : NotificationSendPort {
-
     private val log = LoggerFactory.getLogger(FcmMessageSender::class.java)
 
     @PostConstruct
     fun initialize() {
         try {
             val resource = ClassPathResource(fcmCertificationPath)
-            val options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(resource.inputStream))
-                .build()
+            val options =
+                FirebaseOptions
+                    .builder()
+                    .setCredentials(GoogleCredentials.fromStream(resource.inputStream))
+                    .build()
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options)
@@ -46,22 +47,28 @@ class FcmMessageSender(
         if (deviceToken.isNullOrEmpty()) {
             return
         }
-        val data = mapOf(
-            "title" to letter.title,
-            "content" to letter.content,
-            "type" to letter.type.name,
-            "id" to letter.id.toString(),
-            "time" to letter.time.toString(),
-        )
-        val notification = Notification.builder()
-            .setTitle(letter.title)
-            .setBody(letter.content)
-            .build()
-        val message = Message.builder()
-            .setToken(deviceToken)
-            .setNotification(notification)
-            .putAllData(data)
-            .build()
+        val data =
+            mapOf(
+                "title" to letter.title,
+                "content" to letter.content,
+                "receiverType" to letter.receiverType.name,
+                "eventType" to letter.eventType.name,
+                "id" to letter.id.toString(),
+                "time" to letter.time.toString(),
+            )
+        val notification =
+            Notification
+                .builder()
+                .setTitle(letter.title)
+                .setBody(letter.content)
+                .build()
+        val message =
+            Message
+                .builder()
+                .setToken(deviceToken)
+                .setNotification(notification)
+                .putAllData(data)
+                .build()
 
         try {
             val response = FirebaseMessaging.getInstance().sendAsync(message).get()

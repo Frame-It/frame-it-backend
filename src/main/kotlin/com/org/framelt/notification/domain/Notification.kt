@@ -11,7 +11,8 @@ class Notification(
     val content: String,
     val sendTime: LocalDateTime,
     val resourcesId: Long,
-    val notificationType: String,
+    val receiverType: NotificationReceiverType,
+    val eventType: NotificationEventType,
     var isRead: Boolean,
 ) {
     fun markAsRead() {
