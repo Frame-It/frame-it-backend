@@ -26,7 +26,7 @@ class ProjectJpaEntity(
     val timeOption: TimeOption,
     @Enumerated(EnumType.STRING)
     val locationType: LocationType,
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     val spot: String,
     @Column(nullable = false)
     val detailedSpot: String,
