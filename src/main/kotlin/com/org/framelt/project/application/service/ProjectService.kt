@@ -152,7 +152,7 @@ class ProjectService(
                     title = it.title,
                     recruitmentRole = it.recruitmentRole,
                     shootingAt = it.shootingAt,
-                    spot = it.spot,
+                    address = it.address,
                     timeOption = it.timeOption,
                     concepts = it.concepts,
                     isBookmarked = isBookmarked,

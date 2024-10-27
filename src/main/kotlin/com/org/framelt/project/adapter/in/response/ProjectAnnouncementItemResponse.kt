@@ -9,7 +9,7 @@ data class ProjectAnnouncementItemResponse(
     val recruitmentRole: String,
     val shootingAt: LocalDateTime,
     val timeOption: String,
-    val spot: String,
+    val address: String,
     val concepts: List<String>,
     val isBookmarked: Boolean,
 )

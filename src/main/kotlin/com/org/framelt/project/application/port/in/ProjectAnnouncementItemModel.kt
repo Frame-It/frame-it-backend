@@ -11,7 +11,7 @@ data class ProjectAnnouncementItemModel(
     val title: String,
     val recruitmentRole: Identity,
     val shootingAt: LocalDateTime,
-    val spot: String,
+    val address: String,
     val timeOption: TimeOption,
     val concepts: List<ProjectConcept>,
     val isBookmarked: Boolean,
