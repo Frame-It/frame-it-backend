@@ -114,6 +114,8 @@ class ProjectService(
             locationType = project.locationType,
             timeOption = project.timeOption,
             spot = project.spot,
+            address = project.address,
+            detailedAddress = project.detailedAddress,
             hostConcepts = project.host.shootingConcepts,
             projectConcepts = project.concepts,
             conceptPhotoUrls = project.conceptPhotoUrls,

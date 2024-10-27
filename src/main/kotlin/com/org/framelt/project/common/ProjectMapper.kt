@@ -100,6 +100,8 @@ class ProjectMapper {
                 shootingAt = projectDetail.shootingAt,
                 locationType = projectDetail.locationType.name,
                 spot = projectDetail.spot,
+                address = projectDetail.address,
+                detailedAddress = projectDetail.detailedAddress,
                 hostConcepts = projectDetail.hostConcepts.map { it.code },
                 projectConcepts = projectDetail.projectConcepts.map { it.code },
                 conceptPhotoUrls = projectDetail.conceptPhotoUrls,

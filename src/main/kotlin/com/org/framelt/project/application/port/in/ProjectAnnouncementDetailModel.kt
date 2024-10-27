@@ -15,6 +15,8 @@ data class ProjectAnnouncementDetailModel(
     val locationType: LocationType,
     val timeOption: TimeOption,
     val spot: String,
+    val address: String,
+    val detailedAddress: String,
     val hostConcepts: List<UserConcept>,
     val projectConcepts: List<ProjectConcept>,
     val conceptPhotoUrls: List<String>,
