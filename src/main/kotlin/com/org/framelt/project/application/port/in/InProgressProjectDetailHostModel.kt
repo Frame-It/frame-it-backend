@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 data class InProgressProjectDetailHostModel(
     val title: String,
-    val spot: String,
+    val address: String,
     val shootingAt: LocalDateTime,
     val status: Status,
     val guest: GuestModel,
@@ -23,7 +23,7 @@ data class InProgressProjectDetailHostModel(
         ): InProgressProjectDetailHostModel =
             InProgressProjectDetailHostModel(
                 title = project.title,
-                spot = project.spot,
+                address = project.address,
                 shootingAt = project.shootingAt,
                 status = project.status,
                 guest = GuestModel.fromDomain(guest),

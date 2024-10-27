@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 data class CompletedProjectDetailHostModel(
     val title: String,
-    val spot: String,
+    val address: String,
     val shootingAt: LocalDateTime,
     val status: Status,
     val isReviewDone: Boolean,
@@ -26,7 +26,7 @@ data class CompletedProjectDetailHostModel(
         ): CompletedProjectDetailHostModel =
             CompletedProjectDetailHostModel(
                 title = project.title,
-                spot = project.spot,
+                address = project.address,
                 shootingAt = project.shootingAt,
                 status = project.status,
                 isReviewDone = hostProjectReview != null,

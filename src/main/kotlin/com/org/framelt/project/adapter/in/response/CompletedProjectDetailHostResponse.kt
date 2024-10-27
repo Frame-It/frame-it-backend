@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 class CompletedProjectDetailHostResponse(
     val title: String,
-    val spot: String,
+    val address: String,
     val shootingAt: LocalDateTime,
     val status: String,
     val isReviewDone: Boolean,
@@ -16,7 +16,7 @@ class CompletedProjectDetailHostResponse(
         fun from(projectDetail: CompletedProjectDetailHostModel): CompletedProjectDetailHostResponse =
             CompletedProjectDetailHostResponse(
                 title = projectDetail.title,
-                spot = projectDetail.spot,
+                address = projectDetail.address,
                 shootingAt = projectDetail.shootingAt,
                 status = projectDetail.status.name,
                 isReviewDone = projectDetail.isReviewDone,

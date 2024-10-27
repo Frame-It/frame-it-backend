@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class RecruitingProjectDetailGuestResponse(
     val title: String,
-    val spot: String,
+    val address: String,
     val timeOption: String,
     val shootingAt: LocalDateTime,
     val hostId: Long,
@@ -16,7 +16,7 @@ data class RecruitingProjectDetailGuestResponse(
         fun from(recruitingProjectDetailGuestModel: RecruitingProjectDetailGuestModel) =
             RecruitingProjectDetailGuestResponse(
                 title = recruitingProjectDetailGuestModel.title,
-                spot = recruitingProjectDetailGuestModel.spot,
+                address = recruitingProjectDetailGuestModel.address,
                 timeOption = recruitingProjectDetailGuestModel.timeOption.name,
                 shootingAt = recruitingProjectDetailGuestModel.shootingAt,
                 hostId = recruitingProjectDetailGuestModel.hostId,

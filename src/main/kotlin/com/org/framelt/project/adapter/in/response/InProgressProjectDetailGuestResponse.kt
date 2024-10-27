@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class InProgressProjectDetailGuestResponse(
     val title: String,
-    val spot: String,
+    val address: String,
     val shootingAt: LocalDateTime,
     val status: String,
     val host: InProgressProjectHostResponse,
@@ -16,7 +16,7 @@ data class InProgressProjectDetailGuestResponse(
         fun from(inProgressProjectDetailModel: InProgressProjectDetailModel) =
             InProgressProjectDetailGuestResponse(
                 title = inProgressProjectDetailModel.title,
-                spot = inProgressProjectDetailModel.spot,
+                address = inProgressProjectDetailModel.address,
                 shootingAt = inProgressProjectDetailModel.shootingAt,
                 status = inProgressProjectDetailModel.status.name,
                 host = InProgressProjectHostResponse.from(inProgressProjectDetailModel.host),

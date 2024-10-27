@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 data class RecruitingProjectDetailGuestModel(
     val title: String,
-    val spot: String,
+    val address: String,
     val timeOption: TimeOption,
     val shootingAt: LocalDateTime,
     val hostId: Long,
@@ -22,7 +22,7 @@ data class RecruitingProjectDetailGuestModel(
         ) = run {
             RecruitingProjectDetailGuestModel(
                 title = project.title,
-                spot = project.spot,
+                address = project.address,
                 timeOption = project.timeOption,
                 shootingAt = project.shootingAt,
                 hostId = project.host.id!!,
