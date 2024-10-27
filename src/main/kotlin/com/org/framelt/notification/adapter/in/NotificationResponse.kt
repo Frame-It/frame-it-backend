@@ -7,6 +7,7 @@ data class NotificationResponse(
     val title: String,
     val content: String,
     val sendTime: LocalDateTime,
+    val resourcesId: Long,
     val projectStatus: String?,
     val isHost: Boolean?,
     val eventType: String,

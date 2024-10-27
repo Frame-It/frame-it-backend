@@ -63,6 +63,7 @@ class NotificationService(
                     title = it.title,
                     content = it.content,
                     sendTime = it.sendTime,
+                    resourcesId = it.resourcesId,
                     isRead = it.isRead,
                     projectStatus = it.projectStatus?.name,
                     isHost = it.isHost,
