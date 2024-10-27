@@ -2,7 +2,6 @@ package com.org.framelt.project.adapter.out
 
 import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.ProjectConcept
-import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.Status
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
@@ -40,8 +39,12 @@ class ProjectJpaEntity(
     val timeOption: TimeOption,
     @Enumerated(EnumType.STRING)
     val locationType: LocationType,
-    @Enumerated(EnumType.STRING)
-    val spot: Spot,
+    @Column(nullable = false, length = 10)
+    val spot: String,
+    @Column(nullable = false)
+    val address: String,
+    @Column(nullable = false)
+    val detailedAddress: String,
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = ProjectConcept::class)
     @CollectionTable(
@@ -75,6 +78,8 @@ class ProjectJpaEntity(
                 timeOption = project.timeOption,
                 locationType = project.locationType,
                 spot = project.spot,
+                address = project.address,
+                detailedAddress = project.detailedAddress,
                 concepts = project.concepts,
                 conceptPhotoUrls = project.conceptPhotoUrls,
                 description = project.description,
@@ -95,6 +100,8 @@ fun ProjectJpaEntity.toDomain() =
         timeOption = timeOption,
         locationType = locationType,
         spot = spot,
+        address = address,
+        detailedAddress = detailedAddress,
         concepts = concepts,
         conceptPhotoUrls = conceptPhotoUrls,
         description = description,

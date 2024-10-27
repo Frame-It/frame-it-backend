@@ -18,7 +18,7 @@ data class BookmarkedProjectReadResponse(
                 id = bookmarkedProjectReadModel.id,
                 title = bookmarkedProjectReadModel.title,
                 recruitmentRole = bookmarkedProjectReadModel.recruitmentRole.name,
-                spot = bookmarkedProjectReadModel.spot.name,
+                spot = bookmarkedProjectReadModel.spot,
                 shootingAt = bookmarkedProjectReadModel.shootingAt,
                 timeOption = bookmarkedProjectReadModel.timeOption.name,
                 concepts = bookmarkedProjectReadModel.concepts.map { it.code },

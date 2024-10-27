@@ -15,7 +15,7 @@ data class RecruitingProjectDetailHostResponse(
         fun from(recruitingProjectDetailHostModel: RecruitingProjectDetailHostModel) =
             RecruitingProjectDetailHostResponse(
                 title = recruitingProjectDetailHostModel.title,
-                spot = recruitingProjectDetailHostModel.spot.name,
+                spot = recruitingProjectDetailHostModel.spot,
                 timeOption = recruitingProjectDetailHostModel.timeOption.name,
                 shootingAt = recruitingProjectDetailHostModel.shootingAt,
                 status = recruitingProjectDetailHostModel.status.name,

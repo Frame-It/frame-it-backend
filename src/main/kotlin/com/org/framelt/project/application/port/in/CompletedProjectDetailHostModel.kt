@@ -4,13 +4,12 @@ import com.org.framelt.project.domain.Project
 import com.org.framelt.project.domain.ProjectApplicant
 import com.org.framelt.project.domain.ProjectMember
 import com.org.framelt.project.domain.ProjectReview
-import com.org.framelt.project.domain.Spot
 import com.org.framelt.project.domain.Status
 import java.time.LocalDateTime
 
 data class CompletedProjectDetailHostModel(
     val title: String,
-    val spot: Spot,
+    val spot: String,
     val shootingAt: LocalDateTime,
     val status: Status,
     val isReviewDone: Boolean,

@@ -10,6 +10,8 @@ data class ProjectAnnouncementDetailResponse(
     val locationType: String,
     val timeOption: String,
     val spot: String,
+    val address: String,
+    val detailedAddress: String,
     val hostConcepts: List<String>,
     val projectConcepts: List<String>,
     val conceptPhotoUrls: List<String>,

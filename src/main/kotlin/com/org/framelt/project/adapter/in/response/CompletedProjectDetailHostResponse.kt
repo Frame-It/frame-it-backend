@@ -16,7 +16,7 @@ class CompletedProjectDetailHostResponse(
         fun from(projectDetail: CompletedProjectDetailHostModel): CompletedProjectDetailHostResponse =
             CompletedProjectDetailHostResponse(
                 title = projectDetail.title,
-                spot = projectDetail.spot.name,
+                spot = projectDetail.spot,
                 shootingAt = projectDetail.shootingAt,
                 status = projectDetail.status.name,
                 isReviewDone = projectDetail.isReviewDone,
