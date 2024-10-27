@@ -45,7 +45,7 @@ class UserProjectService(
                     title = it.title,
                     shootingAt = it.shootingAt,
                     timeOption = it.timeOption,
-                    spot = it.spot,
+                    address = it.address,
                     status = it.status,
                     isHost = it.host.id == userProjectReadCommand.viewerId,
                 )

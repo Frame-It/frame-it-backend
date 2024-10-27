@@ -7,7 +7,7 @@ data class UserProjectItemResponse(
     val title: String,
     val shootingAt: LocalDateTime,
     val timeOption: String,
-    val spot: String,
+    val address: String,
     val status: String,
     val isHost: Boolean,
 )

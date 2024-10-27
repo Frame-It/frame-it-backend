@@ -9,7 +9,7 @@ data class UserProjectModel(
     val title: String,
     val shootingAt: LocalDateTime,
     val timeOption: TimeOption,
-    val spot: String,
+    val address: String,
     val status: Status,
     val isHost: Boolean,
 )

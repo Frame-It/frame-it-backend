@@ -189,7 +189,7 @@ class ProjectMapper {
                             title = it.title,
                             shootingAt = it.shootingAt,
                             timeOption = it.timeOption.name,
-                            spot = it.spot,
+                            address = it.address,
                             status = it.status.name,
                             isHost = it.isHost,
                         )
