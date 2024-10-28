@@ -51,9 +51,11 @@ class User(
         this.nickname = nickname
     }
 
-    fun updateDeviseToken(deviseToken: String?) {
+    fun updateDeviceTokenToken(deviseToken: String?) {
         if (deviseToken == null) {
             this.notificationsEnabled = false
+        } else {
+            this.notificationsEnabled = true
         }
         this.deviseToken = deviseToken
     }
