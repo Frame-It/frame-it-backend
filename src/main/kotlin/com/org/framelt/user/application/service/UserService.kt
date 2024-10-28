@@ -98,7 +98,7 @@ class UserService(
         deviseToken: String?,
     ) {
         val user = userQueryPort.readById(userId)
-        user.updateDeviseToken(deviseToken)
+        user.updateDeviceTokenToken(deviseToken)
         userCommandPort.save(user)
     }
 
