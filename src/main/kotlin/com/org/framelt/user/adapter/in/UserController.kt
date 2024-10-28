@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -49,9 +48,9 @@ class UserController(
     @PostMapping("/users/{userId}/deviseToken")
     fun updateDeviseToken(
         @Authorization userId: Long,
-        @RequestParam("deviseToken") deviseToken: String?,
+        @RequestBody userNicknameCheckRequest: UserDeviseTokenRequest,
     ): ResponseEntity<Void> {
-        userDeviseTokenUseCase.updateDeviseToken(userId, deviseToken)
+        userDeviseTokenUseCase.updateDeviseToken(userId, userNicknameCheckRequest)
         return ResponseEntity.ok().build()
     }
 

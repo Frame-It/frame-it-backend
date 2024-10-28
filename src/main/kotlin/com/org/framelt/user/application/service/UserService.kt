@@ -3,6 +3,7 @@ package com.org.framelt.user.application.service
 import com.org.framelt.portfolio.adapter.out.FileUploadClient
 import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.domain.Status
+import com.org.framelt.user.adapter.`in`.UserDeviseTokenRequest
 import com.org.framelt.user.adapter.`in`.response.UserDeviceTokenResponse
 import com.org.framelt.user.application.port.`in`.UserAccountInfoModel
 import com.org.framelt.user.application.port.`in`.UserAccountReadUseCase
@@ -95,10 +96,10 @@ class UserService(
 
     override fun updateDeviseToken(
         userId: Long,
-        deviseToken: String?,
+        deviseToken: UserDeviseTokenRequest,
     ) {
         val user = userQueryPort.readById(userId)
-        user.updateDeviceTokenToken(deviseToken)
+        user.updateDeviceTokenToken(deviseToken.deviseToken)
         userCommandPort.save(user)
     }
 
