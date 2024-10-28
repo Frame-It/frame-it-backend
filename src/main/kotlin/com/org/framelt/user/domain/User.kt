@@ -52,6 +52,9 @@ class User(
     }
 
     fun updateDeviseToken(deviseToken: String?) {
+        if (deviseToken == null) {
+            this.notificationsEnabled = false
+        }
         this.deviseToken = deviseToken
     }
 
