@@ -7,6 +7,6 @@ data class LoginResult(
     val signUpCompleted: Boolean,
     val oauthUserId: Long,
     val identity: Identity,
-    val notificationsEnabled: Boolean,
-    val id: Long,
+    val notificationsEnabled: Boolean?,
+    val id: Long?,
 )

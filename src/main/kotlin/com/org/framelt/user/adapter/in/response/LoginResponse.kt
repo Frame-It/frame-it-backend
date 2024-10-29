@@ -5,6 +5,6 @@ data class LoginResponse(
     val signUpCompleted: Boolean,
     val oauthUserId: Long,
     val identity: String,
-    val notificationsEnabled: Boolean,
-    val id: Long,
+    val notificationsEnabled: Boolean?,
+    val id: Long?,
 )

@@ -52,8 +52,8 @@ class AuthService(
             signUpCompleted = user != null,
             oauthUserId = oauthUser.id!!,
             identity = user?.identity ?: Identity.NONE,
-            notificationsEnabled = user?.notificationsEnabled ?: false,
-            id = user?.id!!,
+            notificationsEnabled = user?.notificationsEnabled,
+            id = user?.id,
         )
     }
 
