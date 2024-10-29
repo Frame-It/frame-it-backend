@@ -35,6 +35,8 @@ class LoginController(
                 signUpCompleted = loginResult.signUpCompleted,
                 oauthUserId = loginResult.oauthUserId,
                 identity = loginResult.identity.name,
+                notificationsEnabled = loginResult.notificationsEnabled,
+                id = loginResult.id,
             )
         return ResponseEntity.ok(response)
     }

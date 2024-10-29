@@ -54,6 +54,8 @@ class FakeLoginController(
                 signUpCompleted = user != null,
                 oauthUserId = oauthUser.id!!,
                 identity = user?.identity!!.name,
+                notificationsEnabled = user.notificationsEnabled,
+                id = user.id!!,
             )
         return ResponseEntity.ok(response)
     }
