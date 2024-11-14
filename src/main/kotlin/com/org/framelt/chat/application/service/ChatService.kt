@@ -1,7 +1,7 @@
 package com.org.framelt.chat.application.service
 
-import CreateChatCommand
-import SendMessageCommand
+import com.org.framelt.chat.application.port.out.CreateChatCommand
+import com.org.framelt.chat.application.port.out.SendMessageCommand
 import com.org.framelt.chat.adapter.`in`.ChatMapper
 import com.org.framelt.chat.adapter.`in`.ChatRoomInfoResponse
 import com.org.framelt.chat.adapter.`in`.ChatRoomUserInfoResponse
