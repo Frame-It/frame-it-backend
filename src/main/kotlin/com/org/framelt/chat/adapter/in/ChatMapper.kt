@@ -33,6 +33,7 @@ class ChatMapper {
                         ChatUserInfoResponse(
                             id = participant.user.id ?: 0L,
                             name = participant.user.name,
+                            nickname = participant.user.nickname,
                             profileImageUrl = participant.user.profileImageUrl ?: "",
                         )
                     }
@@ -49,6 +50,7 @@ class ChatMapper {
                             ChatUserInfoResponse(
                                 id = message.sender.id ?: 0L,
                                 name = message.sender.name,
+                                nickname = message.sender.nickname,
                                 profileImageUrl = message.sender.profileImageUrl ?: "",
                             ),
                         timeStamp = message.timeScript,

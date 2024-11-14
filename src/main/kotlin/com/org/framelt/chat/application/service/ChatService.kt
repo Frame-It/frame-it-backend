@@ -71,6 +71,7 @@ class ChatService(
                         ChatRoomUserInfoResponse(
                             id = participant.user.id!!,
                             name = participant.user.name,
+                            nickName = participant.user.nickname,
                             profileImageUrl = participant.user.profileImageUrl ?: "",
                             identity = participant.user.identity.name,
                         )
