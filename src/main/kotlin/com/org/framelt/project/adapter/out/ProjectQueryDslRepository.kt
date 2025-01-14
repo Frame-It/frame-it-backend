@@ -31,7 +31,10 @@ class ProjectQueryDslRepository(
                 matchesLocationType(projectFilterCommand.locationType),
                 conceptsIn(projectFilterCommand.concepts),
                 matchesStatus(status),
-            ).fetch()
+                lessThan(projectFilterCommand.cursorId),
+            ).orderBy(projectJpaEntity.id.desc())
+            .limit(projectFilterCommand.size.toLong())
+            .fetch()
 
     private fun matchesRecruitmentRole(recruitmentRole: String?): BooleanExpression? {
         if (StringUtils.isNullOrEmpty(recruitmentRole)) {
@@ -79,4 +82,11 @@ class ProjectQueryDslRepository(
     }
 
     private fun matchesStatus(status: Status): BooleanExpression = projectJpaEntity.status.eq(status)
+
+    private fun lessThan(cursorId: Long?): BooleanExpression? {
+        if (cursorId == null) {
+            return projectJpaEntity.id.lt(Long.MAX_VALUE)
+        }
+        return projectJpaEntity.id.lt(cursorId)
+    }
 }
