@@ -81,6 +81,8 @@ class ProjectMapper {
             locationType: String?,
             concepts: List<String>?,
             userId: Long,
+            size: Int,
+            cursorId: Long?,
         ): ProjectFilterCommand =
             ProjectFilterCommand(
                 recruitmentRole = recruitmentRole,
@@ -91,6 +93,8 @@ class ProjectMapper {
                 locationType = locationType,
                 concepts = concepts?.map { ProjectConcept.fromCode(it) },
                 userId = userId,
+                size = size,
+                cursorId = cursorId,
             )
 
         fun toResponse(projectDetail: ProjectAnnouncementDetailModel): ProjectAnnouncementDetailResponse =

@@ -65,6 +65,8 @@ class ProjectController(
         @RequestParam(required = false) spot: String?,
         @RequestParam(required = false) locationType: String?,
         @RequestParam(required = false) concepts: List<String>?,
+        @RequestParam(defaultValue = "10") size: Int,
+        @RequestParam(required = false) cursorId: Long?,
         @OptionalAuth userId: Long,
     ): ResponseEntity<List<ProjectAnnouncementItemResponse>> {
         val projectFilterCommand =
@@ -77,6 +79,8 @@ class ProjectController(
                 locationType = locationType,
                 concepts = concepts,
                 userId = userId,
+                size = size,
+                cursorId = cursorId,
             )
         val projectItems = projectReadUseCase.getProjectAnnouncementList(projectFilterCommand)
         val response = projectItems.map { ProjectMapper.toResponse(it) }

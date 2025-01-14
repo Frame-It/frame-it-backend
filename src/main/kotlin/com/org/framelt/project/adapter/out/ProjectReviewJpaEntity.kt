@@ -13,6 +13,8 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 
 @Entity(name = "project_review")
 class ProjectReviewJpaEntity(
@@ -21,9 +23,11 @@ class ProjectReviewJpaEntity(
     val id: Long? = null,
     @ManyToOne
     @JoinColumn(name = "reviewer_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     val reviewer: ProjectMemberJpaEntity,
     @ManyToOne
     @JoinColumn(name = "reviewee_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     val reviewee: ProjectMemberJpaEntity,
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = ProjectReviewTag::class)

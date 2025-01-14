@@ -12,4 +12,6 @@ data class ProjectFilterCommand(
     val locationType: String?,
     val concepts: List<ProjectConcept>?,
     val userId: Long,
+    val size: Int,
+    val cursorId: Long?,
 )
