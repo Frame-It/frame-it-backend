@@ -123,6 +123,7 @@ class ProjectMapper {
                 isClosed = projectDetail.isClosed,
                 isHost = projectDetail.isHost,
                 timeOption = projectDetail.timeOption.name,
+                viewCount = projectDetail.viewCount,
             )
 
         fun toResponse(projectItem: ProjectAnnouncementItemModel): ProjectAnnouncementItemResponse =
