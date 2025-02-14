@@ -132,6 +132,7 @@ class ProjectService(
                     applicantCount = applicantCount,
                 ),
             isHost = project.host.id == projectAnnouncementDetailCommand.userId,
+            viewCount = project.viewCount,
         )
     }
 

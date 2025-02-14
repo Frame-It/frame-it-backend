@@ -20,4 +20,5 @@ data class ProjectAnnouncementDetailResponse(
     val isBookmarked: Boolean,
     val isClosed: Boolean,
     val isHost: Boolean,
+    val viewCount: Int,
 )
