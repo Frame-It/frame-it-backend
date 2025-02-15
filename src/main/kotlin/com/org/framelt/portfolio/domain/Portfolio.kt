@@ -13,6 +13,7 @@ class Portfolio(
     var photos: List<String>,
     val hashtags: List<String>? = null,
     val collaborator: User?,
+    val viewCount: Int,
     val createAt: LocalDateTime = LocalDateTime.now(),
 ) {
     constructor(
@@ -22,7 +23,7 @@ class Portfolio(
         photos: List<String>,
         hashtags: List<String>?,
         collaborator: User?,
-    ) : this(null, manage, title, description, photos.get(0), photos, hashtags, collaborator)
+    ) : this(null, manage, title, description, photos.get(0), photos, hashtags, collaborator, 0)
 
     fun isOwnedByUser(userId: Long): Boolean {
         return manage.id == userId
@@ -70,6 +71,7 @@ class Portfolio(
             photos = photos,
             hashtags = updatedHashtags,
             collaborator = updatedTogether,
+            viewCount = viewCount,
             createAt = this.createAt,
         )
     }

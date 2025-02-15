@@ -41,4 +41,12 @@ class PortfolioJpaEntity(
     @JoinColumn(name = "collaborator_id")
     val collaborator: UserJpaEntity?,
     val createAt: LocalDateTime,
-)
+) {
+    @Column(nullable = false)
+    var countView: Int = 0
+        private set
+
+    fun increasesViewCount() {
+        countView++
+    }
+}

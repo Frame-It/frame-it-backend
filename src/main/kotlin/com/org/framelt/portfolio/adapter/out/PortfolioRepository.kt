@@ -36,6 +36,7 @@ class PortfolioRepository(
             portfolioJpaRepository
                 .findById(portfolioId)
                 .orElseThrow { RuntimeException("Portfolio not found") }
+        portfolioEntity.increasesViewCount()
         return toDomain(portfolioEntity)
     }
 
@@ -123,6 +124,7 @@ class PortfolioRepository(
             photos = portfolioEntity.photos,
             hashtags = portfolioEntity.hashtags,
             collaborator = portfolioEntity.collaborator?.toDomain(),
+            viewCount = portfolioEntity.countView,
             createAt = portfolioEntity.createAt,
         )
 }
