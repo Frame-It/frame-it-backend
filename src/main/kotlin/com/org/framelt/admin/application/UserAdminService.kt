@@ -1,4 +1,4 @@
-package com.org.framelt.admin.view
+package com.org.framelt.admin.application
 
 import com.org.framelt.admin.view.response.UserAdminResponse
 import com.org.framelt.portfolio.application.port.out.PortfolioReadPort

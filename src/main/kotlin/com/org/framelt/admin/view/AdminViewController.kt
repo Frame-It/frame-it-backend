@@ -1,6 +1,6 @@
-package com.org.framelt.admin.controller
+package com.org.framelt.admin.view
 
-import com.org.framelt.admin.view.UserAdminService
+import com.org.framelt.admin.application.UserAdminService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
