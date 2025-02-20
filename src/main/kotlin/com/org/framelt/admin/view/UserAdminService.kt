@@ -27,6 +27,7 @@ class UserAdminService(
             val portfolios = portfolioReadPort.readByUserId(user.id)
 
             UserAdminResponse(
+                id = user.id,
                 name = user.name,
                 email = user.email,
                 nickname = user.nickname,
@@ -37,6 +38,6 @@ class UserAdminService(
                 portfolioCount = portfolios.size,
                 oauthType = oauthUser?.provider?.name ?: "NONE",
             )
-        }
+        }.sortedByDescending { it.id }
     }
 }
