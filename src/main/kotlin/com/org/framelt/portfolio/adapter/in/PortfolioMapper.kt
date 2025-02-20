@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page
 
 class PortfolioMapper {
     companion object {
-
         fun toResponse(readAllPortfolio: Page<Portfolio>): Page<PortfolioResponse> =
             readAllPortfolio.map { portfolio ->
                 PortfolioResponse(

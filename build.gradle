@@ -55,8 +55,8 @@ dependencies {
     // MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    // ktlint
-
+    // thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.2")
 }
 
 kotlin {

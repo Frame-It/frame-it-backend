@@ -13,7 +13,7 @@ interface UserJpaRepository : Repository<UserJpaEntity, Long> {
 
     fun findAllByIdIn(ids: List<Long>): List<UserJpaEntity>
 
-    fun findByEmail(email: String): UserJpaEntity?
-
     fun findByNickname(nickname: String): UserJpaEntity?
+
+    fun findAll(): List<UserJpaEntity>
 }

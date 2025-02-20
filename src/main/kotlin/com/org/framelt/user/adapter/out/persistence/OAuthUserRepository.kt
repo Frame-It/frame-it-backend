@@ -30,4 +30,9 @@ class OAuthUserRepository(
                 ?: throw IllegalArgumentException("OAuth 회원이 존재하지 않습니다: $id")
         return oAuthUserJpaEntity.toModel()
     }
+
+    override fun readByEmail(email: String): OAuthUserModel? {
+        val oAuthUserJpaEntity = oAuthUserJpaRepository.findByEmail(email)
+        return oAuthUserJpaEntity?.toModel()
+    }
 }
