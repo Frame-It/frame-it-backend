@@ -10,4 +10,6 @@ interface OAuthUserQueryPort {
     ): OAuthUserModel?
 
     fun readById(id: Long): OAuthUserModel
+
+    fun readByEmail(email: String): OAuthUserModel?
 }

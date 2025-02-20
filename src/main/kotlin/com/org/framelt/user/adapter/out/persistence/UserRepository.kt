@@ -67,4 +67,9 @@ class UserRepository(
         portfolioJpaRepository.deleteAllByManage(userJpaEntity)
         quitUserJpaRepository.save(QuitUserJpaEntity.fromDomain(userJpaEntity, quitReason))
     }
+
+    override fun readAll(): List<User> {
+        val userEntities = userJpaRepository.findAll()
+        return userEntities.map { it.toDomain() }
+    }
 }

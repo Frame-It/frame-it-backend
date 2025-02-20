@@ -18,4 +18,6 @@ interface UserQueryPort {
     ): User?
 
     fun existsByNickname(nickname: String): Boolean
+
+    fun readAll(): List<User>
 }
