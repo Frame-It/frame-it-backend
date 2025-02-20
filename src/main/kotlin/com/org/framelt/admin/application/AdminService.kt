@@ -6,14 +6,17 @@ import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.domain.Status
 import com.org.framelt.user.adapter.out.persistence.OAuthUserQueryPort
 import com.org.framelt.user.application.port.out.persistence.UserQueryPort
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class UserAdminService(
+class AdminService(
     private val userQueryPort: UserQueryPort,
     private val oauthUserQueryPort: OAuthUserQueryPort,
     private val projectMemberQueryPort: ProjectMemberQueryPort,
     private val portfolioReadPort: PortfolioReadPort,
+    @Value("\${admin.id}") private val adminId: String,
+    @Value("\${admin.password}") private val adminPassword: String,
 ) {
     fun readAllUsers(): List<UserAdminResponse> {
         val users = userQueryPort.readAll()
@@ -39,5 +42,14 @@ class UserAdminService(
                 oauthType = oauthUser?.provider?.name ?: "NONE",
             )
         }.sortedByDescending { it.id }
+    }
+
+    fun login(
+        id: String,
+        password: String,
+    ) {
+        if (id != adminId || password != adminPassword) {
+            throw IllegalArgumentException("관리자 아이디 또는 비밀번호가 일치하지 않습니다.")
+        }
     }
 }
