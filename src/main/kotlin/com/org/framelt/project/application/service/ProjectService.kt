@@ -448,9 +448,6 @@ class ProjectService(
         isHost: Boolean,
         eventType: NotificationEventType,
     ) {
-        if (!receiver.notificationsEnabled) {
-            return
-        }
         eventPublisher.publishEvent(
             NotificationLetter(
                 sender = sender,
