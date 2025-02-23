@@ -90,6 +90,16 @@ class ProjectService(
                 retouchingDescription = projectCreateCommand.retouchingDescription,
             )
         val savedProject = projectCommandPort.save(project)
+        sendNotificationTo(
+            sender = host,
+            receiver = host,
+            title = "프로젝트 생성 완료",
+            content = "프로젝트: ${savedProject.title}이(가) 생성되었습니다.",
+            id = savedProject.id!!,
+            projectStatus = savedProject.status,
+            isHost = true,
+            eventType = NotificationEventType.PROJECT_CREATION
+        )
         return savedProject.id!!
     }
 
