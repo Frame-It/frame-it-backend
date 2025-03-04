@@ -8,6 +8,7 @@ import com.org.framelt.user.adapter.out.persistence.OAuthUserJpaRepository
 import com.org.framelt.user.adapter.out.persistence.UserJpaEntity
 import com.org.framelt.user.adapter.out.persistence.UserJpaRepository
 import com.org.framelt.user.application.port.out.JwtPort
+import com.org.framelt.user.application.service.AuthService
 import com.org.framelt.user.domain.Identity
 import org.springframework.context.annotation.Profile
 import org.springframework.http.ResponseEntity
@@ -21,6 +22,7 @@ class FakeLoginController(
     val oAuthUserJpaRepository: OAuthUserJpaRepository,
     val userJpaRepository: UserJpaRepository,
     val jwtPort: JwtPort,
+    val authService: AuthService,
 ) {
     @PostMapping("/fake/login")
     fun fakeLogin(
@@ -51,7 +53,7 @@ class FakeLoginController(
         val response =
             LoginResponse(
                 accessToken = jwtPort.createAccessToken(user?.id.toString()),
-                refreshToken = jwtPort.createRefreshToken(user?.id.toString()),
+                refreshToken = authService.createRefreshToken(user?.id),
                 signUpCompleted = user != null,
                 oauthUserId = oauthUser.id!!,
                 identity = user?.identity!!.name,

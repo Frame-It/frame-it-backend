@@ -53,6 +53,10 @@ class JwtProvider(
         return getClaimsJws(credential).body
     }
 
+    override fun parseTokenWithoutScheme(token: String): Claims {
+        return getClaimsJws(token).body
+    }
+
     private fun getClaimsJws(token: String) =
         Jwts
             .parserBuilder()

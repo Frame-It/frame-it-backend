@@ -7,6 +7,7 @@ import com.org.framelt.user.adapter.out.persistence.OAuthUserQueryPort
 import com.org.framelt.user.application.port.`in`.LoginCommand
 import com.org.framelt.user.application.port.`in`.LoginResult
 import com.org.framelt.user.application.port.`in`.LoginUseCase
+import com.org.framelt.user.application.port.`in`.RefreshTokenResult
 import com.org.framelt.user.application.port.`in`.SignUpCommand
 import com.org.framelt.user.application.port.`in`.SignUpResult
 import com.org.framelt.user.application.port.`in`.SignUpUseCase
@@ -65,7 +66,7 @@ class AuthService(
         )
     }
 
-    private fun createRefreshToken(userId: Long?): String {
+    fun createRefreshToken(userId: Long?): String {
         val previousRefreshTokens = refreshTokenQueryPort.findAllByUserId(userId!!).filter { it.isValid }
         check(previousRefreshTokens.size <= 1) { "유효한 리프레시 토큰은 2개 이상 존재할 수 없습니다." }
         val previousRefreshToken = previousRefreshTokens.firstOrNull()
@@ -81,6 +82,22 @@ class AuthService(
             )
         refreshTokenCommandPort.save(refreshToken)
         return refreshToken.token
+    }
+
+    override fun refreshToken(refreshToken: String): RefreshTokenResult {
+        val refreshTokenEntity = refreshTokenQueryPort.findByToken(refreshToken)
+        requireNotNull(refreshTokenEntity) { "유효하지 않은 리프레시 토큰입니다." }
+        if (!refreshTokenEntity.isValid) {
+            refreshTokenCommandPort.deleteAllByUserId(refreshTokenEntity.userId)
+            throw IllegalArgumentException("새로 발급된 리프레시 토큰이 존재하여 탈취된 것으로 간주합니다. 다시 로그인해주세요.")
+        }
+
+        val claims = jwtPort.parseTokenWithoutScheme(refreshToken)
+        require(claims["type"] == "refresh") { "리프레시 토큰이 아닙니다." }
+
+        val newRefreshToken = createRefreshToken(refreshTokenEntity.userId)
+        val newAccessToken = jwtPort.createAccessToken(refreshTokenEntity.userId.toString())
+        return RefreshTokenResult(newAccessToken, newRefreshToken)
     }
 
     override fun signUp(signUpCommand: SignUpCommand): SignUpResult {

@@ -7,5 +7,7 @@ interface JwtPort {
 
     fun parseToken(token: String): Claims
 
+    fun parseTokenWithoutScheme(token: String): Claims
+
     fun createRefreshToken(payload: String): String
 }
