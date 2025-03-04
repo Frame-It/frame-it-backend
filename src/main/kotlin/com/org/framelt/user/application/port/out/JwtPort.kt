@@ -1,7 +1,11 @@
 package com.org.framelt.user.application.port.out
 
-interface JwtPort {
-    fun createToken(payload: String): String
+import io.jsonwebtoken.Claims
 
-    fun parseToken(token: String): String
+interface JwtPort {
+    fun createAccessToken(payload: String): String
+
+    fun parseToken(token: String): Claims
+
+    fun createRefreshToken(payload: String): String
 }

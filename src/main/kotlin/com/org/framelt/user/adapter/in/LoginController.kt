@@ -32,6 +32,7 @@ class LoginController(
         val response =
             LoginResponse(
                 accessToken = loginResult.accessToken,
+                refreshToken = loginResult.refreshToken,
                 signUpCompleted = loginResult.signUpCompleted,
                 oauthUserId = loginResult.oauthUserId,
                 identity = loginResult.identity.name,

@@ -15,14 +15,19 @@ import com.org.framelt.user.application.port.out.JwtPort
 import com.org.framelt.user.application.port.out.oauth.AuthPort
 import com.org.framelt.user.application.port.out.persistence.OAuthUserCommandPort
 import com.org.framelt.user.application.port.out.persistence.OAuthUserModel
+import com.org.framelt.user.application.port.out.persistence.RefreshToken
+import com.org.framelt.user.application.port.out.persistence.RefreshTokenCommandPort
+import com.org.framelt.user.application.port.out.persistence.RefreshTokenQueryPort
 import com.org.framelt.user.application.port.out.persistence.UserCommandPort
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.User
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
+@Transactional
 class AuthService(
     val userService: UserService,
     val authPort: AuthPort,
@@ -31,6 +36,8 @@ class AuthService(
     val oauthUserQueryPort: OAuthUserQueryPort,
     val oauthUserCommandPort: OAuthUserCommandPort,
     val applicationEventPublisher: ApplicationEventPublisher,
+    val refreshTokenQueryPort: RefreshTokenQueryPort,
+    val refreshTokenCommandPort: RefreshTokenCommandPort,
 ) : LoginUseCase,
     SignUpUseCase {
     override fun login(loginCommand: LoginCommand): LoginResult {
@@ -48,13 +55,32 @@ class AuthService(
         val user = oauthUser.user
 
         return LoginResult(
-            accessToken = jwtPort.createToken(user?.id.toString()),
+            accessToken = jwtPort.createAccessToken(user?.id.toString()),
+            refreshToken = createRefreshToken(user?.id),
             signUpCompleted = user != null,
             oauthUserId = oauthUser.id!!,
             identity = user?.identity ?: Identity.NONE,
             notificationsEnabled = user?.notificationsEnabled,
             id = user?.id,
         )
+    }
+
+    private fun createRefreshToken(userId: Long?): String {
+        val previousRefreshTokens = refreshTokenQueryPort.findAllByUserId(userId!!).filter { it.isValid }
+        check(previousRefreshTokens.size <= 1) { "유효한 리프레시 토큰은 2개 이상 존재할 수 없습니다." }
+        val previousRefreshToken = previousRefreshTokens.firstOrNull()
+        previousRefreshToken?.let {
+            it.invalidate()
+            refreshTokenCommandPort.save(it)
+        }
+
+        val refreshToken =
+            RefreshToken(
+                userId = userId,
+                token = jwtPort.createRefreshToken(userId.toString()),
+            )
+        refreshTokenCommandPort.save(refreshToken)
+        return refreshToken.token
     }
 
     override fun signUp(signUpCommand: SignUpCommand): SignUpResult {
@@ -90,7 +116,8 @@ class AuthService(
             ),
         )
         return SignUpResult(
-            accessToken = jwtPort.createToken(savedUser.id.toString()),
+            accessToken = jwtPort.createAccessToken(savedUser.id.toString()),
+            refreshToken = createRefreshToken(savedUser.id),
             identity = savedUser.identity,
         )
     }

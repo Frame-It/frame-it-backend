@@ -50,7 +50,8 @@ class FakeLoginController(
         val user = oauthUser.user
         val response =
             LoginResponse(
-                accessToken = jwtPort.createToken(user?.id.toString()),
+                accessToken = jwtPort.createAccessToken(user?.id.toString()),
+                refreshToken = jwtPort.createRefreshToken(user?.id.toString()),
                 signUpCompleted = user != null,
                 oauthUserId = oauthUser.id!!,
                 identity = user?.identity!!.name,

@@ -28,7 +28,9 @@ class AuthInterceptor(
             request.getHeader(HttpHeaders.AUTHORIZATION)
                 ?: throw IllegalArgumentException("인증 정보가 없습니다.")
 
-        val userId = jwtProvider.parseToken(authHeader)
+        val claims = jwtProvider.parseToken(authHeader)
+        require(claims["type"] == "access") { "액세스 토큰을 통해서만 인증할 수 있습니다." }
+        val userId = claims.subject
         request.setAttribute("userId", userId)
         return true
     }

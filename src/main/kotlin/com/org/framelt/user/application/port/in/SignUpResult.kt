@@ -4,5 +4,6 @@ import com.org.framelt.user.domain.Identity
 
 data class SignUpResult(
     val accessToken: String,
+    val refreshToken: String,
     val identity: Identity,
 )
