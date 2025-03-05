@@ -37,6 +37,7 @@ class WebMvcConfig(
             .excludePathPatterns("/users/{userId}/projects")
             .excludePathPatterns("/users/{userId}/portfolios")
             .excludePathPatterns("/admin/**")
+            .excludePathPatterns("/tokens/refresh")
         registry
             .addInterceptor(optionalAuthInterceptor)
             .addPathPatterns("/projects/announcement")

@@ -1,9 +1,6 @@
 package com.org.framelt.user.application.port.`in`
 
-import com.org.framelt.user.domain.Identity
-
-data class SignUpResult(
+data class RefreshTokenResult(
     val accessToken: String,
     val refreshToken: String,
-    val identity: Identity,
 )

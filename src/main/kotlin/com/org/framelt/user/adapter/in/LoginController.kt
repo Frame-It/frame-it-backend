@@ -2,8 +2,10 @@ package com.org.framelt.user.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
 import com.org.framelt.user.adapter.`in`.request.SignUpRequest
+import com.org.framelt.user.adapter.`in`.request.TokenRefreshRequest
 import com.org.framelt.user.adapter.`in`.response.LoginResponse
 import com.org.framelt.user.adapter.`in`.response.SignUpResponse
+import com.org.framelt.user.adapter.`in`.response.TokenRefreshResponse
 import com.org.framelt.user.application.port.`in`.LoginCommand
 import com.org.framelt.user.application.port.`in`.LoginUseCase
 import com.org.framelt.user.application.port.`in`.SignUpUseCase
@@ -32,6 +34,7 @@ class LoginController(
         val response =
             LoginResponse(
                 accessToken = loginResult.accessToken,
+                refreshToken = loginResult.refreshToken,
                 signUpCompleted = loginResult.signUpCompleted,
                 oauthUserId = loginResult.oauthUserId,
                 identity = loginResult.identity.name,
@@ -59,4 +62,12 @@ class LoginController(
     fun validateToken(
         @Authorization userId: Long,
     ): ResponseEntity<Unit> = ResponseEntity.ok().build()
+
+    @PostMapping("/tokens/refresh")
+    fun refresh(
+        @RequestBody request: TokenRefreshRequest,
+    ): ResponseEntity<TokenRefreshResponse> {
+        val result = loginUseCase.refreshToken(request.refreshToken)
+        return ResponseEntity.ok(TokenRefreshResponse(result.accessToken, result.refreshToken))
+    }
 }
