@@ -5,12 +5,7 @@ import com.org.framelt.notification.application.port.`in`.NotificationDeleteUseC
 import com.org.framelt.notification.application.port.`in`.NotificationMarkAsReadUseCase
 import com.org.framelt.notification.application.port.`in`.NotificationQueryUseCase
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/notifications")
@@ -25,6 +20,12 @@ class NotificationController(
     ): ResponseEntity<Void> {
         val command = MarkAllAsReadCommand(userId)
         notificationMarkAsReadUseCase.markAllAsRead(command)
+        return ResponseEntity.ok().build()
+    }
+
+    @PutMapping("/read/{id}")
+    fun readNotification(@Authorization userId: Long, @PathVariable id: Long): ResponseEntity<Void> {
+        notificationMarkAsReadUseCase.read(userId, id)
         return ResponseEntity.ok().build()
     }
 

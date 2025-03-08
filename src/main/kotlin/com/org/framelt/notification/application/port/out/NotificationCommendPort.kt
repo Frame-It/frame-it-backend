@@ -8,4 +8,6 @@ interface NotificationCommendPort {
     fun deleteById(notificationId: Long)
 
     fun updateAll(userId: Long)
+
+    fun markAsReadByNotificationId(id: Long)
 }

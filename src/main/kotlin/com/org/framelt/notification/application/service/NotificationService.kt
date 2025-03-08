@@ -53,6 +53,11 @@ class NotificationService(
         notificationCommendPort.updateAll(command.userId)
     }
 
+    override fun read(userId: Long, id: Long) {
+        val user = userQueryPort.readById(userId)
+        notificationCommendPort.markAsReadByNotificationId(id)
+    }
+
     override fun getNotificationStatus(command: NotificationReadCommand): List<NotificationResponse> {
         val user = userQueryPort.readById(command.userId)
         val notification = notificationReadPort.findAllByReceiverId(command.userId)

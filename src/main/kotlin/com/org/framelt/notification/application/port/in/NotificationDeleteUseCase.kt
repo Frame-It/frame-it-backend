@@ -11,6 +11,7 @@ interface NotificationDeleteUseCase {
 
 interface NotificationMarkAsReadUseCase {
     fun markAllAsRead(userId: MarkAllAsReadCommand)
+    fun read(userId: Long, id: Long)
 }
 
 interface NotificationQueryUseCase {
