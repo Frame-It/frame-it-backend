@@ -41,7 +41,7 @@ class AdminService(
                 portfolioCount = portfolios.size,
                 oauthType = oauthUser?.provider?.name ?: "NONE",
             )
-        }.sortedByDescending { it.id }
+        }.sortedBy { it.id }
     }
 
     fun login(
