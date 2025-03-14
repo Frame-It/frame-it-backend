@@ -6,6 +6,8 @@ import com.org.framelt.portfolio.application.service.PortfolioDetailResponse
 import com.org.framelt.portfolio.application.service.PortfolioResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -51,7 +53,7 @@ class PortfolioController(
     @GetMapping("/me")
     fun readAllByMe(
         @Authorization userId: Long,
-        pageable: Pageable,
+        @PageableDefault(sort = ["createAt"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<Page<PortfolioResponse>> {
         val command = PortfolioReadAllCommend(userId)
         val response = portfolioCreateUseCase.readAllByMe(command, pageable)
@@ -61,7 +63,7 @@ class PortfolioController(
     @GetMapping("/user/{id}")
     fun readByUserId(
         @PathVariable id: Long,
-        pageable: Pageable,
+        @PageableDefault(sort = ["createAt"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<Page<PortfolioResponse>> {
         val command = PortfolioReadAllCommend(id)
         val response = portfolioCreateUseCase.readByUserId(command, pageable)
