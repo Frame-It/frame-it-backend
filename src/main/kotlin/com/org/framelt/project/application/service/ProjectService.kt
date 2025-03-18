@@ -152,7 +152,7 @@ class ProjectService(
     }
 
     override fun getProjectAnnouncementList(projectFilterCommand: ProjectFilterCommand): List<ProjectAnnouncementItemModel> {
-        val projects = projectQueryPort.readAllByFilterAndStatus(projectFilterCommand, Status.RECRUITING)
+        val projects = projectQueryPort.readAllByFilter(projectFilterCommand)
         return projects
             .map {
                 val projectId = it.id!!
