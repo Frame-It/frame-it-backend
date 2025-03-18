@@ -3,7 +3,6 @@ package com.org.framelt.project.adapter.out
 import com.org.framelt.project.adapter.out.QProjectJpaEntity.projectJpaEntity
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.domain.ProjectConcept
-import com.org.framelt.project.domain.Status
 import com.org.framelt.project.domain.TimeOption
 import com.org.framelt.user.domain.Identity
 import com.org.framelt.user.domain.LocationType
@@ -17,10 +16,7 @@ import java.time.LocalDate
 class ProjectQueryDslRepository(
     private val jpaQueryFactory: JPAQueryFactory,
 ) {
-    fun findAllByFilterAndStatus(
-        projectFilterCommand: ProjectFilterCommand,
-        status: Status,
-    ): List<ProjectJpaEntity> =
+    fun findAllByFilter(projectFilterCommand: ProjectFilterCommand): List<ProjectJpaEntity> =
         jpaQueryFactory
             .selectFrom(projectJpaEntity)
             .where(
@@ -30,7 +26,6 @@ class ProjectQueryDslRepository(
                 matchesSpot(projectFilterCommand.spot),
                 matchesLocationType(projectFilterCommand.locationType),
                 conceptsIn(projectFilterCommand.concepts),
-                matchesStatus(status),
                 lessThan(projectFilterCommand.cursorId),
             ).orderBy(projectJpaEntity.id.desc())
             .limit(projectFilterCommand.size.toLong())
@@ -80,8 +75,6 @@ class ProjectQueryDslRepository(
         }
         return projectJpaEntity.concepts.any().`in`(concepts)
     }
-
-    private fun matchesStatus(status: Status): BooleanExpression = projectJpaEntity.status.eq(status)
 
     private fun lessThan(cursorId: Long?): BooleanExpression? {
         if (cursorId == null) {
