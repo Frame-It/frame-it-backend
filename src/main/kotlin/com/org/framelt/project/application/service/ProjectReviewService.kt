@@ -1,5 +1,7 @@
 package com.org.framelt.project.application.service
 
+import com.org.framelt.notification.application.service.NotificationLetter
+import com.org.framelt.notification.domain.NotificationEventType
 import com.org.framelt.project.application.port.`in`.ProjectReviewCommand
 import com.org.framelt.project.application.port.`in`.ProjectReviewCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectReviewModel
@@ -11,13 +13,16 @@ import com.org.framelt.project.application.port.out.ProjectMemberQueryPort
 import com.org.framelt.project.application.port.out.ProjectReviewCommandPort
 import com.org.framelt.project.application.port.out.ProjectReviewQueryPort
 import com.org.framelt.project.domain.ProjectReview
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class ProjectReviewService(
     val projectMemberQueryPort: ProjectMemberQueryPort,
     val projectReviewCommandPort: ProjectReviewCommandPort,
     val projectReviewQueryPort: ProjectReviewQueryPort,
+    val eventPublisher: ApplicationEventPublisher,
 ) : ProjectReviewCreateUseCase,
     ProjectReviewReadUseCase {
     override fun review(projectReviewCommand: ProjectReviewCommand): ProjectReviewResult {
@@ -32,6 +37,21 @@ class ProjectReviewService(
                 content = projectReviewCommand.content,
             )
         val project = reviewer.project
+
+        val isRevieweeHost = project.host.equals(reviewee.member)
+        val eventType = if (isRevieweeHost) NotificationEventType.PROJECT_REVIEW_CREATED_FOR_HOST else NotificationEventType.PROJECT_REVIEW_CREATED_FOR_APPLICANT
+        eventPublisher.publishEvent(NotificationLetter(
+            sender = reviewer.member,
+            receiver = reviewee.member,
+            title = "${reviewer.member.nickname}님이 리뷰를 남겼습니다.",
+            content = "프로젝트: ${project.title}",
+            projectStatus = project.status,
+            id = project.id!!,
+            isHost = isRevieweeHost,
+            eventType = eventType,
+            project = project,
+            time = LocalDateTime.now(),
+        ))
         return ProjectReviewResult(projectReviewCommandPort.save(projectReview).id!!, project.status)
     }
 

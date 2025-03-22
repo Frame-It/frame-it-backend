@@ -1,9 +1,12 @@
 package com.org.framelt.notification.application.service
 
+import com.org.framelt.global.email.EmailForm
+import com.org.framelt.global.email.EmailParameters
 import com.org.framelt.notification.adapter.`in`.MarkAllAsReadCommand
 import com.org.framelt.notification.adapter.`in`.NotificationDeleteCommand
 import com.org.framelt.notification.adapter.`in`.NotificationReadCommand
 import com.org.framelt.notification.adapter.`in`.NotificationResponse
+import com.org.framelt.notification.adapter.out.EmailSender
 import com.org.framelt.notification.application.port.`in`.NotificationDeleteUseCase
 import com.org.framelt.notification.application.port.`in`.NotificationMarkAsReadUseCase
 import com.org.framelt.notification.application.port.`in`.NotificationQueryUseCase
@@ -22,6 +25,7 @@ class NotificationService(
     private val notificationReadPort: NotificationReadPort,
     private val notificationSendPort: NotificationSendPort,
     private val userQueryPort: UserQueryPort,
+    private val emailSender: EmailSender,
 ) : NotificationDeleteUseCase,
     NotificationMarkAsReadUseCase,
     NotificationQueryUseCase {
@@ -81,6 +85,17 @@ class NotificationService(
     @Async
     fun sendTo(letter: NotificationLetter) {
         addNotification(letter)
+        /*
+        모바일 앱 출시 전까지 알림 기능을 메일로 대체
         notificationSendPort.sendTo(letter)
+         */
+        val emailForm = EmailForm.from(letter.eventType)
+        emailForm?.let {
+            emailSender.sendEmail(
+                letter.receiver.email,
+                emailForm.title,
+                emailForm.generateContent(EmailParameters.from(letter)),
+            )
+        }
     }
 }
