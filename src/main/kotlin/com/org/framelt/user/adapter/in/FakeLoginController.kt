@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @Profile(value = ["!prod"])
 @RestController
@@ -32,7 +33,7 @@ class FakeLoginController(
             oAuthUserJpaRepository.findByEmail(request.email) ?: oAuthUserJpaRepository.save(
                 OAuthUserJpaEntity(
                     provider = OAuthProvider.KAKAO,
-                    providerUserId = "fake",
+                    providerUserId = "fake_${UUID.randomUUID()}",
                     user =
                         userJpaRepository.save(
                             UserJpaEntity(
