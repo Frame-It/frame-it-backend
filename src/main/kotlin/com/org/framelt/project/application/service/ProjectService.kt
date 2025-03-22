@@ -98,7 +98,8 @@ class ProjectService(
             id = savedProject.id!!,
             projectStatus = savedProject.status,
             isHost = true,
-            eventType = NotificationEventType.PROJECT_CREATION
+            eventType = NotificationEventType.PROJECT_CREATION,
+            project = savedProject,
         )
         return savedProject.id!!
     }
@@ -334,6 +335,7 @@ class ProjectService(
             projectStatus = project.status,
             isHost = true,
             eventType = NotificationEventType.PROJECT_APPLICATION,
+            project = project,
         )
         return ProjectApplyModel(project.title)
     }
@@ -405,6 +407,7 @@ class ProjectService(
             projectStatus = project.status,
             isHost = host.isHost,
             eventType = NotificationEventType.PROJECT_START,
+            project = project,
         )
         sendNotificationTo(
             sender = project.host,
@@ -415,6 +418,7 @@ class ProjectService(
             projectStatus = project.status,
             isHost = guest.isHost,
             eventType = NotificationEventType.PROJECT_START,
+            project = project,
         )
     }
 
@@ -439,6 +443,7 @@ class ProjectService(
             projectStatus = project.status,
             isHost = anotherMember.isHost,
             eventType = NotificationEventType.PROJECT_COMPLETE,
+            project = project,
         )
         if (projectMembers.all { it.hasCompletedProject }) {
             val project = projectMember.project
@@ -457,6 +462,7 @@ class ProjectService(
         projectStatus: Status,
         isHost: Boolean,
         eventType: NotificationEventType,
+        project: Project,
     ) {
         eventPublisher.publishEvent(
             NotificationLetter(
@@ -469,6 +475,7 @@ class ProjectService(
                 isHost = isHost,
                 eventType = eventType,
                 time = LocalDateTime.now(),
+                project = project,
             ),
         )
     }
