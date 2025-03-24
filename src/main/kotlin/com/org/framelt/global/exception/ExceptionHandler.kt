@@ -1,6 +1,9 @@
 package com.org.framelt.global.exception
 
 import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.UnsupportedJwtException
+import io.jsonwebtoken.security.SignatureException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -22,12 +25,12 @@ class ExceptionHandler(
             .body(ErrorResponse(e.message))
     }
 
-    @ExceptionHandler(ExpiredJwtException::class)
+    @ExceptionHandler(ExpiredJwtException::class, UnsupportedJwtException::class, MalformedJwtException::class, SignatureException::class)
     fun handleExpiredJwtException(e: ExpiredJwtException): ResponseEntity<ErrorResponse> {
-        logger.warn("[ExpiredJwtException]", e)
+        logger.warn("[Exception while parsing JWT]", e)
         return ResponseEntity
             .status(HttpStatus.FORBIDDEN)
-            .body(ErrorResponse("토큰이 만료되었습니다."))
+            .body(ErrorResponse("JWT를 파싱하는 중 문제가 발생했습니다: ${e.message}."))
     }
 
     @ExceptionHandler(Exception::class)
