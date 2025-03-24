@@ -32,7 +32,7 @@ class WebMvcConfig(
                 "/portfolios/photography",
                 "/portfolios/user/{id}",
             ).excludePathPatterns("/fake/login")
-            .excludePathPatterns("/projects/announcement")
+            .excludePathPatterns("/projects/announcement", "/projects/{projectId}/announcement")
             .excludePathPatterns("/users/{userId}/studio")
             .excludePathPatterns("/users/{userId}/projects")
             .excludePathPatterns("/users/{userId}/portfolios")
@@ -40,7 +40,7 @@ class WebMvcConfig(
             .excludePathPatterns("/tokens/refresh")
         registry
             .addInterceptor(optionalAuthInterceptor)
-            .addPathPatterns("/projects/announcement")
+            .addPathPatterns("/projects/announcement", "/projects/{projectId}/announcement")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
