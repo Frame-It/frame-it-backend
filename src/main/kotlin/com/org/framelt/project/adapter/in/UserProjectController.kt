@@ -1,6 +1,7 @@
 package com.org.framelt.project.adapter.`in`
 
 import com.org.framelt.config.auth.Authorization
+import com.org.framelt.config.guest.OptionalAuth
 import com.org.framelt.project.adapter.`in`.response.UserProjectsResponse
 import com.org.framelt.project.application.port.`in`.UserProjectUseCase
 import com.org.framelt.project.common.ProjectMapper
@@ -35,7 +36,7 @@ class UserProjectController(
     @GetMapping("/users/{userId}/projects")
     fun showProjectsOfGuest(
         @PathVariable userId: Long,
-        @Authorization viewerId: Long,
+        @OptionalAuth viewerId: Long,
     ): ResponseEntity<UserProjectsResponse> {
         val command =
             ProjectMapper.toCommand(

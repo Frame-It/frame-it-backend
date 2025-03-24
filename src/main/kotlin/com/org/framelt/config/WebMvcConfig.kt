@@ -41,6 +41,7 @@ class WebMvcConfig(
         registry
             .addInterceptor(optionalAuthInterceptor)
             .addPathPatterns("/projects/announcement", "/projects/{projectId}/announcement")
+            .addPathPatterns("/users/{userId}/projects")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
