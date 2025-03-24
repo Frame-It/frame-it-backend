@@ -22,6 +22,7 @@ import com.org.framelt.project.application.port.`in`.ProjectCreateCommand
 import com.org.framelt.project.application.port.`in`.ProjectCreateUseCase
 import com.org.framelt.project.application.port.`in`.ProjectFilterCommand
 import com.org.framelt.project.application.port.`in`.ProjectReadUseCase
+import com.org.framelt.project.application.port.`in`.ProjectStatusModel
 import com.org.framelt.project.application.port.`in`.ProjectUpdateCommand
 import com.org.framelt.project.application.port.`in`.ProjectUpdateUseCase
 import com.org.framelt.project.application.port.`in`.RecruitingProjectDetailGuestModel
@@ -44,8 +45,10 @@ import com.org.framelt.user.domain.User
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
+@Transactional
 @Service
 class ProjectService(
     val projectCommandPort: ProjectCommandPort,
@@ -477,6 +480,19 @@ class ProjectService(
                 time = LocalDateTime.now(),
                 project = project,
             ),
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getProjectStatus(
+        projectId: Long,
+        userId: Long,
+    ): ProjectStatusModel {
+        val project = projectQueryPort.readById(projectId)
+        val isHost = project.host.id == userId
+        return ProjectStatusModel(
+            status = project.status.name,
+            isHost = isHost,
         )
     }
 }

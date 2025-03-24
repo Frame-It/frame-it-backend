@@ -5,6 +5,7 @@ import com.org.framelt.config.guest.OptionalAuth
 import com.org.framelt.project.adapter.`in`.request.ProjectApplicationCancelRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectApplyRequest
 import com.org.framelt.project.adapter.`in`.request.ProjectCreateRequest
+import com.org.framelt.project.adapter.`in`.request.ProjectStatusResponse
 import com.org.framelt.project.adapter.`in`.request.ProjectUpdateRequest
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementDetailResponse
 import com.org.framelt.project.adapter.`in`.response.ProjectAnnouncementItemResponse
@@ -163,6 +164,19 @@ class ProjectController(
         val projectCompleteCommand = ProjectCompleteCommand(projectId, memberId)
         val result = projectCompleteUseCase.complete(projectCompleteCommand)
         val response = ProjectCompleteResponse(result.projectStatus.name)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/projects/{projectId}/status")
+    fun checkStatus(
+        @PathVariable projectId: Long,
+        @Authorization userId: Long,
+    ): ResponseEntity<ProjectStatusResponse> {
+        val result = projectReadUseCase.getProjectStatus(projectId, userId)
+        val response = ProjectStatusResponse(
+            status = result.status,
+            isHost = result.isHost,
+        )
         return ResponseEntity.ok(response)
     }
 }

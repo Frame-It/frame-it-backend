@@ -34,4 +34,9 @@ interface ProjectReadUseCase {
         projectId: Long,
         userId: Long,
     ): CompletedProjectDetailGuestModel
+
+    fun getProjectStatus(
+        projectId: Long,
+        userId: Long,
+    ): ProjectStatusModel
 }
