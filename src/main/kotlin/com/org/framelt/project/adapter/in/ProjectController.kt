@@ -91,7 +91,7 @@ class ProjectController(
     @GetMapping("/projects/{projectId}/announcement")
     fun showAnnouncementDetail(
         @PathVariable projectId: Long,
-        @Authorization userId: Long,
+        @OptionalAuth userId: Long,
     ): ResponseEntity<ProjectAnnouncementDetailResponse> {
         val projectAnnouncementDetailCommand = ProjectAnnouncementDetailCommand(projectId, userId)
         val projectDetail = projectReadUseCase.getProjectAnnouncementDetail(projectAnnouncementDetailCommand)
