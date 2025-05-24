@@ -15,4 +15,8 @@ interface ProjectJpaRepository : Repository<ProjectJpaEntity, Long> {
         hostId: Long,
         status: Status,
     ): List<ProjectJpaEntity>
+
+    fun deleteById(id: Long)
+
+    fun findAll(): List<ProjectJpaEntity>
 }
