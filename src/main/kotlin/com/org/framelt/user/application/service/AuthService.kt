@@ -44,20 +44,19 @@ class AuthService(
     override fun login(loginCommand: LoginCommand): LoginResult {
         val authProfile = authPort.getProfile(loginCommand.provider, loginCommand.code, loginCommand.redirectUri)
         val provider = OAuthProvider.of(loginCommand.provider)
-        val oauthUser =
-            oauthUserQueryPort.findByProviderAndProviderUserId(provider, authProfile.providerUserId)
-                ?: oauthUserCommandPort.save(
-                    OAuthUserModel(
-                        provider = provider,
-                        providerUserId = authProfile.providerUserId,
-                        email = authProfile.email,
-                    ),
-                )
+        val oauthUser = oauthUserQueryPort.findByProviderAndProviderUserId(provider, authProfile.providerUserId)
+            ?: oauthUserCommandPort.save(
+                OAuthUserModel(
+                    provider = provider,
+                    providerUserId = authProfile.providerUserId,
+                    email = authProfile.email,
+                ),
+            )
         val user = oauthUser.user
 
         return LoginResult(
             accessToken = jwtPort.createAccessToken(user?.id.toString()),
-            refreshToken = createRefreshToken(user?.id),
+            refreshToken = user?.let { createRefreshToken(it.id) },
             signUpCompleted = user != null,
             oauthUserId = oauthUser.id!!,
             identity = user?.identity ?: Identity.NONE,
