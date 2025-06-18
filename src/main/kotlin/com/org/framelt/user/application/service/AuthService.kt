@@ -66,9 +66,7 @@ class AuthService(
     }
 
     fun createRefreshToken(userId: Long?): String {
-        val previousRefreshTokens = refreshTokenQueryPort.findAllByUserId(userId!!).filter { it.isValid }
-        check(previousRefreshTokens.size <= 1) { "유효한 리프레시 토큰은 2개 이상 존재할 수 없습니다." }
-        val previousRefreshToken = previousRefreshTokens.firstOrNull()
+        val previousRefreshToken = refreshTokenQueryPort.findValidOneByUserIdWithLock(userId!!)
         previousRefreshToken?.let {
             it.invalidate()
             refreshTokenCommandPort.save(it)

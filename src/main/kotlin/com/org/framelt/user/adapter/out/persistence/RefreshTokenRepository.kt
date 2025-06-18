@@ -21,7 +21,6 @@ class RefreshTokenRepository(
         refreshTokenJpaRepository.deleteAllByUserId(userId)
     }
 
-    override fun findAllByUserId(userId: Long): List<RefreshToken> {
-        return refreshTokenJpaRepository.findAllByUserId(userId).map { it.toDomain() }
-    }
+    override fun findValidOneByUserIdWithLock(userId: Long): RefreshToken?
+        = refreshTokenJpaRepository.findValidOneByUserIdWithLock(userId)?.toDomain()
 }
